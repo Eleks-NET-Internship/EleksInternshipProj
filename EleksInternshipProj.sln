@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35303.130
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EleksInternshipProj.Server", "EleksInternshipProj.Server\EleksInternshipProj.Server.csproj", "{F42D60D4-7283-48C2-915D-C948A5A59A66}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "eleksinternshipproj.client", "eleksinternshipproj.client\eleksinternshipproj.client.esproj", "{D3437D4B-ACB7-4D30-A861-23F46B93B717}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F42D60D4-7283-48C2-915D-C948A5A59A66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F42D60D4-7283-48C2-915D-C948A5A59A66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F42D60D4-7283-48C2-915D-C948A5A59A66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F42D60D4-7283-48C2-915D-C948A5A59A66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3437D4B-ACB7-4D30-A861-23F46B93B717}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3437D4B-ACB7-4D30-A861-23F46B93B717}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3437D4B-ACB7-4D30-A861-23F46B93B717}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{D3437D4B-ACB7-4D30-A861-23F46B93B717}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3437D4B-ACB7-4D30-A861-23F46B93B717}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3437D4B-ACB7-4D30-A861-23F46B93B717}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D3C14D9C-3BBB-48E8-91C1-39F4D277446F}
+	EndGlobalSection
+EndGlobal
