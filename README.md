@@ -1,1 +1,1 @@
-# EleksInternshipProj
+# Navchayko
