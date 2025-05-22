@@ -9,7 +9,7 @@ export class LoginComponent {
   loginPayload = {
     username: '',
     password: ''
-  }
+  };
 
   onSignIn() {
     console.log(this.loginPayload);
