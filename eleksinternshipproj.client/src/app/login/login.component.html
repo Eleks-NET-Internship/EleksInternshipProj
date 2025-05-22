@@ -1,1 +1,14 @@
-<p>login works!</p>
+<!-- app.component.html -->
+<form #myForm="ngForm" (ngSubmit)="onSignIn()">
+  <label for="username">Username:</label>
+  <input type="text" name="username" [(ngModel)]="loginPayload.username" required />
+
+  <label for="password">Password:</label>
+  <input type="password" name="password" [(ngModel)]="loginPayload.password" required />
+
+  <button type="submit">Sign in</button>
+</form>
+<p>Don't have an account?</p>
+<button [routerLink]="['/register']">Register</button>
+<span>Or</span>
+<button (click)="onGoogleSignIn()">Sign in with Google</button>
