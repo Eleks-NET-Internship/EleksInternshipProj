@@ -3,9 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35303.130
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EleksInternshipProj.Server", "EleksInternshipProj.Server\EleksInternshipProj.Server.csproj", "{F42D60D4-7283-48C2-915D-C948A5A59A66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EleksInternshipProj.WebApi", "EleksInternshipProj.Server\EleksInternshipProj.WebApi\EleksInternshipProj.WebApi.csproj", "{F42D60D4-7283-48C2-915D-C948A5A59A66}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "eleksinternshipproj.client", "eleksinternshipproj.client\eleksinternshipproj.client.esproj", "{D3437D4B-ACB7-4D30-A861-23F46B93B717}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EleksInternshipProj.Server", "EleksInternshipProj.Server", "{A6C66D5B-E86C-44A6-B9C6-1B7420BA2AA3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EleksInternshipProj.Domain", "EleksInternshipProj.Server\EleksInternshipProj.Domain\EleksInternshipProj.Domain.csproj", "{B969443B-72D9-4047-A2CB-C302026FC316}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EleksInternshipProj.Application", "EleksInternshipProj.Server\EleksInternshipProj.Application\EleksInternshipProj.Application.csproj", "{D6641A89-6E00-487E-A518-283CC79BC259}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EleksInternshipProj.Infrastructure", "EleksInternshipProj.Server\EleksInternshipProj.Infrastructure\EleksInternshipProj.Infrastructure.csproj", "{FB2B1325-12BF-4153-82B7-E410769FE881}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,9 +31,27 @@ Global
 		{D3437D4B-ACB7-4D30-A861-23F46B93B717}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3437D4B-ACB7-4D30-A861-23F46B93B717}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D3437D4B-ACB7-4D30-A861-23F46B93B717}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B969443B-72D9-4047-A2CB-C302026FC316}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B969443B-72D9-4047-A2CB-C302026FC316}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B969443B-72D9-4047-A2CB-C302026FC316}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B969443B-72D9-4047-A2CB-C302026FC316}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6641A89-6E00-487E-A518-283CC79BC259}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6641A89-6E00-487E-A518-283CC79BC259}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6641A89-6E00-487E-A518-283CC79BC259}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6641A89-6E00-487E-A518-283CC79BC259}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB2B1325-12BF-4153-82B7-E410769FE881}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB2B1325-12BF-4153-82B7-E410769FE881}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB2B1325-12BF-4153-82B7-E410769FE881}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB2B1325-12BF-4153-82B7-E410769FE881}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F42D60D4-7283-48C2-915D-C948A5A59A66} = {A6C66D5B-E86C-44A6-B9C6-1B7420BA2AA3}
+		{B969443B-72D9-4047-A2CB-C302026FC316} = {A6C66D5B-E86C-44A6-B9C6-1B7420BA2AA3}
+		{D6641A89-6E00-487E-A518-283CC79BC259} = {A6C66D5B-E86C-44A6-B9C6-1B7420BA2AA3}
+		{FB2B1325-12BF-4153-82B7-E410769FE881} = {A6C66D5B-E86C-44A6-B9C6-1B7420BA2AA3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D3C14D9C-3BBB-48E8-91C1-39F4D277446F}

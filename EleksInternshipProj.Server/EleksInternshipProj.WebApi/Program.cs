@@ -1,4 +1,6 @@
 
+using EleksInternshipProj.WebApi.Extensions;
+
 namespace EleksInternshipProj.Server
 {
     public class Program
@@ -10,6 +12,11 @@ namespace EleksInternshipProj.Server
             // Add services to the container.
 
             builder.Services.AddControllers();
+
+            // from extensions
+            builder.Services.AddApplicationServices();
+            builder.Services.AddRepositories();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
