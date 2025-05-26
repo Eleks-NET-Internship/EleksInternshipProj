@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EleksInternshipProj.Application\EleksInternshipProj.Application.csproj" />
+    <ProjectReference Include="..\EleksInternshipProj.Domain\EleksInternshipProj.Domain.csproj" />
+    <ProjectReference Include="..\EleksInternshipProj.Application\EleksInternshipProj.Application.csproj" />
+    <ProjectReference Include="..\EleksInternshipProj.Domain\EleksInternshipProj.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
