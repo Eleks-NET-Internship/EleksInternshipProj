@@ -1,5 +1,7 @@
 
+using EleksInternshipProj.Infrastructure.Data;
 using EleksInternshipProj.WebApi.Extensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace EleksInternshipProj.Server
 {
@@ -9,6 +11,13 @@ namespace EleksInternshipProj.Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // GET Connection String
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            
+            // Initialize the database
+            builder.Services.AddEntityFrameworkNpgsql().AddDbContext<NavchaykoDbContext>(
+                options => options.UseNpgsql(connectionString));
+            
             // Add services to the container.
 
             builder.Services.AddControllers();
