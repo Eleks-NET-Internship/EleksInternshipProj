@@ -1,5 +1,7 @@
 
 using EleksInternshipProj.WebApi.Extensions;
+using EleksInternsipProj.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace EleksInternshipProj.Server
 {
@@ -13,6 +15,7 @@ namespace EleksInternshipProj.Server
 
             builder.Services.AddControllers();
 
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
             // from extensions
             builder.Services.AddApplicationServices();
             builder.Services.AddRepositories();
