@@ -1,11 +1,6 @@
-﻿using EleksInternsipProj.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EleksInternsipProj.Domain.Abstractions
+﻿using EleksInternshipProj.Domain.Models;
+using Task = System.Threading.Tasks.Task;
+namespace EleksInternshipProj.Domain.Abstractions
 {
     // just example, this folder for repository interfaces
     public interface IUserRepository

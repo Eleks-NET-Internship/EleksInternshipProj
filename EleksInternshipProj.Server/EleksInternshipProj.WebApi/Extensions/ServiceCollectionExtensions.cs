@@ -1,11 +1,8 @@
 ﻿using EleksInternshipProj.Application.Services;
 using EleksInternshipProj.Application.Services.Imp;
 using EleksInternshipProj.Infrastructure.Repositories;
-using EleksInternsipProj.Domain.Abstractions;
-using EleksInternsipProj.Infrastructure.Data;
+using EleksInternshipProj.Domain.Abstractions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;

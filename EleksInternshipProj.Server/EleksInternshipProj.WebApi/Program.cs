@@ -1,7 +1,6 @@
 
 using EleksInternshipProj.Infrastructure.Data;
 using EleksInternshipProj.WebApi.Extensions;
-using EleksInternsipProj.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,7 +26,6 @@ namespace EleksInternshipProj.Server
 
             builder.Services.AddControllers();
 
-            builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
             // from extensions
             builder.Services.AddApplicationServices();
             builder.Services.AddRepositories();

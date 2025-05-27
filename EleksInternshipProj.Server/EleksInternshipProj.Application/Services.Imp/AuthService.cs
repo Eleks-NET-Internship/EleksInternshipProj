@@ -1,12 +1,7 @@
 ﻿using EleksInternshipProj.Application.DTOs;
-using EleksInternsipProj.Domain.Abstractions;
-using EleksInternsipProj.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using EleksInternshipProj.Domain.Abstractions;
+using EleksInternshipProj.Domain.Models;
+using Task = System.Threading.Tasks.Task;
 namespace EleksInternshipProj.Application.Services.Imp
 {
     public class AuthService : IAuthService
@@ -34,9 +29,9 @@ namespace EleksInternshipProj.Application.Services.Imp
             (byte[] hash, byte[] salt) = _passwordHasher.HashPassword(request.Password);
 
             User newUser = new User
-            {
+            { //UserName should be username, it's one word
                 Email = request.Email,
-                Username = request.Username,
+                UserName = request.Username,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 PasswordHash = hash,
@@ -53,7 +48,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             {
                 throw new Exception("Invalid credentials");
             }
-            return _tokenGenerator.GenerateToken(existingUser.UserID, existingUser.Email);
+            return _tokenGenerator.GenerateToken(existingUser.Id, existingUser.Email);
         }
     }
 }

@@ -1,20 +1,15 @@
-﻿using EleksInternsipProj.Domain.Abstractions;
-using EleksInternsipProj.Domain.Models;
-using EleksInternsipProj.Infrastructure.Data;
+﻿using EleksInternshipProj.Domain.Abstractions;
+using Task = System.Threading.Tasks.Task;
+using EleksInternshipProj.Domain.Models;
+using EleksInternshipProj.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace EleksInternshipProj.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly AppDbContext _context;
+        private readonly NavchaykoDbContext _context;
 
-        public UserRepository(AppDbContext context)
+        public UserRepository(NavchaykoDbContext context)
         {
             _context = context;
         }
