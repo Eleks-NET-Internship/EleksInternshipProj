@@ -13,11 +13,13 @@ namespace EleksInternshipProj.Application.Services.Imp
     {
         private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
+        private readonly ITokenGenerator _tokenGenerator;
 
-        public AuthService(IUserRepository userRepository, IPasswordHasher passwordHasher)
+        public AuthService(IUserRepository userRepository, IPasswordHasher passwordHasher, ITokenGenerator tokenGenerator)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
+            _tokenGenerator = tokenGenerator;
         }
 
         public async Task RegisterAsync(RegisterRequest request)
@@ -43,7 +45,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             await _userRepository.AddUserAsync(newUser);
         }
 
-        public async Task ValidateUser(LoginRequest request)
+        public async Task<string> ValidateUser(LoginRequest request)
         {
             User? existingUser = await _userRepository.GetByEmailAsync(request.Email);
             if (existingUser == null ||
@@ -51,6 +53,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             {
                 throw new Exception("Invalid credentials");
             }
+            return _tokenGenerator.GenerateToken(existingUser.UserID, existingUser.Email);
         }
     }
 }

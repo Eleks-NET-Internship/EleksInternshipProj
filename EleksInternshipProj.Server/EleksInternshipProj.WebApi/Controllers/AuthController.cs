@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EleksInternshipProj.Server.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/auth")]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -30,15 +30,16 @@ namespace EleksInternshipProj.Server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
+            string token;
             try
             {
-                await _authService.ValidateUser(request);
+                token = await _authService.ValidateUser(request);
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = ex.Message });
             }
-            return Ok();
+            return Ok(new { accessToken = token});
         }
     }
 }

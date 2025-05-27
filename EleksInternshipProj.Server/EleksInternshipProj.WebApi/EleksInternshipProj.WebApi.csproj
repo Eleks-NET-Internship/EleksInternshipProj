@@ -7,6 +7,7 @@
     <SpaRoot>..\..\eleksinternshipproj.client</SpaRoot>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
+    <UserSecretsId>82f77ff9-2540-4803-9d4d-6960a9fb2772</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
