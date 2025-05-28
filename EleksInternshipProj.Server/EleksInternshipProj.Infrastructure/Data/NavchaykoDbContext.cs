@@ -29,7 +29,7 @@ namespace EleksInternshipProj.Infrastructure.Data
         {
               if (!optionsBuilder.IsConfigured)
               {
-                    optionsBuilder.UseNpgsql("Host=localhost:5432;Database=Navchayko;Username=postgres;Password=12345678");
+                    optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Navchayko;Username=postgres;Password=password");
               }
         }
         
@@ -99,8 +99,6 @@ namespace EleksInternshipProj.Infrastructure.Data
                   entity.ToTable("event");
                   entity.HasKey(e => e.Id);
                   entity.Property(e => e.Name).IsRequired();
-                  entity.Property(e => e.StartTime).IsRequired();
-                  entity.Property(e => e.EndTime).IsRequired();
             });
 
             modelBuilder.Entity<EventMarker>(entity =>
@@ -153,6 +151,8 @@ namespace EleksInternshipProj.Infrastructure.Data
             {
                   entity.ToTable("event_timetable_day");
                   entity.HasKey(etd => etd.Id);
+                  entity.Property(etd => etd.StartTime).IsRequired();
+                  entity.Property(etd => etd.EndTime).IsRequired();
                   entity.HasOne(etd => etd.Event)
                         .WithMany(e => e.EventTimetableDays)
                         .HasForeignKey(etd => etd.EventId)
