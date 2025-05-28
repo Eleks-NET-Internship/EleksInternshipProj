@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace EleksInternshipProj.Application.DTOs
 {
-    internal class MarkerDto
+    public class MarkerDto
     {
+        public long Id { get; set; }
+        public string Name { get; set; } = null!;
+        public long SpaceId { get; set; }
     }
+
 }
