@@ -88,6 +88,7 @@ namespace EleksInternshipProj.Infrastructure.Data
                   entity.ToTable("marker");
                   entity.HasKey(m => m.Id);
                   entity.Property(m => m.Name).IsRequired();
+                  entity.Property(m => m.Type).IsRequired();
                   entity.HasOne(m => m.Space)
                         .WithMany(s => s.Markers)
                         .HasForeignKey(m => m.SpaceId)
