@@ -1,19 +1,18 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EleksInternshipProj.Application.Services.Imp
 {
     public class TokenGenerator : ITokenGenerator
     {
         private readonly string _secret;
+
         private readonly string _issuer;
+
         private readonly string _audience;
 
         public TokenGenerator(IConfiguration configuration)
@@ -22,6 +21,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             _issuer = configuration.GetSection("Jwt")["Issuer"];
             _audience = configuration.GetSection("Jwt")["Audience"];
         }
+
         public string GenerateToken(long userId, string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -42,7 +42,9 @@ namespace EleksInternshipProj.Application.Services.Imp
                 Audience = _audience,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
+
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+
             return tokenHandler.WriteToken(token);
         }
     }

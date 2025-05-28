@@ -1,11 +1,13 @@
-﻿using EleksInternshipProj.Application.Services;
-using EleksInternshipProj.Application.Services.Imp;
-using EleksInternshipProj.Infrastructure.Repositories;
-using EleksInternshipProj.Domain.Abstractions;
+﻿using System.Text;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Text;
+
+using EleksInternshipProj.Domain.Abstractions;
+using EleksInternshipProj.Application.Services;
+using EleksInternshipProj.Application.Services.Imp;
+using EleksInternshipProj.Infrastructure.Repositories;
 
 namespace EleksInternshipProj.WebApi.Extensions
 {
@@ -13,19 +15,16 @@ namespace EleksInternshipProj.WebApi.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            // DI for services here
-
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
+            
             return services;
         }
 
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            // DI for repositories here
             services.AddScoped<IUserRepository, UserRepository>();
-
 
             return services;
         }

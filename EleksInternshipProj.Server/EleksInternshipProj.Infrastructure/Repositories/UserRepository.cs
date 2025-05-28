@@ -1,8 +1,11 @@
-﻿using EleksInternshipProj.Domain.Abstractions;
-using Task = System.Threading.Tasks.Task;
+﻿using Task = System.Threading.Tasks.Task;
+
+using Microsoft.EntityFrameworkCore;
+
+using EleksInternshipProj.Domain.Abstractions;
 using EleksInternshipProj.Domain.Models;
 using EleksInternshipProj.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+
 namespace EleksInternshipProj.Infrastructure.Repositories
 {
     public class UserRepository : IUserRepository

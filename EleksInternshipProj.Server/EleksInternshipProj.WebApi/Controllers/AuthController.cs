@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
+
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
-using Microsoft.AspNetCore.Mvc;
 
 namespace EleksInternshipProj.Server.Controllers
 {
@@ -25,12 +26,15 @@ namespace EleksInternshipProj.Server.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
+
             return Ok();
         }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             string token;
+
             try
             {
                 token = await _authService.ValidateUser(request);
@@ -39,6 +43,7 @@ namespace EleksInternshipProj.Server.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
+
             return Ok(new { accessToken = token});
         }
     }

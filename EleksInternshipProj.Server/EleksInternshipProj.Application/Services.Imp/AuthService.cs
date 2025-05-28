@@ -1,7 +1,9 @@
-﻿using EleksInternshipProj.Application.DTOs;
+﻿using Task = System.Threading.Tasks.Task;
+
+using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Domain.Abstractions;
 using EleksInternshipProj.Domain.Models;
-using Task = System.Threading.Tasks.Task;
+
 namespace EleksInternshipProj.Application.Services.Imp
 {
     public class AuthService : IAuthService
@@ -19,17 +21,16 @@ namespace EleksInternshipProj.Application.Services.Imp
 
         public async Task RegisterAsync(RegisterRequest request)
         {
-            //mock registration, email should be verified by sending and checking confirmation code
-
+            // Mock registration, email should be verified by sending and checking confirmation code
             User? existingUser = await _userRepository.GetByEmailAsync(request.Email);
             if (existingUser != null)
             {
                 throw new Exception("User with this email already exists");
             }
-            (byte[] hash, byte[] salt) = _passwordHasher.HashPassword(request.Password);
 
+            (byte[] hash, byte[] salt) = _passwordHasher.HashPassword(request.Password);
             User newUser = new User
-            { //UserName should be username, it's one word
+            { // UserName should be username, it's one word
                 Email = request.Email,
                 UserName = request.Username,
                 FirstName = request.FirstName,
@@ -37,6 +38,7 @@ namespace EleksInternshipProj.Application.Services.Imp
                 PasswordHash = hash,
                 PasswordSalt = salt,
             };
+
             await _userRepository.AddUserAsync(newUser);
         }
 
@@ -48,6 +50,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             {
                 throw new Exception("Invalid credentials");
             }
+
             return _tokenGenerator.GenerateToken(existingUser.Id, existingUser.Email);
         }
     }

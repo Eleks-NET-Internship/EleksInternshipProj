@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Security.Cryptography;
 
 namespace EleksInternshipProj.Application.Services.Imp
 {
     public class PasswordHasher : IPasswordHasher
     {
         private const int SaltSize = 16;
+
         private const int HashSize = 32;
+
         private const int Iterations = 100_000;
+
         private static readonly HashAlgorithmName HashAlgorithm = HashAlgorithmName.SHA3_256;
+
         public (byte[] hash, byte[] salt) HashPassword(string password)
         {
             byte[] saltBytes = RandomNumberGenerator.GetBytes(SaltSize);
@@ -29,6 +28,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             byte[] hash = pbkdf2.GetBytes(HashSize);
 
             bool isMatch = CryptographicOperations.FixedTimeEquals(hash, storedHash);
+
             return isMatch;
         }
     }

@@ -1,11 +1,12 @@
+using System.Text;
 
-using EleksInternshipProj.Infrastructure.Data;
-using EleksInternshipProj.WebApi.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
+
+using EleksInternshipProj.Infrastructure.Data;
+using EleksInternshipProj.WebApi.Extensions;
 
 namespace EleksInternshipProj.Server
 {
@@ -23,21 +24,16 @@ namespace EleksInternshipProj.Server
                 options => options.UseNpgsql(connectionString));
             
             // Add services to the container.
-
             builder.Services.AddControllers();
 
-            // from extensions
+            // From extensions
             builder.Services.AddApplicationServices();
             builder.Services.AddRepositories();
-
             builder.Services.ConfigureAuth(builder.Configuration);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-
-                
 
             var app = builder.Build();
 
@@ -53,10 +49,8 @@ namespace EleksInternshipProj.Server
 
             app.UseHttpsRedirection();
 
-
             app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 
