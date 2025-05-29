@@ -14,25 +14,31 @@ namespace EleksInternshipProj.Domain.Models
         [Column("user_name")]
         public string UserName { get; set; } = null!;
 
-        [Required, MaxLength(255)]
+        [MaxLength(255)]
         [Column("first_name")]
-        public string FirstName { get; set; } = null!;
+        public string? FirstName { get; set; }
 
-        [Required, MaxLength(255)]
+        [MaxLength(255)]
         [Column("last_name")]
-        public string LastName { get; set; } = null!;
+        public string? LastName { get; set; }
 
         [Required, MaxLength(255)]
         [Column("email")]
         public string Email { get; set; } = null!;
 
-        [Required]
         [Column("password_hash")]
-        public byte[] PasswordHash { get; set; } = null!;
+        public byte[]? PasswordHash { get; set; }
 
-        [Required]
         [Column("password_salt")]
-        public byte[] PasswordSalt { get; set; } = null!;
+        public byte[]? PasswordSalt { get; set; }
+
+        [Required, MaxLength(50)]
+        [Column("auth_provider")]
+        public string AuthProvider { get; set; } = null!;
+
+        [MaxLength(255)]
+        [Column("external_id")]
+        public string? ExternalId {  get; set; }
 
         public List<UserSpace> UserSpaces { get; set; } = new();
     }
