@@ -1,7 +1,9 @@
-﻿using EleksInternshipProj.Application.DTOs;
-using EleksInternshipProj.Domain.Models;
+﻿
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using EleksInternshipProj.Application.DTOs;
+using EleksInternshipProj.Domain.Models;
+
 
 namespace EleksInternshipProj.Application.Services
 {

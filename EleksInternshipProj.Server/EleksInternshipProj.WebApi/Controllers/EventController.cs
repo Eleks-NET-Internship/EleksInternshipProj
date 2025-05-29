@@ -1,8 +1,10 @@
-﻿using EleksInternshipProj.Application.DTOs;
-using EleksInternshipProj.Application.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿
 using System;
 using System.Threading.Tasks;
+using EleksInternshipProj.Application.DTOs;
+using EleksInternshipProj.Application.Services;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace EleksInternshipProj.WebApi.Controllers
 {

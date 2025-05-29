@@ -27,10 +27,7 @@ namespace EleksInternshipProj.Infrastructure.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-              if (!optionsBuilder.IsConfigured)
-              {
-                    optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Navchayko;Username=postgres;Password=password");
-              }
+             
         }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,10 +1,11 @@
-﻿using EleksInternshipProj.Domain.Abstractions;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using EleksInternshipProj.Domain.Abstractions;
 using EleksInternshipProj.Domain.Models;
 using EleksInternshipProj.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 
 namespace EleksInternshipProj.Infrastructure.Repositories
 {
