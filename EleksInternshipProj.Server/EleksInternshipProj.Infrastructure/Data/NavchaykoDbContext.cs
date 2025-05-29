@@ -45,7 +45,7 @@ namespace EleksInternshipProj.Infrastructure.Data
                   entity.ToTable("user");
                   entity.HasKey(u => u.Id);
                   entity.HasIndex(u => new { u.Email, u.AuthProvider}).IsUnique();
-                  entity.Property(u => u.UserName).IsRequired();
+                  entity.Property(u => u.Username).IsRequired();
                   entity.Property(u => u.Email).IsRequired();
                   entity.Property(u => u.AuthProvider).IsRequired();
             });

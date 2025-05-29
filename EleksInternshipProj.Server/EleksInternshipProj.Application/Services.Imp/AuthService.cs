@@ -19,6 +19,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             _tokenGenerator = tokenGenerator;
         }
 
+        // Local auth
         public async Task RegisterAsync(RegisterRequest request)
         {
             // Mock registration, email should be verified by sending and checking confirmation code
@@ -28,15 +29,23 @@ namespace EleksInternshipProj.Application.Services.Imp
                 throw new Exception("User with this email already exists");
             }
 
+            request.Email = request.Email.Trim();
+            request.Username = request.Username.Trim();
+            request.FirstName = request.FirstName.Trim();
+            request.LastName = request.LastName.Trim();
+
+
             (byte[] hash, byte[] salt) = _passwordHasher.HashPassword(request.Password);
             User newUser = new User
-            { // UserName should be username, it's one word
+            {
+                Username = request.Username,
+                FirstName = request.FirstName == "" ? null : request.FirstName,
+                LastName = request.LastName == "" ? null : request.FirstName,
                 Email = request.Email,
-                UserName = request.Username,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
                 PasswordHash = hash,
                 PasswordSalt = salt,
+                AuthProvider = "local",
+                ExternalId = null
             };
 
             await _userRepository.AddUserAsync(newUser);
@@ -53,5 +62,7 @@ namespace EleksInternshipProj.Application.Services.Imp
 
             return _tokenGenerator.GenerateToken(existingUser.Id, existingUser.Email);
         }
+
+        //Google auth
     }
 }

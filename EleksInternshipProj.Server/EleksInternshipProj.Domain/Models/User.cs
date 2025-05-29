@@ -11,8 +11,8 @@ namespace EleksInternshipProj.Domain.Models
         public long Id { get; set; }
 
         [Required, MaxLength(255)]
-        [Column("user_name")]
-        public string UserName { get; set; } = null!;
+        [Column("username")]
+        public string Username { get; set; } = null!;
 
         [MaxLength(255)]
         [Column("first_name")]
