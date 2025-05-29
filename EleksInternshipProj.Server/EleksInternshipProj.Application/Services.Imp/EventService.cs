@@ -1,6 +1,7 @@
 ﻿using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Domain.Abstractions;
 using EleksInternshipProj.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,7 +29,11 @@ namespace EleksInternshipProj.Application.Services.Imp
 
         public async Task<bool> DeleteAsync(long id)
         {
-            return await _eventRepository.DeleteAsync(id);
+            var deleted = await _eventRepository.DeleteAsync(id);
+            if (!deleted)
+                throw new ArgumentException($"Event with ID {id} was not found for deletion.", nameof(id));
+
+            return true;
         }
 
         public async Task<IEnumerable<EventWithMarkersDto>> GetAllAsync()
@@ -43,6 +48,7 @@ namespace EleksInternshipProj.Application.Services.Imp
                 {
                     Id = em.Marker.Id,
                     Name = em.Marker.Name,
+                    Type = em.Marker.Type,
                     SpaceId = em.Marker.SpaceId
                 }).ToList()
             });
@@ -51,7 +57,8 @@ namespace EleksInternshipProj.Application.Services.Imp
         public async Task<EventWithMarkersDto?> GetByIdAsync(long id)
         {
             var ev = await _eventRepository.GetByIdAsync(id);
-            if (ev == null) return null;
+            if (ev == null)
+                throw new ArgumentException($"Event with ID {id} was not found.", nameof(id));
 
             return new EventWithMarkersDto
             {
@@ -61,6 +68,7 @@ namespace EleksInternshipProj.Application.Services.Imp
                 {
                     Id = em.Marker.Id,
                     Name = em.Marker.Name,
+                    Type = em.Marker.Type,
                     SpaceId = em.Marker.SpaceId
                 }).ToList()
             };
@@ -70,11 +78,10 @@ namespace EleksInternshipProj.Application.Services.Imp
         {
             var existingEvent = await _eventRepository.GetByIdAsync(dto.Id);
             if (existingEvent == null)
-                return false;
+                throw new ArgumentException($"Event with ID {dto.Id} was not found for update.");
 
             existingEvent.Name = dto.Name;
             return await _eventRepository.UpdateAsync(existingEvent);
         }
-
     }
 }

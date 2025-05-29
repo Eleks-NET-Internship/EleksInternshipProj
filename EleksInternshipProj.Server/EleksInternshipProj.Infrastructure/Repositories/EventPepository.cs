@@ -34,16 +34,9 @@ namespace EleksInternshipProj.Infrastructure.Repositories
 
         public async Task<Event?> AddAsync(Event entity)
         {
-            try
-            {
-                await _context.Events.AddAsync(entity);
-                await _context.SaveChangesAsync();
-                return entity;
-            }
-            catch
-            {
-                return null;
-            }
+            await _context.Events.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
         public async Task<bool> DeleteAsync(long id)

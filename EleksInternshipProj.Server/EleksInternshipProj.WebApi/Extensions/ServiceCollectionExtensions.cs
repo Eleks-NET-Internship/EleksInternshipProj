@@ -12,6 +12,7 @@ namespace EleksInternshipProj.WebApi.Extensions
         {
             // DI for services here
             services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IMarkerService, MarkerService>();
             return services;
         }
 
@@ -19,7 +20,7 @@ namespace EleksInternshipProj.WebApi.Extensions
         {
             // DI for repositories here
             services.AddScoped<IEventRepository, EventRepository>();
-
+            services.AddScoped<IMarkerRepository, MarkerRepository>();
             return services;
         }
 

@@ -1,7 +1,8 @@
 ﻿using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
-using EleksInternshipProj.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace EleksInternshipProj.WebApi.Controllers
 {
@@ -38,10 +39,11 @@ namespace EleksInternshipProj.WebApi.Controllers
             try
             {
                 var ev = await _eventService.GetByIdAsync(id);
-                if (ev == null)
-                    return NotFound(new { message = $"Event with ID {id} not found." });
-
                 return Ok(new { data = ev });
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(new { message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -73,11 +75,12 @@ namespace EleksInternshipProj.WebApi.Controllers
                 if (id != dto.Id)
                     return BadRequest(new { message = "ID mismatch." });
 
-                var success = await _eventService.UpdateAsync(dto);
-                if (!success)
-                    return NotFound(new { message = $"Event with ID {id} not found." });
-
+                await _eventService.UpdateAsync(dto);
                 return Ok(new { message = "Event updated successfully." });
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(new { message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -91,11 +94,12 @@ namespace EleksInternshipProj.WebApi.Controllers
         {
             try
             {
-                var success = await _eventService.DeleteAsync(id);
-                if (!success)
-                    return NotFound(new { message = $"Event with ID {id} not found." });
-
+                await _eventService.DeleteAsync(id);
                 return Ok(new { message = "Event deleted successfully." });
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(new { message = ex.Message });
             }
             catch (Exception ex)
             {
