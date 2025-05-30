@@ -12,7 +12,7 @@ export class AuthService {
   constructor(private readonly http: HttpClient) { }
 
   login(credentials: { email: string; password: string }) {
-    this.http.post<{ token: string }>('https://127.0.0.1/api/auth/login', credentials)
+    this.http.post<{ token: string }>('http://localhost:5142/api/auth/login', credentials)
       .subscribe(response => {
         sessionStorage.setItem(this.TOKEN_KEY, response.token);
       });
@@ -23,6 +23,11 @@ export class AuthService {
   }
 
   register(registerPayload: { firstName: string, lastName: string, username: string, email: string, password: string }) {
-    this.http.post('https://127.0.0.1/api/auth/register', registerPayload);
+    this.http.post('http://localhost:5142/api/auth/register', registerPayload, { observe: 'response' })
+      .subscribe(response => {
+        if (response.ok) {
+          console.log("Successful register.")
+        }
+      });
   }
 }
