@@ -23,9 +23,18 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<User?> GetByEmailAsync(string email)
+        public async Task<User?> GetByEmailAndProviderAsync(string email, string provider)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email && u.AuthProvider == provider);
+        }
+
+        public async Task<long> GetIdByEmailAndProviderAsync(string email, string provider)
+        {
+            return await _context.Users
+                .Where(u => u.Email == email && u.AuthProvider == provider)
+                .Select(u => u.Id)
+                .FirstOrDefaultAsync();
+
         }
     }
 }

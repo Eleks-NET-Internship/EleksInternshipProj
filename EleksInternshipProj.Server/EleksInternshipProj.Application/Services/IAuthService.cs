@@ -9,8 +9,8 @@ namespace EleksInternshipProj.Application.Services
     {
         Task RegisterAsync(RegisterRequest request);
 
-        Task<string> ValidateUser(LoginRequest request);
+        Task<string> LoginAsync(LoginRequest request);
 
-        Task<string> GoogleLogin(ClaimsPrincipal claimsPrincipal);
+        Task<string> GoogleLoginAsync(ClaimsPrincipal claimsPrincipal);
     }
 }

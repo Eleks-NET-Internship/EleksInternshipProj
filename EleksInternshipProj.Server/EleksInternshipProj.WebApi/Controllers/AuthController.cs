@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
+using System.Security.Claims;
 
 namespace EleksInternshipProj.Server.Controllers
 {
@@ -41,7 +42,7 @@ namespace EleksInternshipProj.Server.Controllers
 
             try
             {
-                token = await _authService.ValidateUser(request);
+                token = await _authService.LoginAsync(request);
             }
             catch (Exception ex)
             {
@@ -70,9 +71,9 @@ namespace EleksInternshipProj.Server.Controllers
             if (!authenticateResult.Succeeded)
                 return Unauthorized();
 
-            var claims = authenticateResult.Principal;
+            ClaimsPrincipal claims = authenticateResult.Principal;
 
-            string token = "";
+            string token = await _authService.GoogleLoginAsync(claims);
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 

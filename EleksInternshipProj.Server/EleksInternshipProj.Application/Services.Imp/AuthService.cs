@@ -24,8 +24,7 @@ namespace EleksInternshipProj.Application.Services.Imp
         public async Task RegisterAsync(RegisterRequest request)
         {
             // Mock registration, email should be verified by sending and checking confirmation code
-            // ADD A FILTER FOR 'local' PROVIDER
-            User? existingUser = await _userRepository.GetByEmailAsync(request.Email);
+            User? existingUser = await _userRepository.GetByEmailAndProviderAsync(request.Email, "local");
             if (existingUser != null)
             {
                 throw new Exception("User with this email already exists");
@@ -65,9 +64,9 @@ namespace EleksInternshipProj.Application.Services.Imp
             await _userRepository.AddUserAsync(newUser);
         }
 
-        public async Task<string> ValidateUser(LoginRequest request)
+        public async Task<string> LoginAsync(LoginRequest request)
         {
-            User? existingUser = await _userRepository.GetByEmailAsync(request.Email);
+            User? existingUser = await _userRepository.GetByEmailAndProviderAsync(request.Email, "local");
             if (existingUser == null ||
                 !_passwordHasher.IsPasswordCorrect(existingUser.PasswordHash, existingUser.PasswordSalt, request.Password))
             {
@@ -78,7 +77,7 @@ namespace EleksInternshipProj.Application.Services.Imp
         }
 
         //Google auth
-        public async Task<string> GoogleLogin(ClaimsPrincipal claimsPrincipal)
+        public async Task<string> GoogleLoginAsync(ClaimsPrincipal claimsPrincipal)
         {
             if (claimsPrincipal == null)
             {
@@ -91,13 +90,19 @@ namespace EleksInternshipProj.Application.Services.Imp
                 throw new Exception("Invalid email");
             }
 
-            // register if doesn't exist (check only for 'google' provider)
-            long userId = await GoogleRegister(claimsPrincipal);
-            // create token for user
+            User? existingUser = await _userRepository.GetByEmailAndProviderAsync(email, "google");
+            if (existingUser != null)
+            {
+                return _tokenGenerator.GenerateToken(existingUser.Id, email);
+            }
+            
+            
+            long userId = await GoogleRegisterAsync(claimsPrincipal);
+
             return _tokenGenerator.GenerateToken(userId, email);
         }
 
-        private async Task<long> GoogleRegister(ClaimsPrincipal claimsPrincipal)
+        private async Task<long> GoogleRegisterAsync(ClaimsPrincipal claimsPrincipal)
         {
             var email = claimsPrincipal.FindFirstValue("email");
             User user = new User
@@ -111,9 +116,10 @@ namespace EleksInternshipProj.Application.Services.Imp
                 AuthProvider = "google",
                 ExternalId = claimsPrincipal.FindFirstValue("given_name")
             };
-            // create user and return his id
 
-            return 0;
+            await _userRepository.AddUserAsync(user);
+
+            return await _userRepository.GetIdByEmailAndProviderAsync(email, "google");
         }
     }
 }
