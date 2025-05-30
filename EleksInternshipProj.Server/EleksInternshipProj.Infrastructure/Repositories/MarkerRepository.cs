@@ -26,9 +26,9 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             return await _context.Markers.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Marker>> GetAllAsync()
+        public async Task<IEnumerable<Marker>> GetAllBySpaceIdAsync(long spaceId)
         {
-            return await _context.Markers.ToListAsync();
+            return await _context.Markers.Where(m => m.SpaceId == spaceId).ToListAsync();
         }
 
         public async Task<IEnumerable<Marker>> GetAllByEventIdAsync(long eventId)

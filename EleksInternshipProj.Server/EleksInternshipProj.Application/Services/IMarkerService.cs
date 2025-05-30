@@ -11,7 +11,7 @@ namespace EleksInternshipProj.Application.Services
     public interface IMarkerService
     {
         Task<MarkerDto?> GetByIdAsync(long id);
-        Task<IEnumerable<MarkerDto>> GetAllAsync();
+        Task<IEnumerable<MarkerDto>> GetAllBySpaceIdAsync(long spaceId);
         Task<IEnumerable<MarkerDto>> GetAllByEventIdAsync(long eventId);
         Task<MarkerDto> AddAsync(CreateMarkerDto dto);
         Task<bool> UpdateAsync(MarkerDto dto);

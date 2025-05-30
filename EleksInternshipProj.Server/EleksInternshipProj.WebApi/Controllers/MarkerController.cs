@@ -19,12 +19,12 @@ namespace EleksInternshipProj.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("all")]
-        public async Task<IActionResult> GetAll()
+        [Route("by-space/{spaceId:long}")]
+        public async Task<IActionResult> GetAllBySpaceId(long spaceId)
         {
             try
             {
-                var markers = await _markerService.GetAllAsync();
+                var markers = await _markerService.GetAllBySpaceIdAsync(spaceId);
                 return Ok(new { data = markers });
             }
             catch (Exception ex)

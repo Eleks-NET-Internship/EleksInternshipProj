@@ -50,9 +50,9 @@ namespace EleksInternshipProj.Application.Services.Imp
             return result;
         }
 
-        public async Task<IEnumerable<MarkerDto>> GetAllAsync()
+        public async Task<IEnumerable<MarkerDto>> GetAllBySpaceIdAsync(long spaceId)
         {
-            var markers = await _markerRepository.GetAllAsync();
+            var markers = await _markerRepository.GetAllBySpaceIdAsync(spaceId);
 
             return markers.Select(m => new MarkerDto
             {
