@@ -21,4 +21,12 @@ public class EventTimetableDay
     [Column("timetable_day_id")]
     public long TimetableDayId { get; set; }
     public TimetableDay TimetableDay { get; set; } = null!;
+
+    [Required]
+    [Column("start_time")]
+    public TimeOnly StartTime { get; set; }
+
+    [Required]
+    [Column("end_time")]
+    public TimeOnly EndTime { get; set; }
 }

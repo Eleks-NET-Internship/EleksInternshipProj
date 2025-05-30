@@ -16,6 +16,9 @@ namespace EleksInternshipProj.WebApi.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            // DI for services here
+            services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IMarkerService, MarkerService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
@@ -25,6 +28,9 @@ namespace EleksInternshipProj.WebApi.Extensions
 
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
+            // DI for repositories here
+            services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IMarkerRepository, MarkerRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
