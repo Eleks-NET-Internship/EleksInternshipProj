@@ -31,9 +31,21 @@ namespace EleksInternshipProj.Application.Services.Imp
 
             request.Email = request.Email.Trim();
             request.Username = request.Username.Trim();
-            request.FirstName = request.FirstName.Trim();
-            request.LastName = request.LastName.Trim();
+            request.FirstName = request.FirstName?.Trim();
+            request.LastName = request.LastName?.Trim();
 
+            if (request.Username.Length < 1)
+            {
+                throw new Exception("Username can't be empty");
+            }
+            else if (request.Email.Length < 3)
+            {
+                throw new Exception("Invalid email");
+            }
+            else if (request.Password.Length < 1)
+            { // Add password validation
+                throw new Exception("Invalid password");
+            }
 
             (byte[] hash, byte[] salt) = _passwordHasher.HashPassword(request.Password);
             User newUser = new User

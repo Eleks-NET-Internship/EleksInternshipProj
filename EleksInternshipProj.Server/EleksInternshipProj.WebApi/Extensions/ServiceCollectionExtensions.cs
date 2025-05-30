@@ -8,6 +8,7 @@ using EleksInternshipProj.Domain.Abstractions;
 using EleksInternshipProj.Application.Services;
 using EleksInternshipProj.Application.Services.Imp;
 using EleksInternshipProj.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace EleksInternshipProj.WebApi.Extensions
 {
@@ -18,7 +19,7 @@ namespace EleksInternshipProj.WebApi.Extensions
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
-            
+
             return services;
         }
 
@@ -31,21 +32,40 @@ namespace EleksInternshipProj.WebApi.Extensions
 
         public static IServiceCollection ConfigureAuth(this IServiceCollection services, IConfiguration configuration)
         {
+            string googleClientId = configuration.GetSection("Google")["ClientId"] ?? throw new ArgumentNullException("Google:ClientId");
+            string googleClientSecret = configuration.GetSection("Google")["ClientSecret"] ?? throw new ArgumentNullException("Google:ClientSecret");
+
+            string jwtIssuer = configuration.GetSection("Jwt")["Issuer"] ?? throw new ArgumentNullException("Jwt:Issuer");
+            string jwtAudience = configuration.GetSection("Jwt")["Audience"] ?? throw new ArgumentNullException("Jwt:Audience");
+            string jwtSecret = configuration.GetSection("Jwt")["Secret"] ?? throw new ArgumentNullException("Jwt:Secret");
+
             services.AddAuthorization();
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(x =>
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddGoogle(options =>
+            {
+                options.ClientId = googleClientId;
+                options.ClientSecret = googleClientSecret;
+                options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.TokenValidationParameters = new TokenValidationParameters
                 {
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("Jwt")["Secret"])),
-                        ValidIssuer = configuration.GetSection("Jwt")["Issuer"],
-                        ValidAudience = configuration.GetSection("Jwt")["Audience"],
-                        ValidateIssuerSigningKey = true,
-                        ValidateLifetime = true,
-                        ValidateIssuer = true,
-                        ValidateAudience = true
-                    };
-                });
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
+                    ValidIssuer = jwtIssuer,
+                    ValidAudience = jwtAudience,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ValidateIssuer = true,
+                    ValidateAudience = true
+                };
+            });
 
             services.AddSwaggerGen(c =>
             {
