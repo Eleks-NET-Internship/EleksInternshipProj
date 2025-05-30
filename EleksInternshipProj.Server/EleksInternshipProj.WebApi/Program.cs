@@ -44,6 +44,8 @@ namespace EleksInternshipProj.Server
 
             var app = builder.Build();
 
+            app.UseCors("AllowAngularApp");
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
 
