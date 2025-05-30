@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -6,6 +7,8 @@ import { Component } from '@angular/core';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
+  constructor(private readonly authService: AuthService) {}
+
   registerPayload = {
     firstName: '',
     lastName: '',
@@ -15,8 +18,6 @@ export class RegisterComponent {
   };
 
   onRegister() {
-    console.log(this.registerPayload);
-
-    // Send register payload to specific API endpoint
+    this.authService.register(this.registerPayload);
   }
 }

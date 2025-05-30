@@ -6,8 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './feature/login/components/login/login.component';
+import { RegisterComponent } from './feature/register/components/register/register.component';
 
 @NgModule({
   declarations: [

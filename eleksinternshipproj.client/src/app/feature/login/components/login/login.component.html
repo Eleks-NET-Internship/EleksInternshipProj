@@ -1,6 +1,6 @@
 <form #myForm="ngForm" (ngSubmit)="onSignIn()">
-  <label for="username">Username:</label>
-  <input type="text" name="username" [(ngModel)]="loginPayload.username" required /><br>
+  <label for="email">Email:</label>
+  <input type="email" name="email" [(ngModel)]="loginPayload.email" required /><br>
 
   <label for="password">Password:</label>
   <input type="password" name="password" [(ngModel)]="loginPayload.password" required /><br>
