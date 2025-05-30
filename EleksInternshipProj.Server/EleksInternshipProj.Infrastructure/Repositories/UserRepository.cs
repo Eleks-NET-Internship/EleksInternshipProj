@@ -1,4 +1,4 @@
-﻿using Task = System.Threading.Tasks.Task;
+using Task = System.Threading.Tasks.Task;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -34,7 +34,6 @@ namespace EleksInternshipProj.Infrastructure.Repositories
                 .Where(u => u.Email == email && u.AuthProvider == provider)
                 .Select(u => u.Id)
                 .FirstOrDefaultAsync();
-
         }
     }
 }

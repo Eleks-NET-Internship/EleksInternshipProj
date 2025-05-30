@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using Task = System.Threading.Tasks.Task;
 
 using EleksInternshipProj.Application.DTOs;
@@ -95,7 +95,6 @@ namespace EleksInternshipProj.Application.Services.Imp
             {
                 return _tokenGenerator.GenerateToken(existingUser.Id, email);
             }
-            
             
             long userId = await GoogleRegisterAsync(claimsPrincipal);
 

@@ -1,4 +1,4 @@
-﻿using Task = System.Threading.Tasks.Task;
+using Task = System.Threading.Tasks.Task;
 
 using EleksInternshipProj.Domain.Models;
 
