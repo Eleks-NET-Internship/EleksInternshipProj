@@ -1,4 +1,5 @@
-﻿using Task = System.Threading.Tasks.Task;
+using System.Security.Claims;
+using Task = System.Threading.Tasks.Task;
 
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Domain.Abstractions;
@@ -19,32 +20,53 @@ namespace EleksInternshipProj.Application.Services.Imp
             _tokenGenerator = tokenGenerator;
         }
 
+        // Local auth
         public async Task RegisterAsync(RegisterRequest request)
         {
             // Mock registration, email should be verified by sending and checking confirmation code
-            User? existingUser = await _userRepository.GetByEmailAsync(request.Email);
+            User? existingUser = await _userRepository.GetByEmailAndProviderAsync(request.Email, "local");
             if (existingUser != null)
             {
                 throw new Exception("User with this email already exists");
             }
 
+            request.Email = request.Email.Trim();
+            request.Username = request.Username.Trim();
+            request.FirstName = request.FirstName?.Trim();
+            request.LastName = request.LastName?.Trim();
+
+            if (request.Username.Length < 1)
+            {
+                throw new Exception("Username can't be empty");
+            }
+            else if (request.Email.Length < 3)
+            {
+                throw new Exception("Invalid email");
+            }
+            else if (request.Password.Length < 1)
+            { // Add password validation
+                throw new Exception("Invalid password");
+            }
+
             (byte[] hash, byte[] salt) = _passwordHasher.HashPassword(request.Password);
             User newUser = new User
-            { // UserName should be username, it's one word
+            {
+                Username = request.Username,
+                FirstName = request.FirstName == "" ? null : request.FirstName,
+                LastName = request.LastName == "" ? null : request.FirstName,
                 Email = request.Email,
-                UserName = request.Username,
-                FirstName = request.FirstName,
-                LastName = request.LastName,
                 PasswordHash = hash,
                 PasswordSalt = salt,
+                AuthProvider = "local",
+                ExternalId = null
             };
 
             await _userRepository.AddUserAsync(newUser);
         }
 
-        public async Task<string> ValidateUser(LoginRequest request)
+        public async Task<string> LoginAsync(LoginRequest request)
         {
-            User? existingUser = await _userRepository.GetByEmailAsync(request.Email);
+            User? existingUser = await _userRepository.GetByEmailAndProviderAsync(request.Email, "local");
             if (existingUser == null ||
                 !_passwordHasher.IsPasswordCorrect(existingUser.PasswordHash, existingUser.PasswordSalt, request.Password))
             {
@@ -52,6 +74,51 @@ namespace EleksInternshipProj.Application.Services.Imp
             }
 
             return _tokenGenerator.GenerateToken(existingUser.Id, existingUser.Email);
+        }
+
+        //Google auth
+        public async Task<string> GoogleLoginAsync(ClaimsPrincipal claimsPrincipal)
+        {
+            if (claimsPrincipal == null)
+            {
+                throw new ArgumentNullException(nameof(claimsPrincipal));
+            }
+
+            var email = claimsPrincipal.FindFirstValue("email");
+            if (email == null)
+            {
+                throw new Exception("Invalid email");
+            }
+
+            User? existingUser = await _userRepository.GetByEmailAndProviderAsync(email, "google");
+            if (existingUser != null)
+            {
+                return _tokenGenerator.GenerateToken(existingUser.Id, email);
+            }
+            
+            long userId = await GoogleRegisterAsync(claimsPrincipal);
+
+            return _tokenGenerator.GenerateToken(userId, email);
+        }
+
+        private async Task<long> GoogleRegisterAsync(ClaimsPrincipal claimsPrincipal)
+        {
+            var email = claimsPrincipal.FindFirstValue("email");
+            User user = new User
+            {
+                Username = email.Substring(0, email.IndexOf('@')),
+                FirstName = claimsPrincipal.FindFirstValue("given_name"),
+                LastName = claimsPrincipal.FindFirstValue("family_name"),
+                Email = email,
+                PasswordHash = null,
+                PasswordSalt = null,
+                AuthProvider = "google",
+                ExternalId = claimsPrincipal.FindFirstValue("given_name")
+            };
+
+            await _userRepository.AddUserAsync(user);
+
+            return await _userRepository.GetIdByEmailAndProviderAsync(email, "google");
         }
     }
 }
