@@ -21,5 +21,5 @@ public class Timetable
     public long SpaceId { get; set; }
     public Space Space { get; set; } = null!;
 
-    public List<TimetableDay> TimetableDays { get; set; } = new();
+    public List<Day> Days { get; set; } = new();
 }

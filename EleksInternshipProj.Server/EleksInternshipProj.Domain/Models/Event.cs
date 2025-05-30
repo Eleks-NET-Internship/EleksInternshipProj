@@ -15,7 +15,7 @@ public class Event
     public string Name { get; set; } = null!;
 
     public List<EventMarker> EventMarkers { get; set; } = new();
-    public List<EventTimetableDay> EventTimetableDays { get; set; } = new();
+    public List<EventDay> EventDays { get; set; } = new();
     public List<SoloEvent> SoloEvents { get; set; } = new();
     public List<Note> Notes { get; set; } = new();
     public List<Task> Tasks { get; set; } = new();

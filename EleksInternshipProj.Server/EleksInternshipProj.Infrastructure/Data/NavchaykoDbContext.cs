@@ -16,8 +16,7 @@ namespace EleksInternshipProj.Infrastructure.Data
         public DbSet<EventMarker> EventMarkers { get; set; }
         public DbSet<Timetable> Timetables { get; set; }
         public DbSet<Day> Days { get; set; }
-        public DbSet<TimetableDay> TimetableDays { get; set; }
-        public DbSet<EventTimetableDay> EventTimetableDays { get; set; }
+        public DbSet<EventDay> EventDays { get; set; }
         public DbSet<SoloEvent> SoloEvents { get; set; }
         public DbSet<Note> Notes { get; set; }
         public DbSet<Task> Tasks { get; set; }
@@ -122,8 +121,8 @@ namespace EleksInternshipProj.Infrastructure.Data
                   entity.HasKey(t => t.Id);
                   entity.Property(t => t.Name).IsRequired();
                   entity.HasOne(t => t.Space)
-                        .WithMany(s => s.Timetables)
-                        .HasForeignKey(t => t.SpaceId)
+                        .WithOne(s => s.Timetable)
+                        .HasForeignKey<Timetable>(t => t.SpaceId)
                         .OnDelete(DeleteBehavior.Cascade);
             });
 
@@ -132,35 +131,25 @@ namespace EleksInternshipProj.Infrastructure.Data
                   entity.ToTable("day");
                   entity.HasKey(d => d.Id);
                   entity.Property(d => d.DayName).IsRequired();
-            });
-
-            modelBuilder.Entity<TimetableDay>(entity =>
-            {
-                  entity.ToTable("timetable_day");
-                  entity.HasKey(td => td.Id);
-                  entity.HasOne(td => td.Timetable)
-                        .WithMany(t => t.TimetableDays)
-                        .HasForeignKey(td => td.TimetableId)
-                        .OnDelete(DeleteBehavior.Cascade);
-                  entity.HasOne(td => td.Day)
-                        .WithMany(d => d.TimetableDays)
-                        .HasForeignKey(td => td.DayId)
+                  entity.HasOne(d => d.Timetable)
+                        .WithMany(t => t.Days)
+                        .HasForeignKey(d => d.TimetableId)
                         .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<EventTimetableDay>(entity =>
+            modelBuilder.Entity<EventDay>(entity =>
             {
-                  entity.ToTable("event_timetable_day");
+                  entity.ToTable("event_day");
                   entity.HasKey(etd => etd.Id);
                   entity.Property(etd => etd.StartTime).IsRequired();
                   entity.Property(etd => etd.EndTime).IsRequired();
                   entity.HasOne(etd => etd.Event)
-                        .WithMany(e => e.EventTimetableDays)
+                        .WithMany(e => e.EventDays)
                         .HasForeignKey(etd => etd.EventId)
                         .OnDelete(DeleteBehavior.Cascade);
-                  entity.HasOne(etd => etd.TimetableDay)
-                        .WithMany(td => td.EventTimetableDays)
-                        .HasForeignKey(etd => etd.TimetableDayId)
+                  entity.HasOne(ed => ed.Day)
+                        .WithMany(td => td.EventDays)
+                        .HasForeignKey(etd => etd.DayId)
                         .OnDelete(DeleteBehavior.Cascade);
             });
 
