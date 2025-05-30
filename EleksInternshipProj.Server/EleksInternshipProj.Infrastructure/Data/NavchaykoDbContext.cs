@@ -29,10 +29,7 @@ namespace EleksInternshipProj.Infrastructure.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-              if (!optionsBuilder.IsConfigured)
-              {
-                    optionsBuilder.UseNpgsql("Host=localhost:5432;Database=Navchayko;Username=postgres;Password=12345678");
-              }
+             
         }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -90,6 +87,7 @@ namespace EleksInternshipProj.Infrastructure.Data
                   entity.ToTable("marker");
                   entity.HasKey(m => m.Id);
                   entity.Property(m => m.Name).IsRequired();
+                  entity.Property(m => m.Type).IsRequired();
                   entity.HasOne(m => m.Space)
                         .WithMany(s => s.Markers)
                         .HasForeignKey(m => m.SpaceId)
@@ -101,8 +99,6 @@ namespace EleksInternshipProj.Infrastructure.Data
                   entity.ToTable("event");
                   entity.HasKey(e => e.Id);
                   entity.Property(e => e.Name).IsRequired();
-                  entity.Property(e => e.StartTime).IsRequired();
-                  entity.Property(e => e.EndTime).IsRequired();
             });
 
             modelBuilder.Entity<EventMarker>(entity =>
@@ -155,6 +151,8 @@ namespace EleksInternshipProj.Infrastructure.Data
             {
                   entity.ToTable("event_timetable_day");
                   entity.HasKey(etd => etd.Id);
+                  entity.Property(etd => etd.StartTime).IsRequired();
+                  entity.Property(etd => etd.EndTime).IsRequired();
                   entity.HasOne(etd => etd.Event)
                         .WithMany(e => e.EventTimetableDays)
                         .HasForeignKey(etd => etd.EventId)
