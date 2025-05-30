@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -6,15 +7,15 @@ import { Component } from '@angular/core';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  constructor(private readonly authService: AuthService) {}
+
   loginPayload = {
-    username: '',
+    email: '',
     password: ''
   };
 
   onSignIn() {
-    console.log(this.loginPayload);
-
-    // Send login payload to specific API endpoint
+    this.authService.login(this.loginPayload)
   }
 
   onGoogleSignIn() {
