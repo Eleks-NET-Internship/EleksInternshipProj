@@ -1,4 +1,5 @@
-﻿using Task = System.Threading.Tasks.Task;
+﻿using System.Security.Claims;
+using Task = System.Threading.Tasks.Task;
 
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Domain.Abstractions;
@@ -23,6 +24,7 @@ namespace EleksInternshipProj.Application.Services.Imp
         public async Task RegisterAsync(RegisterRequest request)
         {
             // Mock registration, email should be verified by sending and checking confirmation code
+            // ADD A FILTER FOR 'local' PROVIDER
             User? existingUser = await _userRepository.GetByEmailAsync(request.Email);
             if (existingUser != null)
             {
@@ -76,5 +78,42 @@ namespace EleksInternshipProj.Application.Services.Imp
         }
 
         //Google auth
+        public async Task<string> GoogleLogin(ClaimsPrincipal claimsPrincipal)
+        {
+            if (claimsPrincipal == null)
+            {
+                throw new ArgumentNullException(nameof(claimsPrincipal));
+            }
+
+            var email = claimsPrincipal.FindFirstValue("email");
+            if (email == null)
+            {
+                throw new Exception("Invalid email");
+            }
+
+            // register if doesn't exist (check only for 'google' provider)
+            long userId = await GoogleRegister(claimsPrincipal);
+            // create token for user
+            return _tokenGenerator.GenerateToken(userId, email);
+        }
+
+        private async Task<long> GoogleRegister(ClaimsPrincipal claimsPrincipal)
+        {
+            var email = claimsPrincipal.FindFirstValue("email");
+            User user = new User
+            {
+                Username = email.Substring(0, email.IndexOf('@')),
+                FirstName = claimsPrincipal.FindFirstValue("given_name"),
+                LastName = claimsPrincipal.FindFirstValue("family_name"),
+                Email = email,
+                PasswordHash = null,
+                PasswordSalt = null,
+                AuthProvider = "google",
+                ExternalId = claimsPrincipal.FindFirstValue("given_name")
+            };
+            // create user and return his id
+
+            return 0;
+        }
     }
 }

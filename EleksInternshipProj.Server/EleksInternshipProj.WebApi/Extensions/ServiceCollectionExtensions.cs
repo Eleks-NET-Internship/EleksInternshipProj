@@ -44,9 +44,8 @@ namespace EleksInternshipProj.WebApi.Extensions
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddCookie()
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddGoogle(options =>
             {
                 options.ClientId = googleClientId;
