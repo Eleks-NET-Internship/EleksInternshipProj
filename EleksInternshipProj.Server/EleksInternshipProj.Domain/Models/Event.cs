@@ -18,5 +18,5 @@ public class Event
     public List<EventDay> EventDays { get; set; } = new();
     public List<SoloEvent> SoloEvents { get; set; } = new();
     public List<Note> Notes { get; set; } = new();
-    public List<Task> Tasks { get; set; } = new();
+    public List<TaskModel> Tasks { get; set; } = new();
 }
