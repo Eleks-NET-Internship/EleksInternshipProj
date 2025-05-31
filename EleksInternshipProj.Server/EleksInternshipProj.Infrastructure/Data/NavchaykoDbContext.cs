@@ -119,7 +119,6 @@ namespace EleksInternshipProj.Infrastructure.Data
             {
                   entity.ToTable("timetable");
                   entity.HasKey(t => t.Id);
-                  entity.Property(t => t.Name).IsRequired();
                   entity.HasOne(t => t.Space)
                         .WithOne(s => s.Timetable)
                         .HasForeignKey<Timetable>(t => t.SpaceId)
