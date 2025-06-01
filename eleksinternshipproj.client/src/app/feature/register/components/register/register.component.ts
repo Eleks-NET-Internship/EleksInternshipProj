@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 
 @Component({
@@ -8,6 +8,12 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
 })
 export class RegisterComponent {
   constructor(private readonly authService: AuthService) {}
+
+  hide = signal(true);
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
+  }
 
   registerPayload = {
     firstName: '',
@@ -19,5 +25,10 @@ export class RegisterComponent {
 
   onRegister() {
     this.authService.register(this.registerPayload);
+    // redirect to home
+  }
+
+  onGoogleSignIn() {
+    // Google sign in
   }
 }

@@ -22,7 +22,7 @@ export class LoginComponent {
 
   onSignIn() {
     this.authService.login(this.loginPayload);
-    //redirect to home
+    // redirect to home
   }
 
   onGoogleSignIn() {

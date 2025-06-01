@@ -1,19 +1,62 @@
-<form #myForm="ngForm" (ngSubmit)="onRegister()">
-  <label for="firstName">First name</label>
-  <input type="text" name="firstName" [(ngModel)]="registerPayload.firstName" required /><br>
+<div class="container">
+  <form #registerForm="ngForm" (ngSubmit)="onRegister()">
+    <p class="header">NAVCHAYKO</p>
 
-  <label for="lastName">Last name</label>
-  <input type="text" name="lastName" [(ngModel)]="registerPayload.lastName" required /><br>
+    <button class="form-button" mat-button (click)="onGoogleSignIn()">Sign in with Google</button>
+    <div class="divider-container"><div class="divider">OR</div></div>
 
-  <label for="email">Email</label>
-  <input type="email" name="email" [(ngModel)]="registerPayload.email" required /><br>
+    <mat-form-field appearance="outline">
+      <mat-label>First Name</mat-label>
+      <input matInput type="text" name="firstName" [(ngModel)]="registerPayload.firstName" required #firstName="ngModel" />
+      <mat-error *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
+        First name is required
+      </mat-error>
+    </mat-form-field><br>
 
-  <label for="username">Username:</label>
-  <input type="text" name="username" [(ngModel)]="registerPayload.username" required /><br>
+    <mat-form-field appearance="outline">
+      <mat-label>Last Name</mat-label>
+      <input matInput type="text" name="lastName" [(ngModel)]="registerPayload.lastName" required #lastName="ngModel" />
+      <mat-error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
+        Last name is required
+      </mat-error>
+    </mat-form-field><br>
 
-  <label for="password">Password:</label>
-  <input type="password" name="password" [(ngModel)]="registerPayload.password" required /><br>
+    <mat-form-field appearance="outline">
+      <mat-label>Username</mat-label>
+      <input matInput type="text" name="username" [(ngModel)]="registerPayload.username" required #username="ngModel" />
+      <mat-error *ngIf="username.invalid && (username.dirty || username.touched)">
+        Username is required
+      </mat-error>
+    </mat-form-field><br>
 
-  <button type="submit">Register</button>
-</form>
-<p>Already have an account?<br><a [routerLink]="['/login']">Sign In</a></p>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" name="email" [(ngModel)]="registerPayload.email" required #email="ngModel" />
+      <mat-error *ngIf="email.invalid && (email.dirty || email.touched)">
+        <span *ngIf="email.errors?.['required']">Email is required</span>
+        <span *ngIf="email.errors?.['email']">Please enter a valid email address</span>
+      </mat-error>
+    </mat-form-field><br>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput [type]="hide() ? 'password' : 'text'" name="password" [(ngModel)]="registerPayload.password" required #password="ngModel" />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="clickEvent($event)"
+        [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide()"
+        type="button"
+      >
+        <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">
+        Valid email is required
+      </mat-error>
+    </mat-form-field><br>
+
+    <button class="form-button" mat-flat-button type="submit" [disabled]="registerForm.invalid">Register</button>
+    <button class="form-button" mat-button [routerLink]="['/login']">Sign in</button>
+  </form>
+</div>

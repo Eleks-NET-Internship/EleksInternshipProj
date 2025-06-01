@@ -27,7 +27,7 @@
       >
         <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
-      <mat-error *ngIf="password.invalid && (email.dirty || email.touched)">
+      <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">
         Valid email is required
       </mat-error>
     </mat-form-field><br>
