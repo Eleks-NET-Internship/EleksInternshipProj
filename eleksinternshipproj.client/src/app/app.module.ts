@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -13,12 +13,15 @@ import { AppComponent } from './app.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { LoginComponent } from './feature/login/components/login/login.component';
 import { RegisterComponent } from './feature/register/components/register/register.component';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { WeatherForecastComponent } from './feature/weatherForecast/components/weather-forecast/weather-forecast.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    WeatherForecastComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +34,7 @@ import { RegisterComponent } from './feature/register/components/register/regist
   ],
   providers: [
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptorsFromDi())
+    provideHttpClient(withInterceptorsFromDi(), withInterceptors([authInterceptor]))
   ],
   bootstrap: [AppComponent]
 })

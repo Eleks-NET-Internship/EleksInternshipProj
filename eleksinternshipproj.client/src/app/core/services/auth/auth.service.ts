@@ -11,10 +11,18 @@ export class AuthService {
 
   constructor(private readonly http: HttpClient) { }
 
+  getToken() {
+    return sessionStorage.getItem(this.TOKEN_KEY);
+  }
+
+  setToken(token: string) {
+    sessionStorage.setItem(this.TOKEN_KEY, token);
+  }
+
   login(credentials: { email: string; password: string }) {
     this.http.post<{ accessToken: string }>('http://localhost:5142/api/auth/login', credentials)
       .subscribe(response => {
-        sessionStorage.setItem(this.TOKEN_KEY, response.accessToken);
+        this.setToken(response.accessToken);
       });
   }
 
