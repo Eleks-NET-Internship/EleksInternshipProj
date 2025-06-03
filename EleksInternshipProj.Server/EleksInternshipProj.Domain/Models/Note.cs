@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EleksInternshipProj.Domain.Models;
 
-
 [Table("note")]
 public class Note
 {

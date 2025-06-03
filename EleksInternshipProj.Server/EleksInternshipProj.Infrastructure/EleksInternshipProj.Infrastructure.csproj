@@ -7,23 +7,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EleksInternshipProj.Application\EleksInternshipProj.Application.csproj" />
-    <ProjectReference Include="..\EleksInternshipProj.Domain\EleksInternshipProj.Domain.csproj" />
-    <ProjectReference Include="..\EleksInternshipProj.Application\EleksInternshipProj.Application.csproj" />
-    <ProjectReference Include="..\EleksInternshipProj.Domain\EleksInternshipProj.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.5">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EleksInternshipProj.Application\EleksInternshipProj.Application.csproj" />
+    <ProjectReference Include="..\EleksInternshipProj.Domain\EleksInternshipProj.Domain.csproj" />
+    <ProjectReference Include="..\EleksInternshipProj.Application\EleksInternshipProj.Application.csproj" />
+    <ProjectReference Include="..\EleksInternshipProj.Domain\EleksInternshipProj.Domain.csproj" />
   </ItemGroup>
 
 </Project>

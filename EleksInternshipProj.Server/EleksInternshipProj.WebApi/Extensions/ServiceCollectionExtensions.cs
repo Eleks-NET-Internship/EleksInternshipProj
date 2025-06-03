@@ -1,8 +1,14 @@
-﻿using EleksInternshipProj.Application.Services;
-using EleksInternshipProj.Application.Services.Imp;
+
+﻿using System.Text;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+
 using EleksInternshipProj.Domain.Abstractions;
+using EleksInternshipProj.Application.Services;
+using EleksInternshipProj.Application.Services.Imp;
 using EleksInternshipProj.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Identity;
 
 namespace EleksInternshipProj.WebApi.Extensions
 {
@@ -13,7 +19,14 @@ namespace EleksInternshipProj.WebApi.Extensions
             // DI for services here
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IMarkerService, MarkerService>();
+<<<<<<< HEAD
             services.AddScoped<ISoloEventService, SoloEventService>();
+=======
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<ITokenGenerator, TokenGenerator>();
+            
+>>>>>>> 554cf6efed3142d4086aeba0c1bc23bb0f18220e
             return services;
         }
 
@@ -22,9 +35,61 @@ namespace EleksInternshipProj.WebApi.Extensions
             // DI for repositories here
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IMarkerRepository, MarkerRepository>();
+<<<<<<< HEAD
             services.AddScoped<ISoloEventRepository, SoloEventRepository>();
+=======
+            services.AddScoped<IUserRepository, UserRepository>();
+
+>>>>>>> 554cf6efed3142d4086aeba0c1bc23bb0f18220e
             return services;
         }
 
+        public static IServiceCollection ConfigureAuth(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddAuthorization();
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(x =>
+                {
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("Jwt")["Secret"])),
+                        ValidIssuer = configuration.GetSection("Jwt")["Issuer"],
+                        ValidAudience = configuration.GetSection("Jwt")["Audience"],
+                        ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
+                        ValidateIssuer = true,
+                        ValidateAudience = true
+                    };
+                });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+
+                var jwtSecurityScheme = new OpenApiSecurityScheme
+                {
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Description = "Enter JWT token (without 'Bearer' prefix)",
+
+                    Reference = new OpenApiReference
+                    {
+                        Id = JwtBearerDefaults.AuthenticationScheme,
+                        Type = ReferenceType.SecurityScheme
+                    }
+                };
+
+                c.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    { jwtSecurityScheme, Array.Empty<string>() }
+                });
+            });
+
+            return services;
+        }
     }
 }
