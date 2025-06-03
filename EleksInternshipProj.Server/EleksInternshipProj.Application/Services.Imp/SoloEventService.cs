@@ -58,6 +58,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             return soloEvents.Select(se => new SoloEventDto
             {
                 Id = se.Id,
+                EventId = se.EventId,
                 EventName = se.Event.Name,
                 EventTime = se.EventTime,
                 Markers = se.Event.EventMarkers.Select(em => new MarkerDto
@@ -79,6 +80,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             return new SoloEventDto
             {
                 Id = soloEvent.Id,
+                EventId = soloEvent.EventId,
                 EventName = soloEvent.Event.Name,
                 EventTime = soloEvent.EventTime,
                 Markers = soloEvent.Event.EventMarkers.Select(em => new MarkerDto
