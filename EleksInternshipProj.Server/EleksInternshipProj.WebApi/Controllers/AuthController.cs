@@ -53,7 +53,7 @@ namespace EleksInternshipProj.Server.Controllers
         }
 
         // Google auth
-        [HttpPost("login/google")]
+        [HttpGet("login/google")]
         public IActionResult GoogleLogin([FromQuery] string returnUrl = "/")
         {
             AuthenticationProperties properties = new AuthenticationProperties
