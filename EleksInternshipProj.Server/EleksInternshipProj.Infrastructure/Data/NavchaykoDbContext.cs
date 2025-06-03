@@ -94,10 +94,15 @@ namespace EleksInternshipProj.Infrastructure.Data
 
             modelBuilder.Entity<Event>(entity =>
             {
-                  entity.ToTable("event");
-                  entity.HasKey(e => e.Id);
-                  entity.Property(e => e.Name).IsRequired();
+                entity.ToTable("event");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired();
+                entity.Property(e => e.IsSolo)
+                      .HasColumnName("is_solo")
+                      .IsRequired()
+                      .HasDefaultValue(false);
             });
+
 
             modelBuilder.Entity<EventMarker>(entity =>
             {

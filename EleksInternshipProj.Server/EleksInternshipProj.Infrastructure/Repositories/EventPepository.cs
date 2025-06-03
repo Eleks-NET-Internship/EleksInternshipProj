@@ -20,14 +20,17 @@ namespace EleksInternshipProj.Infrastructure.Repositories
         public async Task<IEnumerable<Event>> GetAllAsync()
         {
             return await _context.Events
-                 .Include(e => e.EventMarkers)
-                     .ThenInclude(em => em.Marker)
-                 .ToListAsync();
+                .Where(e => e.IsSolo == false)
+                .Include(e => e.EventMarkers)
+                    .ThenInclude(em => em.Marker)
+                .ToListAsync();
         }
+
 
         public async Task<Event?> GetByIdAsync(long id)
         {
             return await _context.Events
+               .Where(e => e.IsSolo == false)
               .Include(e => e.EventMarkers)
                   .ThenInclude(em => em.Marker)
               .FirstOrDefaultAsync(e => e.Id == id);
