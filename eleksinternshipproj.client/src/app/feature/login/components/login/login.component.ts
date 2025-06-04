@@ -26,6 +26,6 @@ export class LoginComponent {
   }
 
   onGoogleSignIn() {
-    // Google sign in
+    this.authService.loginWithGoogle();
   }
 }

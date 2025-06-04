@@ -29,6 +29,6 @@ export class RegisterComponent {
   }
 
   onGoogleSignIn() {
-    // Google sign in
+    this.authService.loginWithGoogle();
   }
 }
