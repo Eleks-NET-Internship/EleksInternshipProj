@@ -84,7 +84,7 @@ namespace EleksInternshipProj.Application.Services.Imp
                 throw new ArgumentNullException(nameof(claimsPrincipal));
             }
 
-            var email = claimsPrincipal.FindFirstValue("email");
+            var email = claimsPrincipal.FindFirstValue(ClaimTypes.Email);
             if (email == null)
             {
                 throw new Exception("Invalid email");
@@ -103,17 +103,17 @@ namespace EleksInternshipProj.Application.Services.Imp
 
         private async Task<long> GoogleRegisterAsync(ClaimsPrincipal claimsPrincipal)
         {
-            var email = claimsPrincipal.FindFirstValue("email");
+            var email = claimsPrincipal.FindFirstValue(ClaimTypes.Email);
             User user = new User
             {
                 Username = email.Substring(0, email.IndexOf('@')),
-                FirstName = claimsPrincipal.FindFirstValue("given_name"),
-                LastName = claimsPrincipal.FindFirstValue("family_name"),
+                FirstName = claimsPrincipal.FindFirstValue(ClaimTypes.GivenName),
+                LastName = claimsPrincipal.FindFirstValue(ClaimTypes.Surname),
                 Email = email,
                 PasswordHash = null,
                 PasswordSalt = null,
                 AuthProvider = "google",
-                ExternalId = claimsPrincipal.FindFirstValue("given_name")
+                ExternalId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier)
             };
 
             await _userRepository.AddUserAsync(user);
