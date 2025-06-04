@@ -1,7 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, tap } from 'rxjs';
-
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +39,6 @@ export class AuthService {
   }
 
   loginWithGoogle() {
-    //this.http.post('https://localhost:5142/api/auth/login/google');
+    window.location.href = 'http://localhost:5142/api/auth/login/google?returnUrl=https://localhost:4200/home';
   }
 }
