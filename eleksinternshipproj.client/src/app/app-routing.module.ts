@@ -8,7 +8,8 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forecast', component: WeatherForecastComponent },
-  { path: '', component: WeatherForecastComponent }
+  { path: '', component: WeatherForecastComponent },
+  { path: '**', redirectTo: '/' }
 ];
 
 @NgModule({
