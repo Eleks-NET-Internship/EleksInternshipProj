@@ -11,6 +11,10 @@ namespace EleksInternshipProj.Server
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+            builder.Logging.AddDebug();
+
             // GET Connection String
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             

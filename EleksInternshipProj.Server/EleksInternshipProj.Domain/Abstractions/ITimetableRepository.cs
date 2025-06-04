@@ -2,7 +2,7 @@
 
 namespace EleksInternshipProj.Domain.Abstractions
 {
-    internal interface ITimetableRepository
+    public interface ITimetableRepository
     {
         Task<Timetable?> GetBySpaceAsync(long spaceId);
         Task<Timetable?> UpdateAsync(Timetable entity);
