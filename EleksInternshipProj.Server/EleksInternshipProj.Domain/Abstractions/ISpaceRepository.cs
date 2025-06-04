@@ -7,7 +7,7 @@ namespace EleksInternshipProj.Domain.Abstractions
     {
         Task<IEnumerable<Space>> GetByUserAsync(long userId);
         Task<Space?> GetByIdAsync(long id);
-        Task<Space?> AddAsync(Space newSpace);
+        Task<Space?> AddAsync(Space space);
         Task<Space?> UpdateAsync(Space space);
         Task<bool> DeleteAsync(long id);
     }

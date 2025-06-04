@@ -1,70 +1,97 @@
 ﻿using EleksInternshipProj.Domain.Abstractions;
 using EleksInternshipProj.Domain.Models;
 using EleksInternshipProj.Infrastructure.Data;
+using Microsoft.Extensions.Logging;
 
 namespace EleksInternshipProj.Infrastructure.Repositories
 {
     public class EventDayRepository : IEventDayRepository
     {
         private readonly NavchaykoDbContext _context;
-        public EventDayRepository(NavchaykoDbContext context)
+        private readonly ILogger<EventDayRepository> _logger;
+
+        public EventDayRepository(NavchaykoDbContext context, ILogger<EventDayRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
+
         public async Task<EventDay?> AddAsync(EventDay entity)
         {
+            _logger.LogInformation($"Adding new EventDay with EventId = {entity.EventId} and DayId = {entity.DayId}");
+
             try
             {
-                var eventDay = new EventDay
-                {
-                    Event = entity.Event,
-                    EventId = entity.EventId,
-                    Day = entity.Day,
-                    DayId = entity.DayId,
-                    StartTime = entity.StartTime,
-                    EndTime = entity.EndTime
-                };
-
-                await _context.EventDays.AddAsync(eventDay);
+                await _context.EventDays.AddAsync(entity);
                 await _context.SaveChangesAsync();
 
-                return eventDay;
+                _logger.LogInformation($"Success! EventDay with ID = {entity.Id} added.");
+                return entity;
             }
-            catch
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "Fail! Error occurred while adding new EventDay.");
                 return null;
             }
         }
 
         public async Task<bool> DeleteAsync(long id)
         {
+            _logger.LogInformation($"Attempting to delete EventDay with ID = {id}");
+
             var eventDay = await _context.EventDays.FindAsync(id);
             if (eventDay == null)
+            {
+                _logger.LogWarning($"Fail! EventDay with ID = {id} not found!");
                 return false;
+            }
 
             _context.EventDays.Remove(eventDay);
             var affectedRows = await _context.SaveChangesAsync();
 
-            return affectedRows > 0;
+            if (affectedRows > 0)
+            {
+                _logger.LogInformation($"Success! EventDay with ID = {id} deleted.");
+                return true;
+            }
+            else
+            {
+                _logger.LogWarning($"Fail! EventDay with ID = {id} not deleted.");
+                return false;
+            }
         }
 
         public async Task<EventDay?> UpdateAsync(EventDay entity)
         {
+            _logger.LogInformation($"Updating EventDay with ID = {entity.Id}");
+
             var existing = await _context.EventDays.FindAsync(entity.Id);
             if (existing == null)
+            {
+                _logger.LogWarning($"Fail! EventDay with ID = {entity.Id} not found!");
                 return null;
+            }
 
-            existing.Event = entity.Event;
-            existing.EventId = entity.EventId;
-            existing.Day = entity.Day;
-            existing.DayId = entity.DayId;
-            existing.StartTime = entity.StartTime;
-            existing.EndTime = entity.EndTime;
+            try
+            {
+                existing.Event = entity.Event;
+                existing.EventId = entity.EventId;
+                existing.Day = entity.Day;
+                existing.DayId = entity.DayId;
+                existing.StartTime = entity.StartTime;
+                existing.EndTime = entity.EndTime;
 
-            _context.EventDays.Update(existing);
-            await _context.SaveChangesAsync();
+                _context.EventDays.Update(existing);
+                await _context.SaveChangesAsync();
 
-            return existing;
+                _logger.LogInformation($"Success! EventDay with ID = {existing.Id} updated.");
+                return existing;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Fail! Error occurred while updating EventDay with ID = {entity.Id}.");
+                return null;
+            }
         }
     }
 }
