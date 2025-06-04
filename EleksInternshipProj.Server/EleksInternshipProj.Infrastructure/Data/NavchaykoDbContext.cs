@@ -1,5 +1,6 @@
-﻿using EleksInternshipProj.Domain.Models;
+using EleksInternshipProj.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using TaskModel = EleksInternshipProj.Domain.Models.TaskModel;
 using TaskStatus = EleksInternshipProj.Domain.Models.TaskStatus;
 
 namespace EleksInternshipProj.Infrastructure.Data

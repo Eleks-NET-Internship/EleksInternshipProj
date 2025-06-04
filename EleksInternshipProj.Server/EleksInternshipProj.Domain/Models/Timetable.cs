@@ -11,10 +11,6 @@ public class Timetable
     [Column("id")]
     public long Id { get; set; }
 
-    [Required, MaxLength(255)]
-    [Column("name")]
-    public string Name { get; set; } = null!;
-
     [Required]
     [ForeignKey(nameof(Space))]
     [Column("space_id")]
