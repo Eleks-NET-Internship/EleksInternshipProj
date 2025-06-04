@@ -18,7 +18,7 @@ export class AuthService {
   }
 
   login(credentials: { email: string; password: string }) {
-    this.http.post<{ accessToken: string }>('http://localhost:5142/api/auth/login', credentials)
+    this.http.post<{ accessToken: string }>('https://localhost:7050/api/auth/login', credentials)
       .subscribe(response => {
         this.setToken(response.accessToken);
       });
@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   register(registerPayload: { firstName: string, lastName: string, username: string, email: string, password: string }) {
-    this.http.post('http://localhost:5142/api/auth/register', registerPayload, { observe: 'response' })
+    this.http.post('https://localhost:7050/api/auth/register', registerPayload, { observe: 'response' })
       .subscribe(response => {
         if (response.ok) {
           console.log("Successful register.");
@@ -39,6 +39,6 @@ export class AuthService {
   }
 
   loginWithGoogle() {
-    window.location.href = 'http://localhost:5142/api/auth/login/google?returnUrl=https://localhost:4200/home';
+    window.location.href = 'https://localhost:7050/api/auth/login/google?returnUrl=https://localhost:4200/home';
   }
 }
