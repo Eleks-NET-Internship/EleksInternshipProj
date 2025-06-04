@@ -1,6 +1,5 @@
 ﻿using EleksInternshipProj.Domain.Models;
 using Microsoft.EntityFrameworkCore;
-using Task = EleksInternshipProj.Domain.Models.Task;
 using TaskStatus = EleksInternshipProj.Domain.Models.TaskStatus;
 
 namespace EleksInternshipProj.Infrastructure.Data
@@ -19,7 +18,7 @@ namespace EleksInternshipProj.Infrastructure.Data
         public DbSet<EventDay> EventDays { get; set; }
         public DbSet<SoloEvent> SoloEvents { get; set; }
         public DbSet<Note> Notes { get; set; }
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<TaskModel> Tasks { get; set; }
         public DbSet<TaskStatus> TaskStatuses { get; set; }
 
         public NavchaykoDbContext(DbContextOptions<NavchaykoDbContext> options) : base(options) { }
@@ -28,7 +27,7 @@ namespace EleksInternshipProj.Infrastructure.Data
         {
               if (!optionsBuilder.IsConfigured)
               {
-                    optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=Navchayko;Username=postgres;Password=password");
+                    optionsBuilder.UseNpgsql("Host=localhost:5432;Database=navchayko;Username=postgres;Password=12345678");
               }
         }
         
@@ -182,7 +181,7 @@ namespace EleksInternshipProj.Infrastructure.Data
                   entity.Property(ts => ts.Name).IsRequired();
             });
 
-            modelBuilder.Entity<Task>(entity =>
+            modelBuilder.Entity<TaskModel>(entity =>
             {
                   entity.ToTable("task");
                   entity.HasKey(t => t.Id);
