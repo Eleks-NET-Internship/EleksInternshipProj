@@ -2,7 +2,7 @@
   <form #loginForm="ngForm" (ngSubmit)="onSignIn()">
     <p class="header">NAVCHAYKO</p>
 
-    <button class="form-button" mat-button (click)="onGoogleSignIn()">Sign in with Google</button>
+    <button class="form-button" mat-button type="button" (click)="onGoogleSignIn()">Sign in with Google</button>
     <div class="divider-container"><div class="divider">OR</div></div>
 
     <mat-form-field appearance="outline">
@@ -28,7 +28,7 @@
         <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
       <mat-error *ngIf="password.invalid && (password.dirty || password.touched)">
-        Valid email is required
+        Valid password is required
       </mat-error>
     </mat-form-field><br>
 
