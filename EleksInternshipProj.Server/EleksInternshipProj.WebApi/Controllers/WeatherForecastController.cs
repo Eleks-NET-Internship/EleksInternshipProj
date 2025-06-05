@@ -1,6 +1,7 @@
+using EleksInternshipProj.Server;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EleksInternshipProj.Server.Controllers
+namespace EleksInternshipProj.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]

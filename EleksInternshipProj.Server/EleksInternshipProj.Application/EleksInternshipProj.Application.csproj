@@ -11,8 +11,4 @@
     <ProjectReference Include="..\EleksInternshipProj.Domain\EleksInternshipProj.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Mappers\" />
-  </ItemGroup>
-
 </Project>
