@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
+  private readonly apiBaseUrl = 'https://localhost:7050';
   private readonly TOKEN_KEY = 'access_token';
 
   constructor(private readonly http: HttpClient) { }
@@ -18,7 +19,7 @@ export class AuthService {
   }
 
   login(credentials: { email: string; password: string }) {
-    this.http.post<{ accessToken: string }>('https://localhost:7050/api/auth/login', credentials)
+    this.http.post<{ accessToken: string }>(this.apiBaseUrl + '/api/auth/login', credentials)
       .subscribe(response => {
         this.setToken(response.accessToken);
       });
@@ -29,7 +30,7 @@ export class AuthService {
   }
 
   register(registerPayload: { firstName: string, lastName: string, username: string, email: string, password: string }) {
-    this.http.post('https://localhost:7050/api/auth/register', registerPayload, { observe: 'response' })
+    this.http.post(this.apiBaseUrl + '/api/auth/register', registerPayload, { observe: 'response' })
       .subscribe(response => {
         if (response.ok) {
           console.log("Successful register.");
@@ -39,6 +40,6 @@ export class AuthService {
   }
 
   loginWithGoogle() {
-    window.location.href = 'https://localhost:7050/api/auth/login/google?returnUrl=https://localhost:4200/home';
+    window.location.href = this.apiBaseUrl + '/api/auth/login/google?returnUrl=https://localhost:4200/home';
   }
 }
