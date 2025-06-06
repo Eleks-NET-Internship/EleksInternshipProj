@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -7,7 +8,7 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService, private router: Router) { }
 
   hide = signal(true);
   clickEvent(event: MouseEvent) {
@@ -24,8 +25,16 @@ export class RegisterComponent {
   };
 
   onRegister() {
-    this.authService.register(this.registerPayload);
-    // redirect to home
+    this.authService.register(this.registerPayload).subscribe({
+      next: (response) => {
+        this.router.navigate(['/login']);
+        // add email verification when the backend implements it
+        // <open modal for code input>
+      },
+      error: (error) => {
+        console.log(error.error.message);
+      }
+    });
   }
 
   onGoogleSignIn() {

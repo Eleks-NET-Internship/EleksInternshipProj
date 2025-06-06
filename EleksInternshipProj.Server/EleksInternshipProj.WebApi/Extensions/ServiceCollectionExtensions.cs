@@ -60,6 +60,13 @@ namespace EleksInternshipProj.WebApi.Extensions
                 options.ClientId = googleClientId;
                 options.ClientSecret = googleClientSecret;
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+                options.Events.OnRemoteFailure = context =>
+                {
+                    context.HandleResponse();
+                    context.Response.Redirect("https://localhost:4200/login");
+                    return Task.CompletedTask;
+                };
             })
             .AddJwtBearer(x =>
             {
