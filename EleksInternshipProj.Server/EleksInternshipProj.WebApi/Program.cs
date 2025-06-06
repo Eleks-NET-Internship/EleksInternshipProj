@@ -1,9 +1,4 @@
-using System.Text;
-
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 using EleksInternshipProj.Infrastructure.Data;
 using EleksInternshipProj.WebApi.Extensions;
@@ -26,6 +21,18 @@ namespace EleksInternshipProj.Server
             // Add services to the container.
             builder.Services.AddControllers();
 
+            // Add CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularApp", policy =>
+                {
+                    policy.WithOrigins("https://localhost:4200")
+                          .AllowCredentials()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+
             // From extensions
             builder.Services.AddApplicationServices();
             builder.Services.AddRepositories();
@@ -36,6 +43,8 @@ namespace EleksInternshipProj.Server
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            app.UseCors("AllowAngularApp");
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
