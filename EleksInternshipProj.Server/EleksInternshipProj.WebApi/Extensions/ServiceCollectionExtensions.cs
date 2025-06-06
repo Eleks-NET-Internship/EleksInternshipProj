@@ -23,7 +23,8 @@ namespace EleksInternshipProj.WebApi.Extensions
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
-            
+            services.AddScoped<ITaskService, TaskService>();
+                
             return services;
         }
 
@@ -34,6 +35,7 @@ namespace EleksInternshipProj.WebApi.Extensions
             services.AddScoped<IMarkerRepository, MarkerRepository>();
             services.AddScoped<ISoloEventRepository, SoloEventRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITaskRepository, TaskRepository>();
 
             return services;
         }
