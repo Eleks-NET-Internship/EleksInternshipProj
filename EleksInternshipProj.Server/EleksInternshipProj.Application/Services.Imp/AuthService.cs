@@ -53,7 +53,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             {
                 Username = request.Username,
                 FirstName = request.FirstName == "" ? null : request.FirstName,
-                LastName = request.LastName == "" ? null : request.FirstName,
+                LastName = request.LastName == "" ? null : request.LastName,
                 Email = request.Email,
                 PasswordHash = hash,
                 PasswordSalt = salt,
