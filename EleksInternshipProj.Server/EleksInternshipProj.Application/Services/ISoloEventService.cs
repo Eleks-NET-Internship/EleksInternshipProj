@@ -14,6 +14,6 @@ namespace EleksInternshipProj.Application.Services
         Task<bool> UpdateAsync(CreateUpdateSoloEventDto dto);
         Task<bool> DeleteAsync(long id);
         Task<SoloEventDto?> GetByIdAsync(long id);
-        Task<IEnumerable<SoloEventDto>> GetAllAsync();
+        Task<IEnumerable<SoloEventDto>> GetAllBySpaceIdAsync(long spaceId);
     }
 }

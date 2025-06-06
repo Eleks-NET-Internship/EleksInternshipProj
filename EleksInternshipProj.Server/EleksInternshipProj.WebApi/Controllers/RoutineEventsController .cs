@@ -1,30 +1,32 @@
-﻿using System;
+﻿
+using System;
 using System.Threading.Tasks;
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace EleksInternshipProj.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SoloEventController : ControllerBase
+    public class RoutineEventsController : ControllerBase
     {
-        private readonly ISoloEventService _soloEventService;
+        private readonly IEventService _eventService;
 
-        public SoloEventController(ISoloEventService soloEventService)
+        public RoutineEventsController(IEventService eventService)
         {
-            _soloEventService = soloEventService;
+            _eventService = eventService;
         }
 
         [HttpGet]
-        [Route("all")]
-        public async Task<IActionResult> GetAll()
+        [Route("all/{spaceId:long}")]
+        public async Task<IActionResult> GetAll(long spaceId)
         {
             try
             {
-                var soloEvents = await _soloEventService.GetAllAsync();
-                return Ok(new { data = soloEvents });
+                var events = await _eventService.GetAllBySpaceIdAsync(spaceId);
+                return Ok(new { data = events });
             }
             catch (Exception ex)
             {
@@ -38,11 +40,12 @@ namespace EleksInternshipProj.WebApi.Controllers
         {
             try
             {
-                var soloEvent = await _soloEventService.GetByIdAsync(id);
-                if (soloEvent == null)
-                    return NotFound(new { message = $"SoloEvent with ID {id} not found." });
-
-                return Ok(new { data = soloEvent });
+                var ev = await _eventService.GetByIdAsync(id);
+                return Ok(new { data = ev });
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(new { message = ex.Message });
             }
             catch (Exception ex)
             {
@@ -51,13 +54,12 @@ namespace EleksInternshipProj.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
-        public async Task<IActionResult> Create([FromBody] CreateUpdateSoloEventDto dto)
+        public async Task<IActionResult> Create([FromBody] CreateEventDto dto)
         {
             try
             {
-                var created = await _soloEventService.AddAsync(dto);
-                return Ok(new { message = "SoloEvent created successfully.", data = new {created.Id, created.EventId } });
+                var created = await _eventService.AddAsync(dto);
+                return Ok(new { message = "Event created successfully.", data = created.Id });
             }
             catch (Exception ex)
             {
@@ -67,15 +69,15 @@ namespace EleksInternshipProj.WebApi.Controllers
 
         [HttpPut]
         [Route("update/{id:long}")]
-        public async Task<IActionResult> Update(long id, [FromBody] CreateUpdateSoloEventDto dto)
+        public async Task<IActionResult> Update(long id, [FromBody] UpdateEventDto dto)
         {
             try
             {
                 if (id != dto.Id)
                     return BadRequest(new { message = "ID mismatch." });
 
-                var updated = await _soloEventService.UpdateAsync(dto);
-                return Ok(new { message = "SoloEvent updated successfully.", success = updated });
+                await _eventService.UpdateAsync(dto);
+                return Ok(new { message = "Event updated successfully." });
             }
             catch (ArgumentException ex)
             {
@@ -88,16 +90,17 @@ namespace EleksInternshipProj.WebApi.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{id:long}")]
+        [Route("{id:long}")]
         public async Task<IActionResult> Delete(long id)
         {
             try
             {
-                var result = await _soloEventService.DeleteAsync(id);
-                if (!result)
-                    return NotFound(new { message = $"SoloEvent with ID {id} not found." });
-
-                return Ok(new { message = "SoloEvent deleted successfully." });
+                await _eventService.DeleteAsync(id);
+                return Ok(new { message = "Event deleted successfully." });
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(new { message = ex.Message });
             }
             catch (Exception ex)
             {

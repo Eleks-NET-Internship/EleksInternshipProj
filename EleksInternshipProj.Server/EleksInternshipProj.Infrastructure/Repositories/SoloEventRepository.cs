@@ -35,10 +35,11 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             return affectedRows > 0;
         }
 
-        public async Task<IEnumerable<SoloEvent>> GetAllAsync()
+        public async Task<IEnumerable<SoloEvent>> GetAllBySpaceIdAsync(long spaceId)
         {
             return await _context.SoloEvents
                 .AsNoTracking()
+                .Where(se => se.Event.SpaceId == spaceId)
                  .Include(se => se.Event)
                      .ThenInclude(e => e.EventMarkers)
                      .ThenInclude(em => em.Marker)

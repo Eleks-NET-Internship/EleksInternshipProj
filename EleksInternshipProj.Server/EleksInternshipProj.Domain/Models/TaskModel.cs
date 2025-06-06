@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace EleksInternshipProj.Domain.Models;
 
 [Table("task")]
-public class Task
+public class TaskModel
 {
     [Key]
     [Column("id")]

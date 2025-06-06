@@ -25,6 +25,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             {
                 Id = 0,
                 Name = dto.EventName,
+                SpaceId = dto.SpaceId,
                 IsSolo = true
             };
 
@@ -51,9 +52,9 @@ namespace EleksInternshipProj.Application.Services.Imp
             return deletedSolo && deletedEvent;
         }
 
-        public async Task<IEnumerable<SoloEventDto>> GetAllAsync()
+        public async Task<IEnumerable<SoloEventDto>> GetAllBySpaceIdAsync(long spaceId)
         {
-            var soloEvents = await _soloEventRepository.GetAllAsync();
+            var soloEvents = await _soloEventRepository.GetAllBySpaceIdAsync(spaceId);
 
             return soloEvents.Select(se => new SoloEventDto
             {

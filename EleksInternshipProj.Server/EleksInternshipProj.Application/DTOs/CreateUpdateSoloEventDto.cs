@@ -11,5 +11,6 @@ namespace EleksInternshipProj.Application.DTOs
         public long Id { get; set; }
         public string EventName { get; set; } = null!;
         public DateTime EventTime { get; set; }
+        public long SpaceId { get; set; }
     }
 }
