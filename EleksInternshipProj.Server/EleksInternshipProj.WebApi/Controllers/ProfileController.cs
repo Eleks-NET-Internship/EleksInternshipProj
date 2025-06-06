@@ -1,8 +1,10 @@
-using EleksInternshipProj.Application.DTOs;
-using EleksInternshipProj.Application.Services;
+using System.Security.Claims;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+
+using EleksInternshipProj.Application.DTOs;
+using EleksInternshipProj.Application.Services;
 
 namespace EleksInternshipProj.Server.Controllers
 {
@@ -39,6 +41,29 @@ namespace EleksInternshipProj.Server.Controllers
             }
 
             return Ok(new { data = profileDto });
+        }
+
+        [HttpPatch]
+        [Authorize]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto dto)
+        {
+            try
+            {
+                string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (userId == null)
+                {
+                    return Unauthorized("No id");
+                }
+
+                await _profileService.UpdateProfile(long.Parse(userId), dto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
+            return Ok();
         }
     }
 }

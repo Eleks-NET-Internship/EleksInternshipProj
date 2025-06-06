@@ -13,5 +13,7 @@ namespace EleksInternshipProj.Domain.Abstractions
         Task AddUserAsync(User user);
 
         Task<User?> GetByIdAsync(long userId);
+
+        Task UpdateUserAsync(User user);
     }
 }

@@ -6,5 +6,6 @@ namespace EleksInternshipProj.Application.Services
     {
         Task<ProfileDto> GetViewInfoAsync(long userId);
 
+        Task UpdateProfile(long userId, UpdateProfileDto profileDto);
     }
 }
