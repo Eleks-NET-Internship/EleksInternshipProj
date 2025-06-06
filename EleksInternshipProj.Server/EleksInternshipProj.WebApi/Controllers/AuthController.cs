@@ -80,7 +80,7 @@ namespace EleksInternshipProj.Server.Controllers
             if (!Url.IsLocalUrl(returnUrl))
                 returnUrl = "/";
 
-            return Redirect($"https://localhost:4200{returnUrl}?accessToken={token}");
+            return Redirect($"https://localhost:4200/auth-callback?{Uri.EscapeDataString(returnUrl)}&accessToken={Uri.EscapeDataString(token)}");
         }
     }
 }
