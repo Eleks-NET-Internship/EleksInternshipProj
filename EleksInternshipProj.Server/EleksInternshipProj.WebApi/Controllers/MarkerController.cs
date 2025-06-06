@@ -53,7 +53,6 @@ namespace EleksInternshipProj.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<IActionResult> Create([FromBody] CreateMarkerDto dto)
         {
             try
@@ -90,7 +89,7 @@ namespace EleksInternshipProj.WebApi.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{id:long}")]
+        [Route("{id:long}")]
         public async Task<IActionResult> Delete(long id)
         {
             try

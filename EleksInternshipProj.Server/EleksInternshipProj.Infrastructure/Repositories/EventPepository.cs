@@ -17,10 +17,10 @@ namespace EleksInternshipProj.Infrastructure.Repositories
         {
             _context = context;
         }
-        public async Task<IEnumerable<Event>> GetAllAsync()
+        public async Task<IEnumerable<Event>> GetAllBySpaceIdAsync(long spaceId)
         {
             return await _context.Events
-                .Where(e => e.IsSolo == false)
+                .Where(e => e.SpaceId == spaceId && e.IsSolo == false)
                 .Include(e => e.EventMarkers)
                     .ThenInclude(em => em.Marker)
                 .ToListAsync();

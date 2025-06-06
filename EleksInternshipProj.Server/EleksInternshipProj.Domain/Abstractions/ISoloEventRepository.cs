@@ -10,7 +10,7 @@ namespace EleksInternshipProj.Domain.Abstractions
 {
     public interface ISoloEventRepository
     {
-        Task<IEnumerable<SoloEvent>> GetAllAsync();
+        Task<IEnumerable<SoloEvent>> GetAllBySpaceIdAsync(long spaceId);
         Task<SoloEvent?> GetByIdAsync(long id);
         Task<SoloEvent?> AddAsync(SoloEvent entity);
         Task<bool> UpdateAsync(SoloEvent entity);

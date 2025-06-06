@@ -22,7 +22,8 @@ namespace EleksInternshipProj.Application.Services.Imp
         {
             var newEvent = new Event
             {
-                Name = dto.Name
+                Name = dto.Name,
+                SpaceId = dto.spaceId
             };
 
             return await _eventRepository.AddAsync(newEvent);
@@ -37,14 +38,15 @@ namespace EleksInternshipProj.Application.Services.Imp
             return true;
         }
 
-        public async Task<IEnumerable<EventWithMarkersDto>> GetAllAsync()
+        public async Task<IEnumerable<EventWithMarkersDto>> GetAllBySpaceIdAsync(long spaceId)
         {
-            var events = await _eventRepository.GetAllAsync();
+            var events = await _eventRepository.GetAllBySpaceIdAsync(spaceId);
 
             return events.Select(ev => new EventWithMarkersDto
             {
                 Id = ev.Id,
                 Name = ev.Name,
+                SpaceId = ev.SpaceId,
                 Markers = ev.EventMarkers.Select(em => new MarkerDto
                 {
                     Id = em.Marker.Id,
@@ -65,6 +67,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             {
                 Id = ev.Id,
                 Name = ev.Name,
+                SpaceId = ev.SpaceId,
                 Markers = ev.EventMarkers.Select(em => new MarkerDto
                 {
                     Id = em.Marker.Id,
