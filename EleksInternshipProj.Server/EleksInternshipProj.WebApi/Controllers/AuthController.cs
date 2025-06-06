@@ -53,7 +53,7 @@ namespace EleksInternshipProj.Server.Controllers
         }
 
         // Google auth
-        [HttpPost("login/google")]
+        [HttpGet("login/google")]
         public IActionResult GoogleLogin([FromQuery] string returnUrl = "/")
         {
             AuthenticationProperties properties = new AuthenticationProperties
@@ -63,7 +63,7 @@ namespace EleksInternshipProj.Server.Controllers
             return Challenge(properties, GoogleDefaults.AuthenticationScheme);
         }
 
-        [HttpPost("login/google/callback")]
+        [HttpGet("login/google/callback")]
         public async Task<IActionResult> GoogleLoginCallback([FromQuery] string returnUrl)
         {
             AuthenticateResult authenticateResult = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
