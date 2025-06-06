@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router'
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ export class AuthService {
   private readonly apiBaseUrl = 'https://localhost:7050';
   private readonly TOKEN_KEY = 'access_token';
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly http: HttpClient, private router: Router) { }
 
   getToken() {
     return sessionStorage.getItem(this.TOKEN_KEY);
@@ -23,6 +24,7 @@ export class AuthService {
       .subscribe(response => {
         this.setToken(response.accessToken);
       });
+    this.router.navigate(['/home']);
   }
 
   logout() {
