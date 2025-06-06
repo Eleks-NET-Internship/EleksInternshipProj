@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
+using EleksInternshipProj.Domain.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EleksInternshipProj.WebApi.Controllers
@@ -18,12 +19,12 @@ namespace EleksInternshipProj.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("all")]
-        public async Task<IActionResult> GetAll()
+        [Route("all/{spaceId:long}")]
+        public async Task<IActionResult> GetAll(long spaceId)
         {
             try
             {
-                var soloEvents = await _soloEventService.GetAllAsync();
+                var soloEvents = await _soloEventService.GetAllBySpaceIdAsync(spaceId);
                 return Ok(new { data = soloEvents });
             }
             catch (Exception ex)

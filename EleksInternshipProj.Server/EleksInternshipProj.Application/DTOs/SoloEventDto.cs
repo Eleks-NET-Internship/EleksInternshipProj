@@ -12,6 +12,7 @@ namespace EleksInternshipProj.Application.DTOs
         public long EventId { get; set; }
         public string EventName { get; set; } = null!;
         public DateTime EventTime { get; set; }
+        public long SpaceId { get; set; }
         public IEnumerable<MarkerDto> Markers { get; set; } = Enumerable.Empty<MarkerDto>();
     }
 }

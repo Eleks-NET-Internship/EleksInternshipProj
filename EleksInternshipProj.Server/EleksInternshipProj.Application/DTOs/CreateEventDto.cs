@@ -9,5 +9,6 @@ namespace EleksInternshipProj.Application.DTOs
     public class CreateEventDto
     {
         public string Name { get; set; } = null!;
+        public long spaceId { get; set; }
     }
 }

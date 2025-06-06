@@ -14,6 +14,7 @@ namespace EleksInternshipProj.Application.DTOs
     {
         public long Id { get; set; }
         public string Name { get; set; } = null!;
+        public long SpaceId { get; set; }
         public IEnumerable<MarkerDto> Markers { get; set; } = Enumerable.Empty<MarkerDto>();
     }
 }
