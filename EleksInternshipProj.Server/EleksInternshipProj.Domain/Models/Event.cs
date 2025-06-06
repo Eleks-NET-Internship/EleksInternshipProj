@@ -14,6 +14,9 @@ public class Event
     [Column("name")]
     public string Name { get; set; } = null!;
 
+    [Column("is_solo")]
+    public bool IsSolo { get; set; } = false;
+
     public List<EventMarker> EventMarkers { get; set; } = new();
     public List<EventTimetableDay> EventTimetableDays { get; set; } = new();
     public List<SoloEvent> SoloEvents { get; set; } = new();
