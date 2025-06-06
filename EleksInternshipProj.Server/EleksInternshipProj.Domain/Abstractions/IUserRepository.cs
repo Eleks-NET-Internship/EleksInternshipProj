@@ -11,5 +11,7 @@ namespace EleksInternshipProj.Domain.Abstractions
         Task<long> GetIdByEmailAndProviderAsync(string email, string provider);
 
         Task AddUserAsync(User user);
+
+        Task<User?> GetByIdAsync(long userId);
     }
 }

@@ -77,7 +77,7 @@ namespace EleksInternshipProj.Server.Controllers
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return Ok( new { accessToken=token});
+            return Ok( new { accessToken = token});
         }
     }
 }
