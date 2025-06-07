@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,25 +19,46 @@ export class AuthService {
     sessionStorage.setItem(this.TOKEN_KEY, token);
   }
 
-  login(credentials: { email: string; password: string }) {
-    this.http.post<{ accessToken: string }>(this.apiBaseUrl + '/api/auth/login', credentials)
-      .subscribe(response => {
-        this.setToken(response.accessToken);
-      });
+  async login(credentials: { email: string; password: string }) : Promise<boolean> {
+    try {
+      const response = await firstValueFrom(this.http.post<{ accessToken: string }>(this.apiBaseUrl + '/api/auth/login', credentials, { observe: 'response' }));
+      if (response.ok) {
+        if (response.body?.accessToken !== undefined) {
+          this.setToken(response.body.accessToken);
+          console.log('Successful login.');
+          return true;
+        }
+        else return false;
+      }
+      else return false;
+    }
+    catch (error) {
+      console.error('Login failed: ', error);
+      return false;
+    }
   }
 
   logout() {
     sessionStorage.removeItem(this.TOKEN_KEY);
   }
 
-  register(registerPayload: { firstName: string, lastName: string, username: string, email: string, password: string }) {
-    this.http.post(this.apiBaseUrl + '/api/auth/register', registerPayload, { observe: 'response' })
-      .subscribe(response => {
-        if (response.ok) {
-          console.log("Successful register.");
-          this.login({ email: registerPayload.email, password: registerPayload.password });
+  async register(registerPayload: { firstName: string, lastName: string, username: string, email: string, password: string }): Promise<boolean> {
+    try {
+      const response = await firstValueFrom(this.http.post(this.apiBaseUrl + '/api/auth/register', registerPayload, { observe: 'response' }));
+      if (response.ok) {
+        const login = await this.login({ email: registerPayload.email, password: registerPayload.password});
+        if (login) {
+          console.log('Successful register.');
+          return true;
         }
-      });
+        else return false;
+      }
+      else return false;
+    }
+    catch (error) {
+      console.error('Register failed: ', error);
+      return false;
+    }
   }
 
   loginWithGoogle() {

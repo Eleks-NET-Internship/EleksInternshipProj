@@ -1,5 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,7 +9,7 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService, private readonly snackBar: MatSnackBar, private readonly router: Router) {}
 
   hide = signal(true);
   clickEvent(event: MouseEvent) {
@@ -20,9 +22,17 @@ export class LoginComponent {
     password: ''
   };
 
-  onSignIn() {
-    this.authService.login(this.loginPayload);
-    // redirect to home
+  async onSignIn() {
+    const login = await this.authService.login(this.loginPayload);
+    if (login) {
+      this.router.navigate(['/home']);
+    }
+    else {
+      this.snackBar.open('Невірна електронна пошта або пароль', 'Закрити', {
+        duration: 5000,
+        panelClass: ['snackbar-error']
+      });
+    }
   }
 
   onGoogleSignIn() {

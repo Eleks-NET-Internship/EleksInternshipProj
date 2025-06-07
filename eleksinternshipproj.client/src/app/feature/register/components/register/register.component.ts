@@ -1,5 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -7,7 +9,7 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService, private readonly snackBar: MatSnackBar, private readonly router: Router) {}
 
   hide = signal(true);
   clickEvent(event: MouseEvent) {
@@ -23,9 +25,17 @@ export class RegisterComponent {
     password: ''
   };
 
-  onRegister() {
-    this.authService.register(this.registerPayload);
-    // redirect to home
+  async onRegister() {
+    const isLogged = await this.authService.register(this.registerPayload);
+    if (isLogged) {
+      this.router.navigate(['/home']);
+    }
+    else {
+      this.snackBar.open('Акаунт з такою електронною поштою вже існує', 'Закрити', {
+        duration: 5000,
+        panelClass: ['snackbar-error']
+      });
+    }
   }
 
   onGoogleSignIn() {
