@@ -23,7 +23,7 @@ export class WeatherForecastComponent {
   }
 
   getForecasts() {
-    this.http.get<WeatherForecast[]>('http://localhost:5142/api/weatherforecast').subscribe(
+    this.http.get<WeatherForecast[]>('http://localhost:7050/api/weatherforecast').subscribe(
       (result) => {
         this.forecasts = result;
       },
