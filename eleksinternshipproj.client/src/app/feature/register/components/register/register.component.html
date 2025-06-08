@@ -7,7 +7,7 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Ім'я</mat-label>
-      <input matInput type="text" name="firstName" [(ngModel)]="registerPayload.firstName" required #firstName="ngModel" />
+      <input matInput type="text" name="firstName" [(ngModel)]="registerPayload.firstName" #firstName="ngModel" />
       <mat-error *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)">
         Ім'я обов'язкове
       </mat-error>
@@ -15,7 +15,7 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Прізвище</mat-label>
-      <input matInput type="text" name="lastName" [(ngModel)]="registerPayload.lastName" required #lastName="ngModel" />
+      <input matInput type="text" name="lastName" [(ngModel)]="registerPayload.lastName" #lastName="ngModel" />
       <mat-error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)">
         Прізвище обов'язкове
       </mat-error>

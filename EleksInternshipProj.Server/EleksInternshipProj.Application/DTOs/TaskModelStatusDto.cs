@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace EleksInternshipProj.Application.DTOs
 {
-    public class CreateEventDto
+    public class TaskModelStatusDto
     {
-        public string Name { get; set; } = null!;
-        public long spaceId { get; set; }
+        public long Id { get; set; }    
+        public string? Name { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using EleksInternshipProj.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EleksInternshipProj.Infrastructure.Migrations
 {
     [DbContext(typeof(NavchaykoDbContext))]
-    partial class NavchaykoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250603160430_AddIsSoloFlagToEvent")]
+    partial class AddIsSoloFlagToEvent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,13 +67,7 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("name");
 
-                    b.Property<long>("SpaceId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("space_id");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("SpaceId");
 
                     b.ToTable("event", "public");
                 });
@@ -266,7 +263,7 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                     b.ToTable("space", "public");
                 });
 
-            modelBuilder.Entity("EleksInternshipProj.Domain.Models.TaskModel", b =>
+            modelBuilder.Entity("EleksInternshipProj.Domain.Models.Task", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -468,17 +465,6 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                     b.ToTable("user_space", "public");
                 });
 
-            modelBuilder.Entity("EleksInternshipProj.Domain.Models.Event", b =>
-                {
-                    b.HasOne("EleksInternshipProj.Domain.Models.Space", "Space")
-                        .WithMany("Events")
-                        .HasForeignKey("SpaceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Space");
-                });
-
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.EventMarker", b =>
                 {
                     b.HasOne("EleksInternshipProj.Domain.Models.Event", "Event")
@@ -550,7 +536,7 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                     b.Navigation("Event");
                 });
 
-            modelBuilder.Entity("EleksInternshipProj.Domain.Models.TaskModel", b =>
+            modelBuilder.Entity("EleksInternshipProj.Domain.Models.Task", b =>
                 {
                     b.HasOne("EleksInternshipProj.Domain.Models.Event", "Event")
                         .WithMany("Tasks")
@@ -656,8 +642,6 @@ namespace EleksInternshipProj.Infrastructure.Migrations
 
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.Space", b =>
                 {
-                    b.Navigation("Events");
-
                     b.Navigation("Markers");
 
                     b.Navigation("Timetables");

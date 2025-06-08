@@ -22,17 +22,20 @@ export class LoginComponent {
     password: ''
   };
 
-  async onSignIn() {
-    const login = await this.authService.login(this.loginPayload);
-    if (login) {
-      this.router.navigate(['/home']);
-    }
-    else {
-      this.snackBar.open('Невірна електронна пошта або пароль', 'Закрити', {
-        duration: 5000,
-        panelClass: ['snackbar-error']
-      });
-    }
+  onSignIn() {
+    this.authService.login(this.loginPayload).subscribe({
+      next: (response) => {
+        this.authService.setToken(response.accessToken);
+        this.router.navigate(['/home']);
+      },
+      error: (error) => {
+        console.log(error.error.message);
+        this.snackBar.open('Невірна електронна пошта або пароль', 'Закрити', {
+          duration: 5000,
+          panelClass: ['snackbar-error']
+        });
+      }
+    });
   }
 
   onGoogleSignIn() {

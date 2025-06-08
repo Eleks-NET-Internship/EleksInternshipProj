@@ -25,17 +25,21 @@ export class RegisterComponent {
     password: ''
   };
 
-  async onRegister() {
-    const isLogged = await this.authService.register(this.registerPayload);
-    if (isLogged) {
-      this.router.navigate(['/home']);
-    }
-    else {
-      this.snackBar.open('Акаунт з такою електронною поштою вже існує', 'Закрити', {
-        duration: 5000,
-        panelClass: ['snackbar-error']
-      });
-    }
+  onRegister() {
+    this.authService.register(this.registerPayload).subscribe({
+      next: (response) => {
+        this.router.navigate(['/login']);
+        // add email verification when the backend implements it
+        // <open modal for code input>
+      },
+      error: (error) => {
+        console.log(error.error.message);
+        this.snackBar.open('Акаунт з такою електронною поштою вже існує', 'Закрити', {
+          duration: 5000,
+          panelClass: ['snackbar-error']
+        });
+      }
+    });
   }
 
   onGoogleSignIn() {

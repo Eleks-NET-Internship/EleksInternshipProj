@@ -35,5 +35,15 @@ namespace EleksInternshipProj.Infrastructure.Repositories
                 .Select(u => u.Id)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<User?> GetByIdAsync(long userId)
+        {
+            return await _context.Users.FindAsync(userId);
+        }
+
+        public async Task UpdateUserAsync(User user)
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 }

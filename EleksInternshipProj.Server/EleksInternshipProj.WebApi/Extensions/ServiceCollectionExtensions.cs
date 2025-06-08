@@ -19,9 +19,12 @@ namespace EleksInternshipProj.WebApi.Extensions
             // DI for services here
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IMarkerService, MarkerService>();
+            services.AddScoped<ISoloEventService, SoloEventService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<ITokenGenerator, TokenGenerator>();
+            services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<IProfileService, ProfileService>();
 
             return services;
         }
@@ -31,7 +34,9 @@ namespace EleksInternshipProj.WebApi.Extensions
             // DI for repositories here
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddScoped<IMarkerRepository, MarkerRepository>();
+            services.AddScoped<ISoloEventRepository, SoloEventRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ITaskRepository, TaskRepository>();
 
             return services;
         }
@@ -57,6 +62,13 @@ namespace EleksInternshipProj.WebApi.Extensions
                 options.ClientId = googleClientId;
                 options.ClientSecret = googleClientSecret;
                 options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+
+                options.Events.OnRemoteFailure = context =>
+                {
+                    context.HandleResponse();
+                    context.Response.Redirect("https://localhost:4200/login");
+                    return Task.CompletedTask;
+                };
             })
             .AddJwtBearer(x =>
             {

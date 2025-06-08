@@ -77,7 +77,10 @@ namespace EleksInternshipProj.Server.Controllers
 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return Ok( new { accessToken=token});
+            if (!Url.IsLocalUrl(returnUrl))
+                returnUrl = "/";
+
+            return Redirect($"https://localhost:4200/auth-callback?{Uri.EscapeDataString(returnUrl)}&accessToken={Uri.EscapeDataString(token)}");
         }
     }
 }

@@ -8,12 +8,12 @@ using EleksInternshipProj.Domain.Models;
 
 namespace EleksInternshipProj.Domain.Abstractions
 {
-    public interface IEventRepository
+    public interface ISoloEventRepository
     {
-        Task<IEnumerable<Event>> GetAllBySpaceIdAsync(long spaceId);
-        Task<Event?> GetByIdAsync(long id);
-        Task<Event?> AddAsync(Event entity);
-        Task<bool> UpdateAsync(Event entity);
+        Task<IEnumerable<SoloEvent>> GetAllBySpaceIdAsync(long spaceId);
+        Task<SoloEvent?> GetByIdAsync(long id);
+        Task<SoloEvent?> AddAsync(SoloEvent entity);
+        Task<bool> UpdateAsync(SoloEvent entity);
         Task<bool> DeleteAsync(long id);
     }
 
