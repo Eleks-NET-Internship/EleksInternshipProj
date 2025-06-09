@@ -29,4 +29,8 @@ export class ScheduleComponent {
   onCardClick(card: any) {
     console.log('Card clicked:', card);
   }
+
+  EditSchedule(){
+    
+  }
 }

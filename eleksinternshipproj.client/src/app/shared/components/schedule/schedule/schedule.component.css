@@ -92,6 +92,18 @@ mat-card-content {
   padding: 20px !important;
 }
 
+.edit-button{
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 50px; 
+  button {
+      color: rgb(0, 0, 0);
+      mat-icon {
+        font-size: 28px;
+      }
+    }
+}
+
 .card-time {
   font-size: 14px;
   color: #666;

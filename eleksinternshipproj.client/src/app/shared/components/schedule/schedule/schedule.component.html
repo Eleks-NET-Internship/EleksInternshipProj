@@ -3,7 +3,11 @@
 
     <!-- Main content -->
     <div class="main-content">
-      
+      <div class="edit-button">
+        <button mat-icon-button size="small" (click)="EditSchedule()">
+          <mat-icon>edit</mat-icon>
+        </button> 
+      </div>    
       <!-- Days header -->
       <div class="days-header">
         <div class="day-column" *ngFor="let day of daysOfWeek">
