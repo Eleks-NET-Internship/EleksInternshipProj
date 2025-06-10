@@ -1,0 +1,91 @@
+<div class="dialog-container">
+      <h2 mat-dialog-title class="dialog-title">Редагування події</h2>
+      
+      <mat-dialog-content class="dialog-content">
+        <form [formGroup]="eventForm" class="event-form">
+          
+          <!-- Назва -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Назва</mat-label>
+            <input matInput formControlName="name" placeholder="Введіть назву події">
+            <mat-error *ngIf="eventForm.get('name')?.hasError('required')">
+              Назва є обов'язковою
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Час початку та закінчення -->
+          <div class="time-row">
+            <mat-form-field appearance="outline" class="time-field">
+              <mat-label>Час початку</mat-label>
+              <input matInput 
+                     type="time" 
+                     formControlName="startTime"
+                     [attr.step]="300">
+              <mat-error *ngIf="eventForm.get('startTime')?.hasError('required')">
+                Час початку є обов'язковим
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="time-field">
+              <mat-label>Час закінчення</mat-label>
+              <input matInput 
+                     type="time" 
+                     formControlName="endTime"
+                     [attr.step]="300">
+              <mat-error *ngIf="eventForm.get('endTime')?.hasError('required')">
+                Час закінчення є обов'язковим
+              </mat-error>
+              <mat-error *ngIf="eventForm.hasError('timeOrder')">
+                Час закінчення повинен бути пізніше часу початку
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Мітки -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Мітки</mat-label>
+            <mat-chip-grid #chipGrid formControlName="tags">
+              <mat-chip-row *ngFor="let tag of selectedTags" 
+                            [removable]="true"
+                            (removed)="removeTag(tag)">
+                {{ tag }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            </mat-chip-grid>
+            <input matInput
+                   #tagInput
+                   [matChipInputFor]="chipGrid"
+                   [matAutocomplete]="autoTags"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   (matChipInputTokenEnd)="addTag($event)"
+                   placeholder="Виберіть або додайте мітки">
+            <mat-autocomplete #autoTags="matAutocomplete" (optionSelected)="selectTag($event)">
+              <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+                {{ tag }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+
+        </form>
+      </mat-dialog-content>
+
+      <!-- Кнопки дій -->
+      <mat-dialog-actions class="dialog-actions">
+        <button mat-button 
+                color="primary" 
+                (click)="onCancel()"
+                class="cancel-btn">
+          Скасувати
+        </button>
+        <button mat-raised-button 
+                color="primary" 
+                (click)="onSave()"
+                [disabled]="eventForm.invalid"
+                class="save-btn">
+          Застосувати
+        </button>
+      </mat-dialog-actions>
+    </div>

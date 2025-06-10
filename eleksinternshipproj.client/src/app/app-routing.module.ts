@@ -5,9 +5,14 @@ import { RegisterComponent } from './feature/register/components/register/regist
 import { WeatherForecastComponent } from './feature/weatherForecast/components/weather-forecast/weather-forecast.component';
 import { authGuard } from './core/guards/auth.guard';
 import { AuthCallbackComponent } from './feature/login/components/auth-callback/auth-callback.component';
+import { CalendarComponent } from './feature/calendar/components/calendar/calendar.component';
+import { ScheduleComponent } from './feature/schedule/components/schedule/schedule.component';
 
 const routes: Routes = [
   { path: 'auth-callback', component: AuthCallbackComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'calendar', component: CalendarComponent },
+  { path: 'schedule', component: ScheduleComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'forecast', component: WeatherForecastComponent, canActivate: [authGuard] }, // when Home component arrives, switch to it here
