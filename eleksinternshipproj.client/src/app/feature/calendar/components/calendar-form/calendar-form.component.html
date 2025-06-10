@@ -1,0 +1,71 @@
+<div class="display-container">
+  <!-- Якщо вибрано сьогодні -->
+  <ng-container *ngIf="getDisplayTitle() === 'СЬОГОДНІ'; else dateSelected">
+    <!-- СЬОГОДНІ -->
+    <div class="display-section">
+      <h3 class="section-title">{{ getDisplayTitle() }}</h3>
+      <div class="display-group">
+        <div class="display-field">{{ todayTasks.task1 || 'тралалейлотралала' }}</div>
+      </div>
+      <div class="display-group">
+        <div class="display-field">{{ todayTasks.task2 || 'пумпурумпумпум' }}</div>
+      </div>
+    </div>
+
+    <!-- ЗАВТРА -->
+    <div class="display-section">
+      <h3 class="section-title">ЗАВТРА</h3>
+      <div class="display-group">
+        <div class="display-field">{{ tomorrowTasks.task1 || 'лалалалала' }}</div>
+      </div>
+    </div>
+
+    <!-- ТИЖДЕНЬ -->
+    <div class="display-section">
+      <h3 class="section-title">ТИЖДЕНЬ</h3>
+      <div class="display-group">
+        <div class="display-field">{{ weekTasks.task1 || 'тралалейлотралала' }}</div>
+      </div>
+      <div class="display-group">
+        <div class="display-field">{{ weekTasks.task2 || 'пумпурумпумпум' }}</div>
+      </div>
+      <div class="display-group">
+        <div class="display-field">{{ weekTasks.task3 || 'лалалалала' }}</div>
+      </div>
+      <div class="display-group">
+        <div class="display-field">{{ weekTasks.task4 || 'тактовоттактоарешилла' }}</div>
+      </div>
+      <div class="display-group">
+        <div class="display-field">{{ weekTasks.task5 || 'саміпосудите' }}</div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Якщо вибрана дата відмінна від сьогодні -->
+  <ng-template #dateSelected>
+    <!-- ПОДІЇ -->
+    <div class="display-section">
+      <h3 class="section-title">ПОДІЇ</h3>
+      <div class="display-group">
+        <div class="display-field">{{ weekTasks.task1 || 'тралалейлотралала' }}</div>
+      </div>
+      <div class="display-group">
+        <div class="display-field">{{ weekTasks.task2 || 'пумпурумпумпум' }}</div>
+      </div>
+      <div class="display-group">
+        <div class="display-field">{{ weekTasks.task3 || 'лалалалала' }}</div>
+      </div>
+    </div>
+
+    <!-- ЗАВДАННЯ -->
+    <div class="display-section">
+      <h3 class="section-title">ЗАВДАННЯ</h3>
+      <div class="display-group">
+        <div class="display-field">{{ weekTasks.task1 || 'тралалейлотралала' }}</div>
+      </div>
+      <div class="display-group">
+        <div class="display-field">{{ weekTasks.task2 || 'пумпурумпумпум' }}</div>
+      </div>
+    </div>
+  </ng-template>
+</div>
