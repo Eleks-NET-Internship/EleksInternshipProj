@@ -14,5 +14,5 @@ public class TaskStatus
     [Column("name")]
     public string Name { get; set; } = null!;
 
-    public List<Task> Tasks { get; set; } = new();
+    public List<TaskModel> Tasks { get; set; } = new();
 }

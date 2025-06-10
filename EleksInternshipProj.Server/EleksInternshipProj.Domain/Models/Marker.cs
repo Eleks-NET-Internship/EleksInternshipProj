@@ -11,6 +11,10 @@ public class Marker
     public long Id { get; set; }
 
     [Required, MaxLength(255)]
+    [Column("type")]
+    public string Type { get; set; } = null!;
+
+    [Required, MaxLength(255)]
     [Column("name")]
     public string Name { get; set; } = null!;
 

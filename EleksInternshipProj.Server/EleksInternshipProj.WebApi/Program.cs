@@ -1,7 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 
 using EleksInternshipProj.Infrastructure.Data;
 using EleksInternshipProj.WebApi.Extensions;
-using Microsoft.EntityFrameworkCore;
 
 namespace EleksInternshipProj.Server
 {
@@ -19,18 +19,32 @@ namespace EleksInternshipProj.Server
                 options => options.UseNpgsql(connectionString));
             
             // Add services to the container.
-
             builder.Services.AddControllers();
 
-            // from extensions
+            // Add CORS
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularApp", policy =>
+                {
+                    policy.WithOrigins("https://localhost:4200")
+                          .AllowCredentials()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
+
+            // From extensions
             builder.Services.AddApplicationServices();
             builder.Services.AddRepositories();
+            builder.Services.ConfigureAuth(builder.Configuration);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            app.UseCors("AllowAngularApp");
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -44,8 +58,8 @@ namespace EleksInternshipProj.Server
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
-
 
             app.MapControllers();
 

@@ -1,12 +1,14 @@
-﻿using EleksInternshipProj.Domain.Models;
-using Microsoft.EntityFrameworkCore;
-using Task = EleksInternshipProj.Domain.Models.Task;
+﻿using Microsoft.EntityFrameworkCore;
+
+using EleksInternshipProj.Domain.Models;
+
+
 using TaskStatus = EleksInternshipProj.Domain.Models.TaskStatus;
 
 namespace EleksInternshipProj.Infrastructure.Data
 {
     public class NavchaykoDbContext : DbContext
-    {
+    {   // Tabs are 4 spaces here, but 6 spaces in OnConfiguring and OnModelCreating??
         public DbSet<User> Users { get; set; }
         public DbSet<Space> Spaces { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -20,17 +22,14 @@ namespace EleksInternshipProj.Infrastructure.Data
         public DbSet<EventTimetableDay> EventTimetableDays { get; set; }
         public DbSet<SoloEvent> SoloEvents { get; set; }
         public DbSet<Note> Notes { get; set; }
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<TaskModel> Tasks { get; set; }
         public DbSet<TaskStatus> TaskStatuses { get; set; }
 
         public NavchaykoDbContext(DbContextOptions<NavchaykoDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-              if (!optionsBuilder.IsConfigured)
-              {
-                    optionsBuilder.UseNpgsql("Host=localhost:5432;Database=Navchayko;Username=postgres;Password=12345678");
-              }
+             
         }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,16 +38,15 @@ namespace EleksInternshipProj.Infrastructure.Data
 
             modelBuilder.Entity<User>(entity =>
             {
+                // Why do we need to specify .IsRequired both here and in User.cs?
                   entity.ToTable("user");
                   entity.HasKey(u => u.Id);
-                  entity.HasIndex(u => u.Email).IsUnique();
-                  entity.Property(u => u.UserName).IsRequired();
-                  entity.Property(u => u.FirstName).IsRequired();
-                  entity.Property(u => u.LastName).IsRequired();
+                  entity.HasIndex(u => new { u.Email, u.AuthProvider}).IsUnique();
+                  entity.Property(u => u.Username).IsRequired();
                   entity.Property(u => u.Email).IsRequired();
-                  entity.Property(u => u.PasswordHash).IsRequired();
-                  entity.Property(u => u.PasswordSalt).IsRequired();
+                  entity.Property(u => u.AuthProvider).IsRequired();
             });
+                  
 
             modelBuilder.Entity<Space>(entity =>
             {
@@ -88,6 +86,7 @@ namespace EleksInternshipProj.Infrastructure.Data
                   entity.ToTable("marker");
                   entity.HasKey(m => m.Id);
                   entity.Property(m => m.Name).IsRequired();
+                  entity.Property(m => m.Type).IsRequired();
                   entity.HasOne(m => m.Space)
                         .WithMany(s => s.Markers)
                         .HasForeignKey(m => m.SpaceId)
@@ -96,12 +95,19 @@ namespace EleksInternshipProj.Infrastructure.Data
 
             modelBuilder.Entity<Event>(entity =>
             {
-                  entity.ToTable("event");
-                  entity.HasKey(e => e.Id);
-                  entity.Property(e => e.Name).IsRequired();
-                  entity.Property(e => e.StartTime).IsRequired();
-                  entity.Property(e => e.EndTime).IsRequired();
+                entity.ToTable("event");
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired();
+                entity.Property(e => e.IsSolo)
+                      .HasColumnName("is_solo")
+                      .IsRequired()
+                      .HasDefaultValue(false);
+                entity.HasOne(e => e.Space)
+                     .WithMany(s => s.Events)
+                     .HasForeignKey(e => e.SpaceId)
+                     .OnDelete(DeleteBehavior.Cascade);
             });
+
 
             modelBuilder.Entity<EventMarker>(entity =>
             {
@@ -153,6 +159,8 @@ namespace EleksInternshipProj.Infrastructure.Data
             {
                   entity.ToTable("event_timetable_day");
                   entity.HasKey(etd => etd.Id);
+                  entity.Property(etd => etd.StartTime).IsRequired();
+                  entity.Property(etd => etd.EndTime).IsRequired();
                   entity.HasOne(etd => etd.Event)
                         .WithMany(e => e.EventTimetableDays)
                         .HasForeignKey(etd => etd.EventId)
@@ -193,7 +201,7 @@ namespace EleksInternshipProj.Infrastructure.Data
                   entity.Property(ts => ts.Name).IsRequired();
             });
 
-            modelBuilder.Entity<Task>(entity =>
+            modelBuilder.Entity<TaskModel>(entity =>
             {
                   entity.ToTable("task");
                   entity.HasKey(t => t.Id);

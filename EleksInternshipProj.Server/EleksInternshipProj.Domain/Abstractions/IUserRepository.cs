@@ -1,14 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
-namespace EleksInternsipProj.Domain.Abstractions
+using EleksInternshipProj.Domain.Models;
+
+namespace EleksInternshipProj.Domain.Abstractions
 {
-    // just exemple, this folder for repository interfaces
     public interface IUserRepository
     {
-        
+        Task<User?> GetByEmailAndProviderAsync(string email, string provider);
+
+        Task<long> GetIdByEmailAndProviderAsync(string email, string provider);
+
+        Task AddUserAsync(User user);
+
+        Task<User?> GetByIdAsync(long userId);
+
+        Task UpdateUserAsync(User user);
     }
 }
