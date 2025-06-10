@@ -11,7 +11,7 @@ import { CalendarFormComponent } from './feature/calendar/components/calendar-fo
 import { ScheduleComponent } from './feature/schedule/components/schedule/schedule.component';
 import { SidebarComponent } from './feature/sidebar/components/sidebar/sidebar.component';
 import { EditScheduleComponent } from './feature/schedule/components/edit-schedule/edit-schedule.component';
-import { EventEditFormComponent } from './feature/schedule/components/event-edit-form/event-edit-form.component'
+import { EventEditFormComponent } from './feature/schedule/components/event-edit-form/event-edit-form.component';
 import { LoginComponent } from './feature/login/components/login/login.component';
 import { RegisterComponent } from './feature/register/components/register/register.component';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
@@ -52,7 +52,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     EventEditFormComponent,
     LoginComponent,
     RegisterComponent,
-    WeatherForecastComponent,
+    WeatherForecastComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
