@@ -11,6 +11,11 @@
   justify-content: space-around;
 }
 
+.container{
+  display: flex;
+  flex-direction: row;
+}
+
 .calendar-section {
   background: #AC6869;
   backdrop-filter: blur(10px);
