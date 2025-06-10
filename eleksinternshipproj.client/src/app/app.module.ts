@@ -1,8 +1,7 @@
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClientModule, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,6 +12,10 @@ import { ScheduleComponent } from './feature/schedule/components/schedule/schedu
 import { SidebarComponent } from './feature/sidebar/components/sidebar/sidebar.component';
 import { EditScheduleComponent } from './feature/schedule/components/edit-schedule/edit-schedule.component';
 import { EventEditFormComponent } from './feature/schedule/components/event-edit-form/event-edit-form.component';
+import { LoginComponent } from './feature/login/components/login/login.component';
+import { RegisterComponent } from './feature/register/components/register/register.component';
+import { authInterceptor } from './core/interceptors/auth.interceptor';
+import { WeatherForecastComponent } from './feature/weatherForecast/components/weather-forecast/weather-forecast.component';
 
 // Angular Material
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -49,8 +52,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     EventEditFormComponent,
   ],
   imports: [
-    BrowserModule, 
-    HttpClientModule,
+    BrowserModule, HttpClientModule,
     AppRoutingModule,
     // Material modules
     MatSidenavModule,

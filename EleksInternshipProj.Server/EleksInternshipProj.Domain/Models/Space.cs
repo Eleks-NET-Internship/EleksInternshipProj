@@ -16,5 +16,6 @@ public class Space
 
     public List<UserSpace> UserSpaces { get; set; } = new();
     public List<Marker> Markers { get; set; } = new();
+    public List<Event> Events { get; set; } = new();
     public List<Timetable> Timetables { get; set; } = new();
 }
