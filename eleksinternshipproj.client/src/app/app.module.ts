@@ -11,12 +11,8 @@ import { CalendarComponent } from './feature/calendar/components/calendar/calend
 import { CalendarFormComponent } from './feature/calendar/components/calendar-form/calendar-form.component';
 import { ScheduleComponent } from './feature/schedule/components/schedule/schedule.component';
 import { SidebarComponent } from './feature/sidebar/components/sidebar/sidebar.component';
-import { EditScheduleComponent } from './shared/components/schedule/edit-schedule/edit-schedule.component';
-import { EventEditFormComponent } from './feature/schedule/components/event-edit-form/event-edit-form.component'
-import { LoginComponent } from './feature/login/components/login/login.component';
-import { RegisterComponent } from './feature/register/components/register/register.component';
-import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { WeatherForecastComponent } from './feature/weatherForecast/components/weather-forecast/weather-forecast.component';
+import { EditScheduleComponent } from './feature/schedule/components/edit-schedule/edit-schedule.component';
+import { EventEditFormComponent } from './feature/schedule/components/event-edit-form/event-edit-form.component';
 
 // Angular Material
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -51,9 +47,6 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     SidebarComponent,
     EditScheduleComponent,
     EventEditFormComponent,
-    LoginComponent,
-    RegisterComponent,
-    WeatherForecastComponent,
   ],
   imports: [
     BrowserModule, 
