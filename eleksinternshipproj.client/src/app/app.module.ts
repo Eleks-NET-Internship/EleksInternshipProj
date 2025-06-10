@@ -50,6 +50,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     SidebarComponent,
     EditScheduleComponent,
     EventEditFormComponent,
+    LoginComponent,
+    RegisterComponent,
+    WeatherForecastComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
