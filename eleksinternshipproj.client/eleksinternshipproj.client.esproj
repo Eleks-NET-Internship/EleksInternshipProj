@@ -11,5 +11,7 @@
     <Folder Include="src\app\core\guards\" />
     <Folder Include="src\app\feature\profile\components\" />
     <Folder Include="src\app\feature\profile\services\" />
+    <Folder Include="src\app\feature\settings\components\" />
+    <Folder Include="src\app\feature\settings\services\" />
   </ItemGroup>
 </Project>

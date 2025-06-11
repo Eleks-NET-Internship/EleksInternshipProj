@@ -37,6 +37,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ProfileComponent } from './feature/profile/components/profile/profile.component';
 import { SharedModule } from './shared/shared.module';
+import { SettingsComponent } from './feature/settings/components/settings/settings.component';
 
 
 
@@ -52,7 +53,8 @@ import { SharedModule } from './shared/shared.module';
     EventEditFormComponent,
     LoginComponent,
     RegisterComponent,
-    ProfileComponent
+    ProfileComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

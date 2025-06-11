@@ -38,13 +38,11 @@ export class SidebarComponent {
       }
 
       case 'Календар': {
-        console.log('Календар');
         this.router.navigate(['/calendar']);
         break;
       }
 
       case 'Розклад': {
-        console.log('Розклад');
         this.router.navigate(['/schedule']);
         break;
       }
@@ -74,14 +72,12 @@ export class SidebarComponent {
       }
 
       case 'Профіль': {
-        console.log('Профіль');
         this.router.navigate(['/profile']);
         break;
       }
 
       case 'Налаштування': {
-        console.log('Налаштування'); // same
-        alert("Not implemented :(");
+        this.router.navigate(['/settings']);
         break;
       }
     }

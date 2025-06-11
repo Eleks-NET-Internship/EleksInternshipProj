@@ -10,6 +10,7 @@ import { EditScheduleComponent } from './feature/schedule/components/edit-schedu
 import { ProfileComponent } from './feature/profile/components/profile/profile.component';
 import { MainLayoutComponent } from './shared/components/layouts/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/auth-layout.component';
+import { SettingsComponent } from './feature/settings/components/settings/settings.component';
 
 const routes: Routes = [
 
@@ -31,6 +32,7 @@ const routes: Routes = [
       { path: 'schedule', component: ScheduleComponent, canActivate: [authGuard] },
       { path: 'edit-schedule', component: EditScheduleComponent, canActivate: [authGuard] },
       { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+      { path: 'settings', component: SettingsComponent, canActivate: [authGuard] }
     ]
   },
 
