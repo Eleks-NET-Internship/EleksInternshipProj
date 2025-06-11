@@ -1,0 +1,74 @@
+.list-container {
+  width: 100%;
+  max-width: 600px; /* Adjust as needed */
+  margin: 20px auto;
+  padding: 20px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 100"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="%23e0f2f7"/><stop offset="100%" stop-color="%23bbdefb"/></linearGradient></defs><rect x="0" y="0" width="100" height="100" fill="url(%23g)"/></svg>'); /* A light blue/white gradient as a placeholder for the background */
+  background-size: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden; /* To ensure the background doesn't overflow rounded corners */
+}
+
+/* Simulating the watercolor effect */
+.list-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 150px; /* Height of the colored area */
+  background: linear-gradient(to bottom right, #e0f2f7, #bbdefb); /* Light blue gradient */
+  opacity: 0.8; /* Adjust for transparency */
+  filter: blur(50px); /* Creates the watercolor-like blur */
+  z-index: 0; /* Ensures it's behind the content */
+}
+
+.header-icons {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1; /* Ensure icons are above background effect */
+}
+
+.add-icon {
+  font-size: 32px;
+  width: 32px;
+  height: 32px;
+  color: #000; /* Black color for the plus icon as in the image */
+  cursor: pointer;
+}
+
+.list-item {
+  background-color: #ba6b6b; /* The reddish color from the image */
+  color: white;
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 50px; /* Gives some height to the cards */
+  position: relative; /* Needed for z-index to work against the pseudo-element background */
+  z-index: 1; /* Ensure cards are above background effect */
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 500;
+  flex-grow: 1; /* Allows title to take up available space */
+  margin-right: 10px; /* Spacing between title and button */
+}
+
+.more-options {
+  color: white; /* White color for the ellipsis icon */
+}
