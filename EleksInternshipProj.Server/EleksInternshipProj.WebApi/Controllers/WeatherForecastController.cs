@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
+using EleksInternshipProj.Server;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EleksInternshipProj.Server.Controllers
+namespace EleksInternshipProj.WebApi.Controllers
 {
     //auth test
     [ApiController]

@@ -12,10 +12,12 @@ namespace EleksInternshipProj.Infrastructure.Repositories
     public class EventRepository : IEventRepository
     {
         private readonly NavchaykoDbContext _context;
+        private readonly ILogger<EventRepository> _logger;
 
-        public EventRepository(NavchaykoDbContext context)
+        public EventRepository(NavchaykoDbContext context, ILogger<EventRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
         public async Task<IEnumerable<Event>> GetAllBySpaceIdAsync(long spaceId)
         {

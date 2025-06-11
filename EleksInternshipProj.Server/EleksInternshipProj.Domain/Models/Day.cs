@@ -14,5 +14,11 @@ public class Day
     [Column("day_name")]
     public string DayName { get; set; } = null!;
 
-    public List<TimetableDay> TimetableDays { get; set; } = new();
+    [Required]
+    [ForeignKey(nameof(Timetable))]
+    [Column("timetable_id")]
+    public long TimetableId { get; set; }
+    public Timetable Timetable { get; set; } = null!;
+
+    public List<EventDay> EventDays { get; set; } = new();
 }
