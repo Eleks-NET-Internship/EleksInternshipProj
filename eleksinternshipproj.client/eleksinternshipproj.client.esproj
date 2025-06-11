@@ -9,5 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\core\guards\" />
+    <Folder Include="src\app\feature\profile\components\" />
   </ItemGroup>
 </Project>
