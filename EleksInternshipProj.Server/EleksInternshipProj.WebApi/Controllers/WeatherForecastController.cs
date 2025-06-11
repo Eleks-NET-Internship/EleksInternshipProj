@@ -1,10 +1,12 @@
+using Microsoft.AspNetCore.Authorization;
 using EleksInternshipProj.Server;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EleksInternshipProj.WebApi.Controllers
 {
+    //auth test
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/weatherForecast")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
@@ -20,6 +22,7 @@ namespace EleksInternshipProj.WebApi.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
+        [Authorize]
         public IEnumerable<WeatherForecast> Get()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

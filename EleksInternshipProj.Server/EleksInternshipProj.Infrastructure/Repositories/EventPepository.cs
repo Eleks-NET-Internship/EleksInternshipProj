@@ -1,10 +1,11 @@
-﻿using EleksInternshipProj.Domain.Abstractions;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using EleksInternshipProj.Domain.Abstractions;
 using EleksInternshipProj.Domain.Models;
 using EleksInternshipProj.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 
 namespace EleksInternshipProj.Infrastructure.Repositories
 {
@@ -18,17 +19,20 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             _context = context;
             _logger = logger;
         }
-        public async Task<IEnumerable<Event>> GetAllAsync()
+        public async Task<IEnumerable<Event>> GetAllBySpaceIdAsync(long spaceId)
         {
             return await _context.Events
-                 .Include(e => e.EventMarkers)
-                     .ThenInclude(em => em.Marker)
-                 .ToListAsync();
+                .Where(e => e.SpaceId == spaceId && e.IsSolo == false)
+                .Include(e => e.EventMarkers)
+                    .ThenInclude(em => em.Marker)
+                .ToListAsync();
         }
+
 
         public async Task<Event?> GetByIdAsync(long id)
         {
             return await _context.Events
+               .Where(e => e.IsSolo == false)
               .Include(e => e.EventMarkers)
                   .ThenInclude(em => em.Marker)
               .FirstOrDefaultAsync(e => e.Id == id);
@@ -36,16 +40,9 @@ namespace EleksInternshipProj.Infrastructure.Repositories
 
         public async Task<Event?> AddAsync(Event entity)
         {
-            try
-            {
-                await _context.Events.AddAsync(entity);
-                await _context.SaveChangesAsync();
-                return entity;
-            }
-            catch
-            {
-                return null;
-            }
+            await _context.Events.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
         public async Task<bool> DeleteAsync(long id)

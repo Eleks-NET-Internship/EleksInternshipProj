@@ -1,0 +1,112 @@
+/* Сайдбар */
+.sidenav {
+  position: relative;
+  height: 100vh;
+  max-width: 230px;
+  background-color: #F7E2E1;
+  border-right: 1px solid #e0e0e0;
+  box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.sidenav-header {
+  padding: 16px;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.sidenav-header button {
+  color: #666;
+}
+
+/* Навігаційне меню */
+.nav-list {
+  padding-top: 8px;
+  height: auto;
+}
+
+.nav-list mat-list-item {
+  height: 56px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 2px 8px;
+  border-radius: 8px;
+  text-align: start;
+}
+
+.nav-list mat-list-item:hover {
+  background-color: rgba(25, 118, 210, 0.08);
+}
+
+.nav-list mat-list-item.active {
+  background-color: #1976d2;
+  color: white;
+}
+
+.nav-list mat-list-item.active mat-icon {
+  color: white;
+}
+
+.nav-list mat-list-item mat-icon {
+  color: #666;
+  margin-right: 16px;
+}
+
+.nav-list mat-list-item span {
+  padding-left: 10px;
+}
+
+mat-list-item {
+  align-items: center; /* Ensures vertical centering of content */
+}
+
+/* Адаптивний дизайн */
+@media (max-width: 1200px) {
+  .schedule-grid,
+  .days-header {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .day-column:nth-child(n+4) {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidenav {
+    width: 70px;
+  }
+  
+  .nav-list mat-list-item span {
+    display: none;
+  }
+  
+  .nav-list mat-list-item mat-icon {
+    margin-right: 0;
+  }
+  
+  .schedule-grid,
+  .days-header {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .day-column:nth-child(n+3) {
+    display: none;
+  }
+  
+  .main-content {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .schedule-grid,
+  .days-header {
+    grid-template-columns: 1fr;
+  }
+  
+  .day-column:nth-child(n+2) {
+    display: none;
+  }
+}

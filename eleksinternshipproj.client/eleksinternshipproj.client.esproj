@@ -7,4 +7,23 @@
     <!-- Folder where production build objects will be placed -->
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist\eleksinternshipproj.client\browser\</BuildOutputFolder>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="src\app\core\guards\" />
+    <Folder Include="src\app\feature\calendar\services\" />
+    <Folder Include="src\app\feature\events\components\" />
+    <Folder Include="src\app\feature\events\services\" />
+    <Folder Include="src\app\feature\notes\components\" />
+    <Folder Include="src\app\feature\notes\services\" />
+    <Folder Include="src\app\feature\schedule\services\" />
+    <Folder Include="src\app\feature\spaces\components\" />
+    <Folder Include="src\app\feature\spaces\services\" />
+    <Folder Include="src\app\feature\statistics\components\" />
+    <Folder Include="src\app\feature\statistics\services\" />
+    <Folder Include="src\app\feature\profile\components\" />
+    <Folder Include="src\app\feature\profile\services\" />
+    <Folder Include="src\app\feature\settings\components\" />
+    <Folder Include="src\app\feature\settings\services\" />
+    <Folder Include="src\app\feature\tasks\components\" />
+    <Folder Include="src\app\feature\tasks\services\" />
+  </ItemGroup>
 </Project>

@@ -1,0 +1,83 @@
+<div class="schedule-container">
+  <mat-sidenav-container class="schedule-sidenav-container">
+
+    <mat-sidenav-content class="schedule-content">
+      <!-- Header with navigation -->
+      <div class="schedule-header">
+        <!-- <button mat-icon-button (click)="previousWeek()">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <span class="week-range">{{ getWeekDateRange() }}</span>
+        <button mat-icon-button (click)="nextWeek()">
+          <mat-icon>chevron_right</mat-icon>
+        </button> -->
+      </div>
+
+      <!-- Weekly schedule grid -->
+      <div class="schedule-grid">
+        <div class="day-column"
+             *ngFor="let day of schedule; let i = index"
+             [class.highlight-day]="day.day === 'Середа'">
+          <div class="day-header">
+            <h4>{{ day.day }}</h4>
+          </div>
+
+          <div class="day-events"
+               cdkDropList
+               [id]="'day-' + i"
+               [cdkDropListData]="day.events"
+               [cdkDropListConnectedTo]="connectedDropLists"
+               (cdkDropListDropped)="onEventDrop($event)">
+            <!-- Event cards -->
+            <mat-card class="event-card"
+                      *ngFor="let event of day.events; let j = index"
+                      cdkDrag
+                      [style.background-color]="event.color">
+              <div class="event-actions">
+                <button mat-icon-button size="small" (click)="editEvent(event)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button size="small" (click)="deleteEvent(i, j)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+
+              <mat-card-content>
+                <div class="event-time">{{ event.time }}</div>
+                <div class="event-title">{{ event.title }}</div>
+                <div class="event-description" *ngIf="event.description">
+                  {{ event.description }}
+                </div>
+              </mat-card-content>
+
+              <!-- Drag handle -->
+              <div class="drag-handle" cdkDragHandle>
+                <mat-icon>drag_indicator</mat-icon>
+              </div>
+            </mat-card>
+
+            <!-- Empty state -->
+            <div class="empty-state">
+              <button mat-button (click)="addEvent(i)" class="add-event-btn">
+                <mat-icon>add</mat-icon>
+                Додати подію
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="action-buttons">
+        <button mat-raised-button color="primary" (click)="cancelChanges()">
+          Скасувати
+        </button>
+        <button mat-raised-button color="accent" (click)="saveChanges()">
+          Застосувати
+        </button>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+

@@ -1,0 +1,43 @@
+<!-- calendar.component.html -->
+<div class="calendar-container">
+  <div class="calendar-section">
+    <div class="calendar-header">
+      <button class="nav-arrow left-arrow" (click)="previousMonth()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15,18 9,12 15,6"></polyline>
+        </svg>
+      </button>
+      <h2>{{ getCurrentMonthName() }} {{ currentYear }}</h2>
+      <button class="nav-arrow right-arrow" (click)="nextMonth()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9,18 15,12 9,6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <div class="calendar-grid">
+      <!-- Days of week header -->
+      <div class="day-header">Пн</div>
+      <div class="day-header">Вт</div>
+      <div class="day-header">Ср</div>
+      <div class="day-header">Чт</div>
+      <div class="day-header">Пт</div>
+      <div class="day-header">Сб</div>
+      <div class="day-header">Нд</div>
+
+      <!-- Calendar days -->
+      <div class="day-cell"
+           *ngFor="let day of calendarDays; let i = index"
+           [class.selected]="isSelectedDay(day)"
+           (click)="selectDay(day)">
+        {{ day || '' }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Calendar Form Section -->
+  <div class="form-section">
+    <app-calendar-form [selectedDate]="getSelectedDate()">
+    </app-calendar-form>
+  </div>
+</div>

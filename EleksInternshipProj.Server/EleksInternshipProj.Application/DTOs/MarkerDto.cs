@@ -10,6 +10,7 @@ namespace EleksInternshipProj.Application.DTOs
     {
         public long Id { get; set; }
         public string Name { get; set; } = null!;
+        public string Type { get; set; } = null!;
         public long SpaceId { get; set; }
     }
 
