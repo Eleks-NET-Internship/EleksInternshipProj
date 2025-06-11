@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 
 using EleksInternshipProj.Domain.Models;
+using TaskStatus = EleksInternshipProj.Domain.Models.TaskStatus;
 
 
 
@@ -103,10 +104,6 @@ namespace EleksInternshipProj.Infrastructure.Data
                       .HasColumnName("is_solo")
                       .IsRequired()
                       .HasDefaultValue(false);
-                entity.HasOne(e => e.Space)
-                     .WithMany(s => s.Events)
-                     .HasForeignKey(e => e.SpaceId)
-                     .OnDelete(DeleteBehavior.Cascade);
             });
 
 
