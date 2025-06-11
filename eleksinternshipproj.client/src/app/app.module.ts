@@ -15,7 +15,6 @@ import { EventEditFormComponent } from './feature/schedule/components/event-edit
 import { LoginComponent } from './feature/login/components/login/login.component';
 import { RegisterComponent } from './feature/register/components/register/register.component';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { WeatherForecastComponent } from './feature/weatherForecast/components/weather-forecast/weather-forecast.component';
 
 // Angular Material
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -36,6 +35,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ProfileComponent } from './feature/profile/components/profile/profile.component';
 
 
 
@@ -52,7 +52,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     EventEditFormComponent,
     LoginComponent,
     RegisterComponent,
-    WeatherForecastComponent
+    ProfileComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
