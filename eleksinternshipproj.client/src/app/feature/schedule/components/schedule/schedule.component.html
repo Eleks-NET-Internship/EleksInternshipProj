@@ -1,51 +1,48 @@
 <div class="schedule-container">
-  <div class="sidenav-container">
-    <app-sidebar></app-sidebar>
-    <!-- Main content -->
-    <div class="main-content">
-      <div class="edit-button">
-        <button mat-icon-button size="small" (click)="EditSchedule()">
-          <mat-icon>edit</mat-icon>
-        </button> 
-      </div>    
-      <!-- Days header -->
-      <div class="days-header">
-        <div class="day-column" *ngFor="let day of daysOfWeek">
-          <h3 class="day-title">{{ day }}</h3>
-        </div>
-      </div>
 
-      <!-- Schedule cards grid -->
-      <div class="schedule-grid">
-        
-        <!-- Monday column -->
-        <div class="day-column">
-          <mat-card 
-            *ngFor="let card of scheduleData.monday"
-            class="schedule-card"
-            [class.has-notification]="card.hasNotification"
-            (click)="onCardClick(card)">
-            
-            <!-- Red notification dot -->
-            <div *ngIf="card.hasNotification" class="notification-dot"></div>
-            
-            <mat-card-content>
-              <div class="card-time">{{ card.time }}</div>
-              <div class="card-title">{{ card.title }}</div>
-              <div *ngIf="card.description" class="card-description">
-                {{ card.description }}
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
-
-        <!-- Empty columns for other days -->
-        <div class="day-column" *ngFor="let day of [1,2,3,4]">
-          <!-- Тут можна додати інші карточки -->
-        </div>
-        
+  <!-- Main content -->
+  <div class="main-content">
+    <div class="edit-button">
+      <button mat-icon-button size="small" (click)="EditSchedule()">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+    <!-- Days header -->
+    <div class="days-header">
+      <div class="day-column" *ngFor="let day of daysOfWeek">
+        <h3 class="day-title">{{ day }}</h3>
       </div>
     </div>
-    
+
+    <!-- Schedule cards grid -->
+    <div class="schedule-grid">
+
+      <!-- Monday column -->
+      <div class="day-column">
+        <mat-card *ngFor="let card of scheduleData.monday"
+                  class="schedule-card"
+                  [class.has-notification]="card.hasNotification"
+                  (click)="onCardClick(card)">
+
+          <!-- Red notification dot -->
+          <div *ngIf="card.hasNotification" class="notification-dot"></div>
+
+          <mat-card-content>
+            <div class="card-time">{{ card.time }}</div>
+            <div class="card-title">{{ card.title }}</div>
+            <div *ngIf="card.description" class="card-description">
+              {{ card.description }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <!-- Empty columns for other days -->
+      <div class="day-column" *ngFor="let day of [1,2,3,4]">
+        <!-- Тут можна додати інші карточки -->
+      </div>
+
+    </div>
   </div>
+
 </div>

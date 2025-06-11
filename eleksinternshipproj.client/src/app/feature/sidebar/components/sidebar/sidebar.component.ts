@@ -17,7 +17,7 @@ export class SidebarComponent {
     { icon: 'event', label: 'Події' },
     { icon: 'bar_chart', label: 'Статистика' },
     { icon: 'person', label: 'Профіль', active: true },
-    { icon: 'settings', label: 'Налаштування' }
+    { icon: 'settings', label: 'Налаштування' },
   ];
 
   constructor(private router: Router) { }
@@ -50,7 +50,7 @@ export class SidebarComponent {
       }
 
       case 'Завдання': {
-        console.log('Завдання');
+        console.log('Завдання'); // same
         alert("Not implemented :(");
         break;
       }

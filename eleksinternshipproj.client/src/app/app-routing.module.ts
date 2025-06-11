@@ -8,19 +8,33 @@ import { CalendarComponent } from './feature/calendar/components/calendar/calend
 import { ScheduleComponent } from './feature/schedule/components/schedule/schedule.component';
 import { EditScheduleComponent } from './feature/schedule/components/edit-schedule/edit-schedule.component';
 import { ProfileComponent } from './feature/profile/components/profile/profile.component';
+import { MainLayoutComponent } from './shared/components/layouts/main-layout/main-layout.component';
+import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/auth-layout.component';
 
 const routes: Routes = [
-  { path: 'auth-callback', component: AuthCallbackComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
 
-  { path: 'calendar', component: CalendarComponent, canActivate: [authGuard] },
-  { path: 'schedule', component: ScheduleComponent, canActivate: [authGuard] },
-  { path: 'edit-schedule', component: EditScheduleComponent, canActivate: [authGuard] },
-  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  {
+    path: '',
+    component: AuthLayoutComponent,
+    children: [
+      { path: 'auth-callback', component: AuthCallbackComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
+    ]
+  },
 
-  { path: '', component: ProfileComponent, canActivate: [authGuard] },
-  { path: '**', redirectTo: '/' }
+  {
+    path: '',
+    component: MainLayoutComponent,
+    children: [
+      { path: 'calendar', component: CalendarComponent, canActivate: [authGuard] },
+      { path: 'schedule', component: ScheduleComponent, canActivate: [authGuard] },
+      { path: 'edit-schedule', component: EditScheduleComponent, canActivate: [authGuard] },
+      { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+    ]
+  },
+
+  { path: '**', redirectTo: '/profile' } // change to space selection page later
 ];
 
 @NgModule({

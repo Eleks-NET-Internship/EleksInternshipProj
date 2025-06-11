@@ -36,6 +36,7 @@ import { MatRippleModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ProfileComponent } from './feature/profile/components/profile/profile.component';
+import { SharedModule } from './shared/shared.module';
 
 
 
@@ -47,7 +48,6 @@ import { ProfileComponent } from './feature/profile/components/profile/profile.c
     CalendarComponent,
     CalendarFormComponent,
     ScheduleComponent,
-    SidebarComponent,
     EditScheduleComponent,
     EventEditFormComponent,
     LoginComponent,
@@ -57,6 +57,7 @@ import { ProfileComponent } from './feature/profile/components/profile/profile.c
   imports: [
     BrowserModule, HttpClientModule,
     AppRoutingModule,
+    SharedModule,
     // Material modules
     MatSidenavModule,
     MatListModule,
