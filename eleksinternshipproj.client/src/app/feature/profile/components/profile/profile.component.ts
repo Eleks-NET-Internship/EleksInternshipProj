@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ProfileService } from '../../services/profile.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ProfileDto, ProfileResponse } from '../../models/profile-models';
+import { ProfileDto, ProfileResponse, UpdateProfileDto } from '../../models/profile-models';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-profile',
@@ -13,7 +14,7 @@ export class ProfileComponent {
 
   email: string = "";
 
-  constructor(private fb: FormBuilder, private profileService: ProfileService) {
+  constructor(private fb: FormBuilder, private profileService: ProfileService, private snackBar: MatSnackBar) {
     this.profileForm = this.fb.group({
       username: ["", Validators.required],
       firstname: [""],
@@ -42,6 +43,27 @@ export class ProfileComponent {
   }
 
   onSave(): void {
-    // do nothing at all
+    const formValues = this.profileForm.value;
+
+    const userProfile: UpdateProfileDto = {
+      username: formValues.username.trim(),
+      firstName: formValues.firstname?.trim() || undefined,
+      lastName: formValues.lastname?.trim() || undefined,
+    };
+
+    this.profileService.updateProfile(userProfile).subscribe({
+      next: (response) => {
+        this.snackBar.open('Дані оновлено!', 'Закрити', {
+          duration: 5000,
+        });
+      },
+      error: (error) => {
+        console.error(error.error.message);
+        this.snackBar.open('Не вдалось оновити дані :(', 'Закрити', {
+          duration: 5000,
+          panelClass: ['snackbar-error']
+        });
+      }
+    });
   }
 }

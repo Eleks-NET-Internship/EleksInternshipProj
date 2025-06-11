@@ -30,7 +30,7 @@ export class LoginComponent {
       },
       error: (error) => {
         console.log(error.error.message);
-        this.snackBar.open('Невірна електронна пошта або пароль', 'Закрити', {
+        this.snackBar.open('Неправильна електронна пошта або пароль', 'Закрити', {
           duration: 5000,
           panelClass: ['snackbar-error']
         });
