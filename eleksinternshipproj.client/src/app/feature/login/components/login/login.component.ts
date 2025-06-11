@@ -26,7 +26,7 @@ export class LoginComponent {
     this.authService.login(this.loginPayload).subscribe({
       next: (response) => {
         this.authService.setToken(response.accessToken);
-        this.router.navigate(['/home']);
+        this.router.navigate(['/spaces']);
       },
       error: (error) => {
         console.log(error.error.message);

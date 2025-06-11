@@ -38,6 +38,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ProfileComponent } from './feature/profile/components/profile/profile.component';
 import { SharedModule } from './shared/shared.module';
 import { SettingsComponent } from './feature/settings/components/settings/settings.component';
+import { StatisticsComponent } from './feature/statistics/components/statistics/statistics.component';
+import { SpacesComponent } from './feature/spaces/components/spaces/spaces.component';
+import { NotesComponent } from './feature/notes/components/notes/notes.component';
+import { EventsComponent } from './feature/events/components/events/events.component';
+import { TasksComponent } from './feature/tasks/components/tasks/tasks.component';
 
 
 
@@ -54,7 +59,12 @@ import { SettingsComponent } from './feature/settings/components/settings/settin
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
-    SettingsComponent
+    SettingsComponent,
+    StatisticsComponent,
+    SpacesComponent,
+    NotesComponent,
+    EventsComponent,
+    TasksComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

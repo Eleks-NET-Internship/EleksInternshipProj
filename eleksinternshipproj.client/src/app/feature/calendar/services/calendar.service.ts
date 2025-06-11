@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class SettingsService {
+export class CalendarService {
   private readonly apiBaseUrl = 'https://localhost:7050';
 
   constructor(private readonly http: HttpClient) { }

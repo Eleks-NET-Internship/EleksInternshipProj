@@ -11,6 +11,11 @@ import { ProfileComponent } from './feature/profile/components/profile/profile.c
 import { MainLayoutComponent } from './shared/components/layouts/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/auth-layout.component';
 import { SettingsComponent } from './feature/settings/components/settings/settings.component';
+import { StatisticsComponent } from './feature/statistics/components/statistics/statistics.component';
+import { TasksComponent } from './feature/tasks/components/tasks/tasks.component';
+import { NotesComponent } from './feature/notes/components/notes/notes.component';
+import { EventsComponent } from './feature/events/components/events/events.component';
+import { SpacesComponent } from './feature/spaces/components/spaces/spaces.component';
 
 const routes: Routes = [
 
@@ -28,15 +33,20 @@ const routes: Routes = [
     path: '',
     component: MainLayoutComponent,
     children: [
+      { path: 'spaces', component: SpacesComponent, canActivate: [authGuard] },
       { path: 'calendar', component: CalendarComponent, canActivate: [authGuard] },
       { path: 'schedule', component: ScheduleComponent, canActivate: [authGuard] },
       { path: 'edit-schedule', component: EditScheduleComponent, canActivate: [authGuard] },
+      { path: 'tasks', component: TasksComponent, canActivate: [authGuard] },
+      { path: 'notes', component: NotesComponent, canActivate: [authGuard] },
+      { path: 'events', component: EventsComponent, canActivate: [authGuard] },
+      { path: 'statistics', component: StatisticsComponent, canActivate: [authGuard] },
       { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
       { path: 'settings', component: SettingsComponent, canActivate: [authGuard] }
     ]
   },
 
-  { path: '**', redirectTo: '/profile' } // change to space selection page later
+  { path: '**', redirectTo: '/spaces' }
 ];
 
 @NgModule({
