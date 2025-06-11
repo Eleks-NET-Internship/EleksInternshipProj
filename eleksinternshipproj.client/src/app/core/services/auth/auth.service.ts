@@ -34,6 +34,6 @@ export class AuthService {
   }
 
   loginWithGoogle() {
-    window.location.href = `${this.apiBaseUrl}/api/auth/login/google?returnUrl=/forecast`;
+    window.location.href = `${this.apiBaseUrl}/api/auth/login/google?returnUrl=/spaces`;
   }
 }

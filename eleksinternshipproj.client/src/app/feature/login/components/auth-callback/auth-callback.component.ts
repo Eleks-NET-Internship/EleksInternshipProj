@@ -18,7 +18,7 @@ export class AuthCallbackComponent {
     this.route.queryParams.subscribe({
       next: (params) => {
         const token = params['accessToken'];
-        const returnUrl = params['returnUrl'] || '/home';
+        const returnUrl = params['returnUrl'] || '/spaces';
 
         if (token) {
           this.auth.setToken(token);

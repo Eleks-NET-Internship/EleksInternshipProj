@@ -8,7 +8,6 @@ import { ProfileDto, ProfileResponse, UpdateProfileDto } from '../models/profile
 })
 export class ProfileService {
   private readonly apiBaseUrl = 'https://localhost:7050';
-  private readonly TOKEN_KEY = 'access_token';
 
   constructor(private readonly http: HttpClient) { }
 
