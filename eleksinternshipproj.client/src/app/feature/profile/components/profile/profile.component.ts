@@ -53,13 +53,13 @@ export class ProfileComponent {
 
     this.profileService.updateProfile(userProfile).subscribe({
       next: (response) => {
-        this.snackBar.open('��� ��������!', '�������', {
+        this.snackBar.open('Дані оновлено!', 'Закрити', {
           duration: 5000,
         });
       },
       error: (error) => {
         console.error(error.error.message);
-        this.snackBar.open('�� ������� ������� ��� :(', '�������', {
+        this.snackBar.open('Не вдалось оновити дані :(', 'Закрити', {
           duration: 5000,
           panelClass: ['snackbar-error']
         });
