@@ -16,6 +16,7 @@ import { TasksComponent } from './feature/tasks/components/tasks/tasks.component
 import { NotesComponent } from './feature/notes/components/notes/notes.component';
 import { EventsComponent } from './feature/events/components/events/events.component';
 import { SpacesComponent } from './feature/spaces/components/spaces/spaces.component';
+import { EventDetailComponent } from './feature/events/components/event-detail/event-detail.component';
 
 const routes: Routes = [
 
@@ -42,6 +43,7 @@ const routes: Routes = [
       { path: 'tasks', component: TasksComponent, canActivate: [authGuard] },
       { path: 'notes', component: NotesComponent, canActivate: [authGuard] },
       { path: 'events', component: EventsComponent, canActivate: [authGuard] },
+      { path: 'event/:id', component: EventDetailComponent, canActivate: [authGuard] },
       { path: 'statistics', component: StatisticsComponent, canActivate: [authGuard] },
       { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
       { path: 'settings', component: SettingsComponent, canActivate: [authGuard] }

@@ -3,6 +3,7 @@ using System;
 using EleksInternshipProj.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EleksInternshipProj.Infrastructure.Migrations
 {
     [DbContext(typeof(NavchaykoDbContext))]
-    partial class NavchaykoDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250607110157_AddUserFields")]
+    partial class AddUserFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,7 +104,7 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                     b.ToTable("event_marker", "public");
                 });
 
-            modelBuilder.Entity("EleksInternshipProj.Domain.Models.EventMarker", b =>
+            modelBuilder.Entity("EleksInternshipProj.Domain.Models.EventTimetableDay", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -579,8 +582,8 @@ namespace EleksInternshipProj.Infrastructure.Migrations
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.Timetable", b =>
                 {
                     b.HasOne("EleksInternshipProj.Domain.Models.Space", "Space")
-                        .WithOne("Timetable")
-                        .HasForeignKey("EleksInternshipProj.Domain.Models.Timetable", "SpaceId")
+                        .WithMany("Timetables")
+                        .HasForeignKey("SpaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -43,7 +43,9 @@ import { SpacesComponent } from './feature/spaces/components/spaces/spaces.compo
 import { NotesComponent } from './feature/notes/components/notes/notes.component';
 import { EventsComponent } from './feature/events/components/events/events.component';
 import { TasksComponent } from './feature/tasks/components/tasks/tasks.component';
-
+import { AddEventDialogComponent } from './feature/events/components/add-event-dialog/add-event-dialog.component';
+import { EventDetailComponent } from './feature/events/components/event-detail/event-detail.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
@@ -64,7 +66,9 @@ import { TasksComponent } from './feature/tasks/components/tasks/tasks.component
     SpacesComponent,
     NotesComponent,
     EventsComponent,
-    TasksComponent
+    TasksComponent,
+    AddEventDialogComponent,
+    EventDetailComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
@@ -90,6 +94,7 @@ import { TasksComponent } from './feature/tasks/components/tasks/tasks.component
     MatRippleModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatProgressSpinnerModule,
     // CDK Modules
     DragDropModule,
 ],
