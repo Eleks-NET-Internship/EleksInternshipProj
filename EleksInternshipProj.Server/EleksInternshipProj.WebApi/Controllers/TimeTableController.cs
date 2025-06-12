@@ -1,12 +1,14 @@
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Mappers;
 using EleksInternshipProj.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EleksInternshipProj.WebApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class TimeTableController : ControllerBase
 {
     private readonly ITimetableService _timetableService;
