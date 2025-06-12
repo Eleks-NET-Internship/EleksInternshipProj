@@ -43,6 +43,7 @@ import { SpacesComponent } from './feature/spaces/components/spaces/spaces.compo
 import { NotesComponent } from './feature/notes/components/notes/notes.component';
 import { EventsComponent } from './feature/events/components/events/events.component';
 import { TasksComponent } from './feature/tasks/components/tasks/tasks.component';
+import { AddEventDialogComponent } from './feature/events/components/add-event-dialog/add-event-dialog.component';
 
 
 
@@ -64,7 +65,8 @@ import { TasksComponent } from './feature/tasks/components/tasks/tasks.component
     SpacesComponent,
     NotesComponent,
     EventsComponent,
-    TasksComponent
+    TasksComponent,
+    AddEventDialogComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

@@ -1,50 +1,41 @@
-<div class="list-container">
+<div class="main-wrapper">
   <div class="header-icons">
-    <mat-icon class="add-icon">add_circle_outline</mat-icon>
+    <mat-icon class="add-icon" (click)="addEvent()">add_circle_outline</mat-icon>
   </div>
 
-  <mat-card class="list-item">
-    <div class="card-content">
-      <span class="card-title">Сховища даних</span>
-      <button mat-icon-button class="more-options">
-        <mat-icon>more_horiz</mat-icon>
-      </button>
+  <div class="list-container">
+    <!-- Якщо подій немає -->
+    <div *ngIf="events.length === 0" class="empty-message">
+      Додайте свою першу подію
     </div>
-  </mat-card>
 
-  <mat-card class="list-item">
-    <div class="card-content">
-      <span class="card-title">Хмарні обчислення</span>
-      <button mat-icon-button class="more-options">
-        <mat-icon>more_horiz</mat-icon>
-      </button>
-    </div>
-  </mat-card>
+    <!-- Якщо події є -->
+    <mat-card class="list-item" *ngFor="let event of events">
+      <div class="card-content">
+        <span class="card-title">{{ event.name }}</span>
 
-  <mat-card class="list-item">
-    <div class="card-content">
-      <span class="card-title">Основи безпеки життєдіяльності та безпеки праці</span>
-      <button mat-icon-button class="more-options">
-        <mat-icon>more_horiz</mat-icon>
-      </button>
-    </div>
-  </mat-card>
+        <!-- Меню кнопка -->
+        <button
+          mat-icon-button
+          class="more-options"
+          [matMenuTriggerFor]="menu"
+          (click)="selectedEvent = event"
+        >
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+      </div>
+    </mat-card>
 
-  <mat-card class="list-item">
-    <div class="card-content">
-      <span class="card-title">Бази даних (Курсова робота)</span>
-      <button mat-icon-button class="more-options">
-        <mat-icon>more_horiz</mat-icon>
+    <!-- Меню -->
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="editEvent()">
+        <mat-icon>edit</mat-icon>
+        <span>Редагувати</span>
       </button>
-    </div>
-  </mat-card>
-
-  <mat-card class="list-item">
-    <div class="card-content">
-      <span class="card-title">Навчально-технологічна практика</span>
-      <button mat-icon-button class="more-options">
-        <mat-icon>more_horiz</mat-icon>
+      <button mat-menu-item (click)="deleteEvent()">
+        <mat-icon>delete</mat-icon>
+        <span>Видалити</span>
       </button>
-    </div>
-  </mat-card>
+    </mat-menu>
+  </div>
 </div>
