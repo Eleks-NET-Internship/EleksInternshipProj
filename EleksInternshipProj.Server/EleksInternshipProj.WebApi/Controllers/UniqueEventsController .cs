@@ -3,12 +3,14 @@ using System.Threading.Tasks;
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
 using EleksInternshipProj.Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EleksInternshipProj.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class UniqueEventsController : ControllerBase
     {
         private readonly ISoloEventService _soloEventService;

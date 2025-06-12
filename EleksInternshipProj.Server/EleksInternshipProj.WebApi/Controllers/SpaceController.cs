@@ -1,5 +1,6 @@
 ﻿using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -7,6 +8,7 @@ namespace EleksInternshipProj.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class SpaceController : ControllerBase
     {
         private readonly ISpaceService _spaceService;
