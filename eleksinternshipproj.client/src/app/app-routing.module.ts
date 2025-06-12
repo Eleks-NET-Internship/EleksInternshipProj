@@ -19,6 +19,8 @@ import { SpacesComponent } from './feature/spaces/components/spaces/spaces.compo
 
 const routes: Routes = [
 
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+
   {
     path: '',
     component: AuthLayoutComponent,
