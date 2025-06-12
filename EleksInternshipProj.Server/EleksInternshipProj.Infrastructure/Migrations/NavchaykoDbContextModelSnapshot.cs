@@ -38,7 +38,13 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                         .HasColumnType("character varying(50)")
                         .HasColumnName("day_name");
 
+                    b.Property<long>("TimetableId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("timetable_id");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TimetableId");
 
                     b.ToTable("day", "public");
                 });
@@ -75,6 +81,40 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                     b.ToTable("event", "public");
                 });
 
+            modelBuilder.Entity("EleksInternshipProj.Domain.Models.EventDay", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("DayId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("day_id");
+
+                    b.Property<TimeOnly>("EndTime")
+                        .HasColumnType("time without time zone")
+                        .HasColumnName("end_time");
+
+                    b.Property<long>("EventId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("event_id");
+
+                    b.Property<TimeOnly>("StartTime")
+                        .HasColumnType("time without time zone")
+                        .HasColumnName("start_time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DayId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("event_day", "public");
+                });
+
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.EventMarker", b =>
                 {
                     b.Property<long>("Id")
@@ -99,40 +139,6 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                     b.HasIndex("MarkerId");
 
                     b.ToTable("event_marker", "public");
-                });
-
-            modelBuilder.Entity("EleksInternshipProj.Domain.Models.EventMarker", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<TimeOnly>("EndTime")
-                        .HasColumnType("time without time zone")
-                        .HasColumnName("end_time");
-
-                    b.Property<long>("EventId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("event_id");
-
-                    b.Property<TimeOnly>("StartTime")
-                        .HasColumnType("time without time zone")
-                        .HasColumnName("start_time");
-
-                    b.Property<long>("TimetableDayId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("timetable_day_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("TimetableDayId");
-
-                    b.ToTable("event_timetable_day", "public");
                 });
 
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.Marker", b =>
@@ -341,47 +347,16 @@ namespace EleksInternshipProj.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("name");
-
                     b.Property<long>("SpaceId")
                         .HasColumnType("bigint")
                         .HasColumnName("space_id");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SpaceId");
+                    b.HasIndex("SpaceId")
+                        .IsUnique();
 
                     b.ToTable("timetable", "public");
-                });
-
-            modelBuilder.Entity("EleksInternshipProj.Domain.Models.TimetableDay", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("DayId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("day_id");
-
-                    b.Property<long>("TimetableId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("timetable_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DayId");
-
-                    b.HasIndex("TimetableId");
-
-                    b.ToTable("timetable_day", "public");
                 });
 
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.User", b =>
@@ -393,43 +368,50 @@ namespace EleksInternshipProj.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<string>("AuthProvider")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("auth_provider");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("email");
 
+                    b.Property<string>("ExternalId")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("external_id");
+
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("first_name");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("last_name");
 
                     b.Property<byte[]>("PasswordHash")
-                        .IsRequired()
                         .HasColumnType("bytea")
                         .HasColumnName("password_hash");
 
                     b.Property<byte[]>("PasswordSalt")
-                        .IsRequired()
                         .HasColumnType("bytea")
                         .HasColumnName("password_salt");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
-                        .HasColumnName("user_name");
+                        .HasColumnName("username");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Email")
+                    b.HasIndex("Email", "AuthProvider")
                         .IsUnique();
 
                     b.ToTable("user", "public");
@@ -468,15 +450,45 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                     b.ToTable("user_space", "public");
                 });
 
+            modelBuilder.Entity("EleksInternshipProj.Domain.Models.Day", b =>
+                {
+                    b.HasOne("EleksInternshipProj.Domain.Models.Timetable", "Timetable")
+                        .WithMany("Days")
+                        .HasForeignKey("TimetableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Timetable");
+                });
+
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.Event", b =>
                 {
                     b.HasOne("EleksInternshipProj.Domain.Models.Space", "Space")
-                        .WithMany("Events")
+                        .WithMany()
                         .HasForeignKey("SpaceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Space");
+                });
+
+            modelBuilder.Entity("EleksInternshipProj.Domain.Models.EventDay", b =>
+                {
+                    b.HasOne("EleksInternshipProj.Domain.Models.Day", "Day")
+                        .WithMany("EventDays")
+                        .HasForeignKey("DayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EleksInternshipProj.Domain.Models.Event", "Event")
+                        .WithMany("EventDays")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Day");
+
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.EventMarker", b =>
@@ -496,25 +508,6 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                     b.Navigation("Event");
 
                     b.Navigation("Marker");
-                });
-
-            modelBuilder.Entity("EleksInternshipProj.Domain.Models.EventTimetableDay", b =>
-                {
-                    b.HasOne("EleksInternshipProj.Domain.Models.Event", "Event")
-                        .WithMany("EventTimetableDays")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EleksInternshipProj.Domain.Models.TimetableDay", "TimetableDay")
-                        .WithMany("EventTimetableDays")
-                        .HasForeignKey("TimetableDayId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Event");
-
-                    b.Navigation("TimetableDay");
                 });
 
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.Marker", b =>
@@ -580,25 +573,6 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                     b.Navigation("Space");
                 });
 
-            modelBuilder.Entity("EleksInternshipProj.Domain.Models.TimetableDay", b =>
-                {
-                    b.HasOne("EleksInternshipProj.Domain.Models.Day", "Day")
-                        .WithMany("TimetableDays")
-                        .HasForeignKey("DayId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EleksInternshipProj.Domain.Models.Timetable", "Timetable")
-                        .WithMany("TimetableDays")
-                        .HasForeignKey("TimetableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Day");
-
-                    b.Navigation("Timetable");
-                });
-
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.UserSpace", b =>
                 {
                     b.HasOne("EleksInternshipProj.Domain.Models.Role", "Role")
@@ -628,14 +602,14 @@ namespace EleksInternshipProj.Infrastructure.Migrations
 
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.Day", b =>
                 {
-                    b.Navigation("TimetableDays");
+                    b.Navigation("EventDays");
                 });
 
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.Event", b =>
                 {
-                    b.Navigation("EventMarkers");
+                    b.Navigation("EventDays");
 
-                    b.Navigation("EventTimetableDays");
+                    b.Navigation("EventMarkers");
 
                     b.Navigation("Notes");
 
@@ -656,11 +630,10 @@ namespace EleksInternshipProj.Infrastructure.Migrations
 
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.Space", b =>
                 {
-                    b.Navigation("Events");
-
                     b.Navigation("Markers");
 
-                    b.Navigation("Timetables");
+                    b.Navigation("Timetable")
+                        .IsRequired();
 
                     b.Navigation("UserSpaces");
                 });
@@ -672,12 +645,7 @@ namespace EleksInternshipProj.Infrastructure.Migrations
 
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.Timetable", b =>
                 {
-                    b.Navigation("TimetableDays");
-                });
-
-            modelBuilder.Entity("EleksInternshipProj.Domain.Models.TimetableDay", b =>
-                {
-                    b.Navigation("EventTimetableDays");
+                    b.Navigation("Days");
                 });
 
             modelBuilder.Entity("EleksInternshipProj.Domain.Models.User", b =>
