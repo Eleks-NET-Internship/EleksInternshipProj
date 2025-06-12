@@ -10,7 +10,7 @@ namespace EleksInternshipProj.Application.Services.Imp
 
         private const int Iterations = 100_000;
 
-        private static readonly HashAlgorithmName HashAlgorithm = HashAlgorithmName.SHA3_256;
+        private static readonly HashAlgorithmName HashAlgorithm = HashAlgorithmName.SHA256;
 
         public (byte[] hash, byte[] salt) HashPassword(string password)
         {
