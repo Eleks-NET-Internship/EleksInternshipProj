@@ -1,0 +1,60 @@
+.event-detail-wrapper {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;   
+  padding: 20px;       
+  box-sizing: border-box; 
+  width: 75vw;          
+  margin-left: 7%;
+}
+
+.event-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px; 
+  text-align: center;
+}
+
+.content-blocks-container {
+  display: flex;
+  justify-content: center; 
+  gap: 20px; 
+  width: 100vw; 
+  max-width: 1200px; 
+}
+
+.content-block {
+  flex: 1; 
+  min-width: 300px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  border-radius: 8px; 
+}
+
+
+.card-header {
+  background-color: #ba6b6b; 
+  color: white;
+  padding: 16px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.header-title-center {
+  width: 100%;
+  text-align: center;
+}
+
+
+
+/* Адаптивність для менших екранів */
+@media (max-width: 768px) {
+  .content-blocks-container {
+    flex-direction: column; 
+    align-items: center; 
+  }
+
+  .content-block {
+    width: 90%; 
+    max-width: 500px; 
+  }
+}

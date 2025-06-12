@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EventsService } from '../../services/events.service';
 import { CreateEventDto, EventDto } from '../../models/events-models';
 import { map } from 'rxjs';
+import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
 
@@ -18,7 +19,8 @@ export class EventsComponent implements OnInit {
 
   constructor(
     private eventsService: EventsService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+     private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -103,5 +105,9 @@ export class EventsComponent implements OnInit {
         console.error('Помилка при видаленні події:', err);
       }
     });
+  }
+
+  goToEvent(event: EventDto): void {
+    this.router.navigate(['/event', event.id]);
   }
 }

@@ -10,7 +10,7 @@
     </div>
 
     <!-- Якщо події є -->
-    <mat-card class="list-item" *ngFor="let event of events">
+    <mat-card class="list-item" *ngFor="let event of events" (click)="goToEvent(event)" style="cursor: pointer;">
       <div class="card-content">
         <span class="card-title">{{ event.name }}</span>
 
@@ -19,7 +19,7 @@
           mat-icon-button
           class="more-options"
           [matMenuTriggerFor]="menu"
-          (click)="selectedEvent = event"
+          (click)="selectedEvent = event; $event.stopPropagation()"
         >
           <mat-icon>more_horiz</mat-icon>
         </button>
