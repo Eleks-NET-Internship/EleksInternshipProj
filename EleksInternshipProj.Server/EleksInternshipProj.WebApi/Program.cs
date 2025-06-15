@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using EleksInternshipProj.Infrastructure.Data;
 using EleksInternshipProj.WebApi.Extensions;
 
-namespace EleksInternshipProj.Server
+namespace EleksInternshipProj.WebApi
 {
     public class Program
     {
