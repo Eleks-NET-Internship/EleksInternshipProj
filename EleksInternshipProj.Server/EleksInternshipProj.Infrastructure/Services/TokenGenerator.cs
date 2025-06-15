@@ -1,11 +1,12 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using EleksInternshipProj.Application.Services;
 using EleksInternshipProj.Infrastructure.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace EleksInternshipProj.Application.Services.Imp
+namespace EleksInternshipProj.Infrastructure.Services
 {
     public class TokenGenerator : ITokenGenerator
     {

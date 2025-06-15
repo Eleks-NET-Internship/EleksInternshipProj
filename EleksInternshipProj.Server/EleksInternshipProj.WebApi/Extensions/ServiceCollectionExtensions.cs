@@ -10,6 +10,7 @@ using EleksInternshipProj.Application.Services;
 using EleksInternshipProj.Application.Services.Imp;
 using EleksInternshipProj.Infrastructure.Repositories;
 using EleksInternshipProj.Infrastructure.Extensions;
+using EleksInternshipProj.Infrastructure.Services;
 
 namespace EleksInternshipProj.WebApi.Extensions
 {
