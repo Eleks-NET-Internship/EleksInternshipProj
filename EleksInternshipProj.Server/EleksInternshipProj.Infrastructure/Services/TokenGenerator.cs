@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-
+using EleksInternshipProj.Infrastructure.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -17,9 +17,9 @@ namespace EleksInternshipProj.Application.Services.Imp
 
         public TokenGenerator(IConfiguration configuration)
         {
-            _secret = configuration.GetSection("Jwt")["Secret"];
-            _issuer = configuration.GetSection("Jwt")["Issuer"];
-            _audience = configuration.GetSection("Jwt")["Audience"];
+            _secret = configuration.GetRequiredConfig("Jwt", "Secret");
+            _issuer = configuration.GetRequiredConfig("Jwt", "Issuer");
+            _audience = configuration.GetRequiredConfig("Jwt", "Audience");
         }
 
         public string GenerateToken(long userId, string email)
