@@ -33,7 +33,7 @@ namespace EleksInternshipProj.Infrastructure.Repositories
                 {
                     SpaceId = space.Id,
                     UserId = userId,
-                    RoleId = 0 // default role
+                    RoleId = 1
                 };
 
                 await _context.UserSpaces.AddAsync(userSpace);
@@ -63,13 +63,11 @@ namespace EleksInternshipProj.Infrastructure.Repositories
                 {
                     SpaceId = space.Id,
                     UserId = userId,
-                    RoleId = 0 // default role
+                    RoleId = 2
                 };
 
                 await _context.UserSpaces.AddAsync(userSpace);
                 await _context.SaveChangesAsync();
-
-                _logger.LogInformation($"Space with ID = {space.Id} successfully got a new User with ID = {userId}");
 
                 await transaction.CommitAsync();
 
@@ -115,9 +113,6 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             _logger.LogInformation($"Searching for Space with ID: {id}");
 
             var space = await _context.Spaces
-                .Include(s => s.UserSpaces)
-                .Include(s => s.Markers)
-                .Include(s => s.Timetable)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (space == null)
@@ -135,9 +130,6 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             var spaces = await _context.UserSpaces
                 .Where(us => us.UserId == userId)
                 .Select(us => us.Space)
-                .Include(s => s.UserSpaces)
-                .Include(s => s.Markers)
-                .Include(s => s.Timetable)
                 .ToListAsync();
 
             _logger.LogInformation($"Found {spaces.Count} Space(s) for User ID = {userId}");

@@ -18,7 +18,6 @@ namespace EleksInternshipProj.Application.Services.Imp
         {
             var space = new Space
             {
-                Id = 0,
                 Name = name
             };
             return await _spaceRepository.AddAsync(space, userId);

@@ -45,7 +45,7 @@ namespace EleksInternshipProj.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("addToSpace")]
+        [Route("add-to-space")]
         public async Task<IActionResult> AddToSpace(long spaceId, string userName)
         {
             var result = await _spaceService.AddUserToSpaceAsync(spaceId, userName);
