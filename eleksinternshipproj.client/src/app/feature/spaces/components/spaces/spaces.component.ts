@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { SpacesService } from '../../services/spaces.service';
 import { SpaceDto } from '../../models/spaces-models';
 
 @Component({
   selector: 'app-spaces',
   templateUrl: './spaces.component.html',
-  styleUrls: ['./spaces.component.scss']
+  styleUrls: ['./spaces.component.css'] // або .scss
 })
 export class SpacesComponent implements OnInit {
   spaces: SpaceDto[] = [];
   showAddMenu: boolean = false;
+
+  @ViewChild('addMenuWrapper') addMenuWrapper!: ElementRef;
 
   constructor(private spacesService: SpacesService) {}
 
@@ -32,6 +34,14 @@ export class SpacesComponent implements OnInit {
     this.showAddMenu = !this.showAddMenu;
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (this.showAddMenu && this.addMenuWrapper && !this.addMenuWrapper.nativeElement.contains(target)) {
+      this.showAddMenu = false;
+    }
+  }
+
   createSpace(): void {
     const name = prompt('Введіть назву простору:');
     if (name && name.trim()) {
@@ -48,7 +58,9 @@ export class SpacesComponent implements OnInit {
   }
 
   renameSpace(space: SpaceDto): void {
-    if (space.name && space.name.trim()) {
+    const newName = prompt('Нова назва:', space.name);
+    if (newName && newName.trim()) {
+      space.name = newName.trim();
       this.spacesService.renameSpace(space).subscribe({
         next: (updatedSpace) => {
           space.name = updatedSpace.name;

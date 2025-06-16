@@ -4,8 +4,9 @@
     <div class="header-title">Мої простори</div>
 
     <div class="header-actions">
-      <div class="add-space-wrapper" (mouseleave)="showAddMenu = false">
-        <button class="add-space-btn" (click)="toggleAddMenu()">+ Додати простір</button>
+      <div class="add-space-wrapper" #addMenuWrapper>
+      <button class="add-space-btn" (click)="toggleAddMenu()">+ Додати простір</button>
+
         <div class="add-dropdown" *ngIf="showAddMenu">
           <button class="dropdown-item" (click)="createSpace()">Створити власний</button>
           <button class="dropdown-item" disabled title="Незабаром">Приєднатись до існуючого</button>
@@ -17,7 +18,7 @@
   <!-- Divider -->
   <div class="space-divider"></div>
 
-  <!-- Content -->
+  <!-- Main content -->
   <div class="space-content">
     <div *ngIf="spaces.length === 0" class="empty-message">Пусто</div>
 
