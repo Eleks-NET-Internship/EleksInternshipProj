@@ -3,6 +3,7 @@ using EleksInternshipProj.Application.Services;
 using EleksInternshipProj.Domain.Abstractions;
 using EleksInternshipProj.Domain.Models;
 using EleksInternshipProj.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -10,6 +11,7 @@ namespace EleksInternshipProj.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class SpaceController : ControllerBase
     {
         private readonly ISpaceService _spaceService;

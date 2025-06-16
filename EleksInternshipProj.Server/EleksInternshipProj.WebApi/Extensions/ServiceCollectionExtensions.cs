@@ -9,6 +9,8 @@ using EleksInternshipProj.Domain.Abstractions;
 using EleksInternshipProj.Application.Services;
 using EleksInternshipProj.Application.Services.Imp;
 using EleksInternshipProj.Infrastructure.Repositories;
+using EleksInternshipProj.Infrastructure.Extensions;
+using EleksInternshipProj.Infrastructure.Services;
 
 namespace EleksInternshipProj.WebApi.Extensions
 {
@@ -45,12 +47,12 @@ namespace EleksInternshipProj.WebApi.Extensions
 
         public static IServiceCollection ConfigureAuth(this IServiceCollection services, IConfiguration configuration)
         {
-            string googleClientId = configuration.GetSection("Google")["ClientId"] ?? throw new ArgumentNullException("Google:ClientId");
-            string googleClientSecret = configuration.GetSection("Google")["ClientSecret"] ?? throw new ArgumentNullException("Google:ClientSecret");
+            string googleClientId = configuration.GetRequiredConfig("Google", "ClientId");
+            string googleClientSecret = configuration.GetRequiredConfig("Google", "ClientSecret");
 
-            string jwtIssuer = configuration.GetSection("Jwt")["Issuer"] ?? throw new ArgumentNullException("Jwt:Issuer");
-            string jwtAudience = configuration.GetSection("Jwt")["Audience"] ?? throw new ArgumentNullException("Jwt:Audience");
-            string jwtSecret = configuration.GetSection("Jwt")["Secret"] ?? throw new ArgumentNullException("Jwt:Secret");
+            string jwtIssuer = configuration.GetRequiredConfig("Jwt", "Issuer");
+            string jwtAudience = configuration.GetRequiredConfig("Jwt", "Audience");
+            string jwtSecret = configuration.GetRequiredConfig("Jwt", "Secret");
 
             services.AddAuthorization();
             services.AddAuthentication(options =>

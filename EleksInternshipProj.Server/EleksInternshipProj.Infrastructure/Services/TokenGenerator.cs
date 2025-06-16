@@ -5,7 +5,10 @@ using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace EleksInternshipProj.Application.Services.Imp
+using EleksInternshipProj.Application.Services;
+using EleksInternshipProj.Infrastructure.Extensions;
+
+namespace EleksInternshipProj.Infrastructure.Services
 {
     public class TokenGenerator : ITokenGenerator
     {
@@ -17,9 +20,9 @@ namespace EleksInternshipProj.Application.Services.Imp
 
         public TokenGenerator(IConfiguration configuration)
         {
-            _secret = configuration.GetSection("Jwt")["Secret"];
-            _issuer = configuration.GetSection("Jwt")["Issuer"];
-            _audience = configuration.GetSection("Jwt")["Audience"];
+            _secret = configuration.GetRequiredConfig("Jwt", "Secret");
+            _issuer = configuration.GetRequiredConfig("Jwt", "Issuer");
+            _audience = configuration.GetRequiredConfig("Jwt", "Audience");
         }
 
         public string GenerateToken(long userId, string email)

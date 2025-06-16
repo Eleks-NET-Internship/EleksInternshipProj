@@ -1,20 +1,33 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { CreateEventDto, EventDto, UpdateEventDto } from '../models/events-models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventsService {
-  private readonly apiBaseUrl = 'https://localhost:7050';
+  private readonly apiBaseUrl = 'https://localhost:7050/api/RoutineEvents';
 
   constructor(private readonly http: HttpClient) { }
-  // switch any for model type
-  updateStuff(newData: any) {
-    return this.http.patch(`${this.apiBaseUrl}/api/...`, newData);
+
+  getAll(spaceId: number): Observable<{ data: EventDto[] }> {
+    return this.http.get<{ data: EventDto[] }>(`${this.apiBaseUrl}/all/${spaceId}`);
   }
 
-  getStuff(): Observable<any> {
-    return this.http.get(`${this.apiBaseUrl}/api/...`);
+  getById(id: number): Observable<{ data: EventDto }> {
+    return this.http.get<{ data: EventDto }>(`${this.apiBaseUrl}/${id}`);
+  }
+
+  create(dto: CreateEventDto): Observable<{ message: string; data: number }> {
+    return this.http.post<{ message: string; data: number }>(`${this.apiBaseUrl}`, dto);
+  }
+
+  update(id: number, dto: UpdateEventDto): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(`${this.apiBaseUrl}/update/${id}`, dto);
+  }
+
+  delete(id: number): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiBaseUrl}/${id}`);
   }
 }
