@@ -4,40 +4,37 @@
     <!-- СЬОГОДНІ -->
     <div class="display-section">
       <h3 class="section-title">{{ getDisplayTitle() }}</h3>
-      <div class="display-group">
-        <div class="display-field">{{ todayTasks.task1 || 'тралалейлотралала' }}</div>
-      </div>
-      <div class="display-group">
-        <div class="display-field">{{ todayTasks.task2 || 'пумпурумпумпум' }}</div>
-      </div>
+      @for (task of todayTasks; track task.id) {
+        <div class="display-group">
+          <div class="display-field">{{ task.name }}</div>
+        </div>
+      } @empty {
+        <div class="display-group">Завдань немає</div>
+      }
     </div>
 
     <!-- ЗАВТРА -->
     <div class="display-section">
       <h3 class="section-title">ЗАВТРА</h3>
-      <div class="display-group">
-        <div class="display-field">{{ tomorrowTasks.task1 || 'лалалалала' }}</div>
-      </div>
+      @for (task of tomorrowTasks; track task.id) {
+        <div class="display-group">
+          <div class="display-field">{{ task.name }}</div>
+        </div>
+      } @empty {
+        <div class="display-group">Завдань немає</div>
+      }
     </div>
 
     <!-- ТИЖДЕНЬ -->
     <div class="display-section">
       <h3 class="section-title">ТИЖДЕНЬ</h3>
-      <div class="display-group">
-        <div class="display-field">{{ weekTasks.task1 || 'тралалейлотралала' }}</div>
-      </div>
-      <div class="display-group">
-        <div class="display-field">{{ weekTasks.task2 || 'пумпурумпумпум' }}</div>
-      </div>
-      <div class="display-group">
-        <div class="display-field">{{ weekTasks.task3 || 'лалалалала' }}</div>
-      </div>
-      <div class="display-group">
-        <div class="display-field">{{ weekTasks.task4 || 'тактовоттактоарешилла' }}</div>
-      </div>
-      <div class="display-group">
-        <div class="display-field">{{ weekTasks.task5 || 'саміпосудите' }}</div>
-      </div>
+      @for (task of weekTasks; track task.id) {
+        <div class="display-group">
+          <div class="display-field">{{ task.name }}</div>
+        </div>
+      } @empty {
+        <div class="display-group">Завдань немає</div>
+      }
     </div>
   </ng-container>
 
@@ -46,26 +43,25 @@
     <!-- ПОДІЇ -->
     <div class="display-section">
       <h3 class="section-title">ПОДІЇ</h3>
-      <div class="display-group">
-        <div class="display-field">{{ weekTasks.task1 || 'тралалейлотралала' }}</div>
-      </div>
-      <div class="display-group">
-        <div class="display-field">{{ weekTasks.task2 || 'пумпурумпумпум' }}</div>
-      </div>
-      <div class="display-group">
-        <div class="display-field">{{ weekTasks.task3 || 'лалалалала' }}</div>
-      </div>
+      @for (event of events; track $index) {
+        <div class="display-group">
+          <div class="display-field">{{ event }}</div>
+        </div>
+      } @empty {
+        <div class="display-group">Подій немає</div>
+      }
     </div>
 
     <!-- ЗАВДАННЯ -->
     <div class="display-section">
       <h3 class="section-title">ЗАВДАННЯ</h3>
-      <div class="display-group">
-        <div class="display-field">{{ weekTasks.task1 || 'тралалейлотралала' }}</div>
-      </div>
-      <div class="display-group">
-        <div class="display-field">{{ weekTasks.task2 || 'пумпурумпумпум' }}</div>
-      </div>
+      @for (task of selectedDateTasks; track task.id) {
+        <div class="display-group">
+          <div class="display-field">{{ task.name }}</div>
+        </div>
+      } @empty {
+        <div class="display-group">Завдань немає</div>
+      }
     </div>
   </ng-template>
 </div>
