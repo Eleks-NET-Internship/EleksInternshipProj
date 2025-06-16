@@ -23,6 +23,7 @@ namespace EleksInternshipProj.Infrastructure.Data
         public DbSet<Note> Notes { get; set; }
         public DbSet<TaskModel> Tasks { get; set; }
         public DbSet<TaskStatus> TaskStatuses { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         public NavchaykoDbContext(DbContextOptions<NavchaykoDbContext> options) : base(options) { }
 
@@ -204,6 +205,12 @@ namespace EleksInternshipProj.Infrastructure.Data
                         .WithMany(s => s.Tasks)
                         .HasForeignKey(t => t.StatusId);
             });
+
+            modelBuilder.Entity<Notification>(entity =>
+            {
+                entity.ToTable("notifications");
+            });
+
         }
     }
 }
