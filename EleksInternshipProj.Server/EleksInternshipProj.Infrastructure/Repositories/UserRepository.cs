@@ -45,5 +45,12 @@ namespace EleksInternshipProj.Infrastructure.Repositories
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<User?> GetByNameAsync(string name)
+        {
+            return await _context.Users
+                .Where(u => u.Username == name)
+                .FirstOrDefaultAsync();
+        }
     }
 }
