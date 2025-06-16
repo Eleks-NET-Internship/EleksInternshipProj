@@ -17,6 +17,11 @@ namespace EleksInternshipProj.Application.Services.Imp
             return await _spaceRepository.AddAsync(space, userId);
         }
 
+        public Task<bool> AddUserToSpaceAsync(long spaceId, long userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> DeleteSpaceAsync(long spaceId)
         {
             return await _spaceRepository.DeleteAsync(spaceId);
