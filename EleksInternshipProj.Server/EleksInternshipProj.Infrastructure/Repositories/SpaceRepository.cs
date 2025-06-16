@@ -52,6 +52,38 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             }
         }
 
+        public async Task<Space?> AddToAsync(Space space, long userId)
+        {
+            _logger.LogInformation($"Adding new User ID = {userId} to Space with Name '{space.Name}'");
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var userSpace = new UserSpace
+                {
+                    SpaceId = space.Id,
+                    UserId = userId,
+                    RoleId = 0 // default role
+                };
+
+                await _context.UserSpaces.AddAsync(userSpace);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation($"Space with ID = {space.Id} successfully got a new User with ID = {userId}");
+
+                await transaction.CommitAsync();
+
+                _logger.LogInformation($"Success! User ID = {userId} assigned to Space ID = {space.Id}");
+                return space;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, $"Fail! Error occurred while adding new Space '{space.Name}' for User ID = {userId}.");
+                return null;
+            }
+        }
+
         public async Task<bool> DeleteAsync(long id)
         {
             _logger.LogInformation($"Attempting to delete Space with ID: {id}");
