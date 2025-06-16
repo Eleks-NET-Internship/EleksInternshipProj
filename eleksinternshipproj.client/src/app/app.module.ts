@@ -11,11 +11,10 @@ import { CalendarFormComponent } from './feature/calendar/components/calendar-fo
 import { ScheduleComponent } from './feature/schedule/components/schedule/schedule.component';
 import { SidebarComponent } from './feature/sidebar/components/sidebar/sidebar.component';
 import { EditScheduleComponent } from './feature/schedule/components/edit-schedule/edit-schedule.component';
-import { EventEditFormComponent } from './feature/schedule/components/event-edit-form/event-edit-form.component'
+import { EventEditFormComponent } from './feature/schedule/components/event-edit-form/event-edit-form.component';
 import { LoginComponent } from './feature/login/components/login/login.component';
 import { RegisterComponent } from './feature/register/components/register/register.component';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
-import { WeatherForecastComponent } from './feature/weatherForecast/components/weather-forecast/weather-forecast.component';
 
 // Angular Material
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -36,6 +35,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatRippleModule } from '@angular/material/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { ProfileComponent } from './feature/profile/components/profile/profile.component';
+import { SharedModule } from './shared/shared.module';
+import { NotesComponent } from './feature/notes/components/notes/notes.component';
+import { EventNotesComponent } from './feature/notes/components/event-notes/event-notes.component';
+import { NoteDetailComponent } from './feature/notes/components/note-detail/note-detail.component';
+import { MatSelectModule } from '@angular/material/select'; // Додайте цей імпорт
+import { MatOptionModule } from '@angular/material/core'; // Додайте цей імпорт
 
 
 
@@ -47,16 +53,19 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     CalendarComponent,
     CalendarFormComponent,
     ScheduleComponent,
-    SidebarComponent,
     EditScheduleComponent,
     EventEditFormComponent,
     LoginComponent,
     RegisterComponent,
-    WeatherForecastComponent,
+    ProfileComponent,
+    NotesComponent,
+    EventNotesComponent,
+    NoteDetailComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
     AppRoutingModule,
+    SharedModule,
     // Material modules
     MatSidenavModule,
     MatListModule,
@@ -79,6 +88,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatAutocompleteModule,
     // CDK Modules
     DragDropModule,
+    MatSelectModule,
+    MatOptionModule
 ],
   providers: [
     provideAnimationsAsync(),

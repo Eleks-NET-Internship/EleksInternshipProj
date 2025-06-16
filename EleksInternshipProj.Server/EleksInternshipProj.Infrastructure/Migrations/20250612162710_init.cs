@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EleksInternshipProj.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,22 +27,6 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_day", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "event",
-                schema: "public",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    start_time = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
-                    end_time = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_event", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,16 +78,123 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    user_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    first_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    last_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    username = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    first_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    last_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    password_hash = table.Column<byte[]>(type: "bytea", nullable: false),
-                    password_salt = table.Column<byte[]>(type: "bytea", nullable: false)
+                    password_hash = table.Column<byte[]>(type: "bytea", nullable: true),
+                    password_salt = table.Column<byte[]>(type: "bytea", nullable: true),
+                    auth_provider = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    external_id = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_user", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "event",
+                schema: "public",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    is_solo = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false),
+                    space_id = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_event", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_event_space_space_id",
+                        column: x => x.space_id,
+                        principalSchema: "public",
+                        principalTable: "space",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "marker",
+                schema: "public",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    type = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    space_id = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_marker", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_marker_space_space_id",
+                        column: x => x.space_id,
+                        principalSchema: "public",
+                        principalTable: "space",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "timetable",
+                schema: "public",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    space_id = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_timetable", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_timetable_space_space_id",
+                        column: x => x.space_id,
+                        principalSchema: "public",
+                        principalTable: "space",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_space",
+                schema: "public",
+                columns: table => new
+                {
+                    id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    user_id = table.Column<long>(type: "bigint", nullable: false),
+                    space_id = table.Column<long>(type: "bigint", nullable: false),
+                    role_id = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_space", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_user_space_role_role_id",
+                        column: x => x.role_id,
+                        principalSchema: "public",
+                        principalTable: "role",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_user_space_space_space_id",
+                        column: x => x.space_id,
+                        principalSchema: "public",
+                        principalTable: "space",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_user_space_user_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "public",
+                        principalTable: "user",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -152,50 +243,6 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "marker",
-                schema: "public",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    space_id = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_marker", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_marker_space_space_id",
-                        column: x => x.space_id,
-                        principalSchema: "public",
-                        principalTable: "space",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "timetable",
-                schema: "public",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    space_id = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_timetable", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_timetable_space_space_id",
-                        column: x => x.space_id,
-                        principalSchema: "public",
-                        principalTable: "space",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "task",
                 schema: "public",
                 columns: table => new
@@ -224,43 +271,6 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                         column: x => x.status_id,
                         principalSchema: "public",
                         principalTable: "taskstatus",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "user_space",
-                schema: "public",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    user_id = table.Column<long>(type: "bigint", nullable: false),
-                    space_id = table.Column<long>(type: "bigint", nullable: false),
-                    role_id = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_user_space", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_user_space_role_role_id",
-                        column: x => x.role_id,
-                        principalSchema: "public",
-                        principalTable: "role",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_user_space_space_space_id",
-                        column: x => x.space_id,
-                        principalSchema: "public",
-                        principalTable: "space",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_user_space_user_user_id",
-                        column: x => x.user_id,
-                        principalSchema: "public",
-                        principalTable: "user",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -331,7 +341,9 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     event_id = table.Column<long>(type: "bigint", nullable: false),
-                    timetable_day_id = table.Column<long>(type: "bigint", nullable: false)
+                    timetable_day_id = table.Column<long>(type: "bigint", nullable: false),
+                    start_time = table.Column<TimeOnly>(type: "time without time zone", nullable: false),
+                    end_time = table.Column<TimeOnly>(type: "time without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -351,6 +363,12 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_event_space_id",
+                schema: "public",
+                table: "event",
+                column: "space_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_event_marker_event_id",
@@ -432,10 +450,10 @@ namespace EleksInternshipProj.Infrastructure.Migrations
                 column: "timetable_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_email",
+                name: "IX_user_email_auth_provider",
                 schema: "public",
                 table: "user",
-                column: "email",
+                columns: new[] { "email", "auth_provider" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

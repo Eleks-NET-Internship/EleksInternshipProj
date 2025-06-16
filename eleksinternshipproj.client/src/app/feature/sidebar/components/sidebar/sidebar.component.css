@@ -57,6 +57,9 @@
   padding-left: 10px;
 }
 
+mat-list-item {
+  align-items: center; /* Ensures vertical centering of content */
+}
 
 /* Адаптивний дизайн */
 @media (max-width: 1200px) {

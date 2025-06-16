@@ -25,6 +25,7 @@ namespace EleksInternshipProj.WebApi.Extensions
             services.AddScoped<ITokenGenerator, TokenGenerator>();
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<INoteService, NoteService>();
 
             return services;
         }
@@ -37,6 +38,7 @@ namespace EleksInternshipProj.WebApi.Extensions
             services.AddScoped<ISoloEventRepository, SoloEventRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddScoped<INoteRepository, NoteRepository>();
 
             return services;
         }

@@ -1,5 +1,4 @@
 <div class="schedule-container">
-  <app-sidebar></app-sidebar>
   <mat-sidenav-container class="schedule-sidenav-container">
 
     <mat-sidenav-content class="schedule-content">
@@ -16,30 +15,24 @@
 
       <!-- Weekly schedule grid -->
       <div class="schedule-grid">
-        <div 
-          class="day-column" 
-          *ngFor="let day of schedule; let i = index"
-          [class.highlight-day]="day.day === 'Середа'"
-        >
+        <div class="day-column"
+             *ngFor="let day of schedule; let i = index"
+             [class.highlight-day]="day.day === 'Середа'">
           <div class="day-header">
             <h4>{{ day.day }}</h4>
           </div>
-          
-          <div 
-            class="day-events"
-            cdkDropList
-            [id]="'day-' + i"
-            [cdkDropListData]="day.events"
-            [cdkDropListConnectedTo]="connectedDropLists"
-            (cdkDropListDropped)="onEventDrop($event)"
-          >
+
+          <div class="day-events"
+               cdkDropList
+               [id]="'day-' + i"
+               [cdkDropListData]="day.events"
+               [cdkDropListConnectedTo]="connectedDropLists"
+               (cdkDropListDropped)="onEventDrop($event)">
             <!-- Event cards -->
-            <mat-card 
-              class="event-card"
-              *ngFor="let event of day.events; let j = index"
-              cdkDrag
-              [style.background-color]="event.color"
-            >
+            <mat-card class="event-card"
+                      *ngFor="let event of day.events; let j = index"
+                      cdkDrag
+                      [style.background-color]="event.color">
               <div class="event-actions">
                 <button mat-icon-button size="small" (click)="editEvent(event)">
                   <mat-icon>edit</mat-icon>
@@ -48,7 +41,7 @@
                   <mat-icon>delete</mat-icon>
                 </button>
               </div>
-              
+
               <mat-card-content>
                 <div class="event-time">{{ event.time }}</div>
                 <div class="event-title">{{ event.title }}</div>
@@ -85,6 +78,6 @@
       </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
+</div>
 
-  
 
