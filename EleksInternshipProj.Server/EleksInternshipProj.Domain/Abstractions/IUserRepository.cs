@@ -14,6 +14,7 @@ namespace EleksInternshipProj.Domain.Abstractions
         Task AddUserAsync(User user);
 
         Task<User?> GetByIdAsync(long userId);
+        Task<User?> GetByNameAsync(string name);
 
         Task UpdateUserAsync(User user);
     }

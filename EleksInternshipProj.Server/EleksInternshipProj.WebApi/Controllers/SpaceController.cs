@@ -1,5 +1,8 @@
 ﻿using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
+using EleksInternshipProj.Domain.Abstractions;
+using EleksInternshipProj.Domain.Models;
+using EleksInternshipProj.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -12,19 +15,17 @@ namespace EleksInternshipProj.WebApi.Controllers
     public class SpaceController : ControllerBase
     {
         private readonly ISpaceService _spaceService;
+
         public SpaceController(ISpaceService spaceService)
         {
             _spaceService = spaceService;
         }
 
-        private long GetUserId() => long.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
-
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetSpaces([FromQuery] int currentPage = 1, [FromQuery] int pageSize = 10)
+        public async Task<IActionResult> GetSpaces(long userId)
         {
-            var userId = GetUserId();
-            var (spaces, totalCount) = await _spaceService.GetSpacesAsync(userId, currentPage, pageSize);
+            var (spaces, totalCount) = await _spaceService.GetSpacesAsync(userId);
 
             var result = new
             {
@@ -37,13 +38,21 @@ namespace EleksInternshipProj.WebApi.Controllers
 
         [HttpPost]
         [Route("add")]
-        public async Task<IActionResult> AddSpace([FromBody] string spaceName)
+        public async Task<IActionResult> AddSpace(long userId, string spaceName)
         {
-            var userId = GetUserId();
             var space = await _spaceService.AddSpaceAsync(userId, spaceName);
             if (space == null) return BadRequest("Failed to create space.");
 
             return Ok(new SpaceDto { Id = space.Id, Name = space.Name });
+        }
+
+        [HttpPost]
+        [Route("add-to-space")]
+        public async Task<IActionResult> AddToSpace(long spaceId, string userName)
+        {
+            var result = await _spaceService.AddUserToSpaceAsync(spaceId, userName);
+
+            return Ok(result);
         }
 
         [HttpDelete]
@@ -54,9 +63,9 @@ namespace EleksInternshipProj.WebApi.Controllers
             return success ? NoContent() : NotFound();
         }
 
-        [HttpPatch]
+        [HttpPost]
         [Route("rename/{spaceId:long}")]
-        public async Task<IActionResult> RenameSpace(long spaceId, [FromBody] string newName)
+        public async Task<IActionResult> RenameSpace(long spaceId, string newName)
         {
             var space = await _spaceService.RenameSpaceAsync(spaceId, newName);
             if (space == null) return NotFound();
