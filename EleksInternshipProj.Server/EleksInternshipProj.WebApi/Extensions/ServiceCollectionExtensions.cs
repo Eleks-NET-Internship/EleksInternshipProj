@@ -123,6 +123,8 @@ namespace EleksInternshipProj.WebApi.Extensions
 
         public static IServiceCollection AddHostedServices(this IServiceCollection services)
         {
+            services.AddSignalR();
+
             services.AddHostedService<TaskNotificationWorker>();
             return services;
         }

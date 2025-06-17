@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 using EleksInternshipProj.Infrastructure.Data;
 using EleksInternshipProj.WebApi.Extensions;
+using EleksInternshipProj.Infrastructure.Hubs;
 
 namespace EleksInternshipProj.WebApi
 {
@@ -67,6 +68,8 @@ namespace EleksInternshipProj.WebApi
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.MapHub<NotificationHub>("/hubs/notifications");
 
             app.MapFallbackToFile("/index.html");
 

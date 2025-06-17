@@ -3,6 +3,8 @@
 using EleksInternshipProj.Domain.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using EleksInternshipProj.Domain.Models;
+using Microsoft.AspNetCore.SignalR;
+using EleksInternshipProj.Infrastructure.Hubs;
 
 namespace EleksInternshipProj.Infrastructure.BackgroundTasks
 {
@@ -33,6 +35,8 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
             ITaskRepository taskService = scope.ServiceProvider.GetRequiredService<ITaskRepository>();
             INotificationRepository notificationRepository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
 
+            IHubContext<NotificationHub> hubContext = scope.ServiceProvider.GetRequiredService<IHubContext<NotificationHub>>();
+
             DateTime current = DateTime.UtcNow;
 
             // testing reminders for 24 hours before deadline
@@ -53,11 +57,11 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 Notification notification = new Notification
                 {
                     Id = 0,
-                    RelatedId = task.Id,
-                    RelatedType = "task",
-                    Message = $"Нагадування: {task.Name} має дедлайн на {task.EventTime}!",
-                    SpaceId = task.Event.SpaceId,
                     Title = "Дедлайн близько!",
+                    Message = $"Нагадування: {task.Name} має дедлайн на {task.EventTime}!",
+                    RelatedType = "task",
+                    RelatedId = task.Id,
+                    SpaceId = task.Event.SpaceId,
                 };
                 await notificationRepository.AddNotificationAsync(notification);
 
@@ -66,7 +70,13 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 // send notif via something
 
                 // signalR
-
+                await hubContext.Clients.All.SendAsync("ReceiveNotification", new
+                {
+                    title = notification.Title,
+                    message = notification.Message,
+                    relatedType = notification.RelatedType,
+                    relatedId = task.Id,
+                });
                 // email
 
             }
