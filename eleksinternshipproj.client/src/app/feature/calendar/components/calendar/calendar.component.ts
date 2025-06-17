@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-calendar',
@@ -8,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class CalendarComponent implements OnInit {
   calendarDays: number[] = [];
   selectedDate: { day: number, month: number, year: number } | null = null;
+  selectedDateSignal = signal<Date | null>(null);
   currentMonth: number = new Date().getMonth();
   currentYear: number = new Date().getFullYear();
 
@@ -55,12 +56,14 @@ export class CalendarComponent implements OnInit {
         this.selectedDate.year === this.currentYear
       ) {
         this.selectedDate = null;
+        this.selectedDateSignal.set(null);
       } else {
         this.selectedDate = {
           day: day,
           month: this.currentMonth,
           year: this.currentYear
         };
+        this.selectedDateSignal.set(new Date(this.selectedDate.year, this.selectedDate.month, this.selectedDate.day));
       }
 
       console.log(
@@ -79,12 +82,6 @@ export class CalendarComponent implements OnInit {
       this.selectedDate.month === this.currentMonth &&
       this.selectedDate.year === this.currentYear
     );
-  }
-
-  getSelectedDate(): Date | null {
-    return this.selectedDate
-      ? new Date(this.selectedDate.year, this.selectedDate.month, this.selectedDate.day)
-      : null;
   }
 
   getCurrentMonthName(): string {
