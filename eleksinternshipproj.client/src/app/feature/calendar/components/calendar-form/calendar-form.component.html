@@ -43,7 +43,7 @@
     <!-- ПОДІЇ -->
     <div class="display-section">
       <h3 class="section-title">ПОДІЇ</h3>
-      @for (event of events; track $index) {
+      @for (event of events; track event.eventId) {
         <div class="display-group">
           <div class="display-field">{{ event.eventName }}</div>
         </div>
