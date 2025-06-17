@@ -20,10 +20,22 @@ export class NotificationsSignalrService {
       .catch((err => console.error("Error starting up signalR", err)));
 
     this.hubConnection.on("ReceiveNotification", (data) => {
-      console.log("New notification: ", data);
+      if (Notification.permission === "granted") {
+        this.createNotification(data);
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            this.createNotification(data);
+          }
+        })
+      }
     })
   }
-
+  createNotification(data: any): Notification {
+    return new Notification(data.title, {
+      body: data.message
+    });
+  }
   stopConnection(): void {
     if (this.hubConnection) {
       this.hubConnection.stop();
