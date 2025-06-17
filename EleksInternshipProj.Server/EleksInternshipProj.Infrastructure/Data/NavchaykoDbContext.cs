@@ -208,7 +208,7 @@ namespace EleksInternshipProj.Infrastructure.Data
 
             modelBuilder.Entity<Notification>(entity =>
             {
-                entity.ToTable("notifications");
+                entity.ToTable("notification");
             });
 
         }

@@ -1,12 +1,8 @@
-﻿using EleksInternshipProj.Domain.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
+
+using EleksInternshipProj.Domain.Abstractions;
 using EleksInternshipProj.Domain.Models;
 using EleksInternshipProj.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EleksInternshipProj.Infrastructure.Repositories
 {
@@ -97,6 +93,14 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             _context.Tasks.Update(task);
             var affectedRows = await _context.SaveChangesAsync();
             return affectedRows > 0;
+        }
+
+        public async Task<IEnumerable<TaskModel>> GetByTimePeriodAsync(DateTime begin, DateTime end)
+        {
+            IEnumerable<TaskModel> tasks = await _context.Tasks
+                .Where(task => task.EventTime > begin && task.EventTime < end)
+                .ToListAsync();
+            return tasks;
         }
     }
 }

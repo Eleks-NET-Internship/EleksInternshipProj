@@ -15,6 +15,7 @@ public class Space
     public string Name { get; set; } = null!;
 
     public List<UserSpace> UserSpaces { get; set; } = new();
+
     public List<Marker> Markers { get; set; } = new();
 
     public Timetable Timetable { get; set; } = null!;

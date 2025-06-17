@@ -41,6 +41,7 @@ namespace EleksInternshipProj.WebApi.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<ISpaceRepository, SpaceRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
 
             return services;
         }
@@ -115,6 +116,12 @@ namespace EleksInternshipProj.WebApi.Extensions
                 });
             });
 
+            return services;
+        }
+
+        public static IServiceCollection AddHostedServices(this IServiceCollection services)
+        {
+            services.AddHostedService<TaskNotificationWorker>();
             return services;
         }
     }

@@ -1,9 +1,5 @@
 ﻿using EleksInternshipProj.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using TaskStatus = EleksInternshipProj.Domain.Models.TaskStatus;
 
 namespace EleksInternshipProj.Domain.Abstractions
@@ -19,6 +15,6 @@ namespace EleksInternshipProj.Domain.Abstractions
         Task<bool> UpdateAsync(TaskModel task);
         Task<bool> UpdateStatusAsync(long taskId, long newStatusId);
         Task<bool> DeleteAsync(long id);
-
+        Task<IEnumerable<TaskModel>> GetByTimePeriodAsync(DateTime begin, DateTime end);
     }
 }
