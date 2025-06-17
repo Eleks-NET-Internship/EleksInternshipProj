@@ -98,6 +98,7 @@ namespace EleksInternshipProj.Infrastructure.Repositories
         public async Task<IEnumerable<TaskModel>> GetByTimePeriodAsync(DateTime begin, DateTime end)
         {
             IEnumerable<TaskModel> tasks = await _context.Tasks
+                .Include(task => task.Event)
                 .Where(task => task.EventTime > begin && task.EventTime < end)
                 .ToListAsync();
             return tasks;

@@ -11,6 +11,7 @@ using EleksInternshipProj.Application.Services.Imp;
 using EleksInternshipProj.Infrastructure.Repositories;
 using EleksInternshipProj.Infrastructure.Extensions;
 using EleksInternshipProj.Infrastructure.Services;
+using EleksInternshipProj.Infrastructure.BackgroundTasks;
 
 namespace EleksInternshipProj.WebApi.Extensions
 {

@@ -27,5 +27,12 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             await _context.Notifications.AddAsync(notification);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> ExitstForRelatedAsync(string relatedType, long relatedId)
+        {
+            return await _context.Notifications
+                 .AnyAsync(notification => notification.RelatedType == relatedType
+                 && notification.RelatedId == relatedId);
+        }
     }
 }
