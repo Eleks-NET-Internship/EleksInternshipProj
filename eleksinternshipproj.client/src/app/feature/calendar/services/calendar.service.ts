@@ -2,8 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
-import type { TaskDTO } from '../models/calendar-models';
-import type { UniqueEventDTO } from '../models/calendar-models';
+import type { TaskDTO, UniqueEventDTO } from '../models/calendar-models';
 
 @Injectable({
   providedIn: 'root'
