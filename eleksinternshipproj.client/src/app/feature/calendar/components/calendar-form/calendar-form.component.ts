@@ -1,7 +1,7 @@
 // calendar-form.component.ts
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import type { TaskDTO } from '../../models/calendar-models';
+import type { TaskDTO, UniqueEventDTO } from '../../models/calendar-models';
 import { CalendarService } from '../../services/calendar.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class CalendarFormComponent implements OnChanges {
 
   selectedDateTasks: TaskDTO[] = [];
 
-  events: any[] = [];
+  events: UniqueEventDTO[] = [];
 
   constructor(private readonly calendarService: CalendarService) {}
 
