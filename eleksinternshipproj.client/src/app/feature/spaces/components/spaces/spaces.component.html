@@ -1,1 +1,33 @@
-<p>TODO: implement spaces</p>
+<div class="space-container">
+  <!-- Header -->
+  <div class="space-header">
+    <div class="header-title">Мої простори</div>
+
+    <div class="header-actions">
+      <div class="add-space-wrapper" #addMenuWrapper>
+      <button class="add-space-btn" (click)="toggleAddMenu()">+ Додати простір</button>
+
+        <div class="add-dropdown" *ngIf="showAddMenu">
+          <button class="dropdown-item" (click)="createSpace()">Створити власний</button>
+          <button class="dropdown-item" disabled title="Незабаром">Приєднатись до існуючого</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Divider -->
+  <div class="space-divider"></div>
+
+  <!-- Main content -->
+  <div class="space-content">
+    <div *ngIf="spaces.length === 0" class="empty-message">Пусто</div>
+
+    <div *ngFor="let space of spaces" class="space-card">
+      <div class="space-name">{{ space.name }}</div>
+      <div class="space-actions">
+        <button class="action-btn" (click)="renameSpace(space)">Редагувати</button>
+        <button class="action-btn delete" (click)="deleteSpace(space.id)">Видалити</button>
+      </div>
+    </div>
+  </div>
+</div>

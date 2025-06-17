@@ -33,7 +33,37 @@ namespace EleksInternshipProj.Infrastructure.Repositories
                 {
                     SpaceId = space.Id,
                     UserId = userId,
-                    RoleId = 0 // default role
+                    RoleId = 1
+                };
+
+                await _context.UserSpaces.AddAsync(userSpace);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                _logger.LogInformation($"Success! User ID = {userId} assigned to Space ID = {space.Id}");
+                return space;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, $"Fail! Error occurred while adding new Space '{space.Name}' for User ID = {userId}.");
+                return null;
+            }
+        }
+
+        public async Task<Space?> AddToAsync(Space space, long userId)
+        {
+            _logger.LogInformation($"Adding new User ID = {userId} to Space with Name '{space.Name}'");
+
+            using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var userSpace = new UserSpace
+                {
+                    SpaceId = space.Id,
+                    UserId = userId,
+                    RoleId = 2
                 };
 
                 await _context.UserSpaces.AddAsync(userSpace);
@@ -83,9 +113,6 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             _logger.LogInformation($"Searching for Space with ID: {id}");
 
             var space = await _context.Spaces
-                .Include(s => s.UserSpaces)
-                .Include(s => s.Markers)
-                .Include(s => s.Timetable)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (space == null)
@@ -103,9 +130,6 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             var spaces = await _context.UserSpaces
                 .Where(us => us.UserId == userId)
                 .Select(us => us.Space)
-                .Include(s => s.UserSpaces)
-                .Include(s => s.Markers)
-                .Include(s => s.Timetable)
                 .ToListAsync();
 
             _logger.LogInformation($"Found {spaces.Count} Space(s) for User ID = {userId}");

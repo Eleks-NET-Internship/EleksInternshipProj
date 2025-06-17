@@ -8,6 +8,7 @@ namespace EleksInternshipProj.Domain.Abstractions
         Task<IEnumerable<Space>> GetByUserAsync(long userId);
         Task<Space?> GetByIdAsync(long id);
         Task<Space?> AddAsync(Space space, long userId);
+        Task<Space?> AddToAsync(Space space, long userId);
         Task<Space?> UpdateAsync(Space space);
         Task<bool> DeleteAsync(long id);
     }

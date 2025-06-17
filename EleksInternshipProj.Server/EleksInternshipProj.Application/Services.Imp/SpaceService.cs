@@ -6,15 +6,31 @@ namespace EleksInternshipProj.Application.Services.Imp
     public class SpaceService : ISpaceService
     {
         private readonly ISpaceRepository _spaceRepository;
-        public SpaceService(ISpaceRepository spaceRepository)
+        private readonly IUserRepository _userRepository;
+
+        public SpaceService(ISpaceRepository spaceRepository, IUserRepository userRepository)
         {
             _spaceRepository = spaceRepository;
+            _userRepository = userRepository;
         }
 
         public async Task<Space?> AddSpaceAsync(long userId, string name)
         {
-            var space = new Space { Name = name };
+            var space = new Space
+            {
+                Name = name
+            };
             return await _spaceRepository.AddAsync(space, userId);
+        }
+
+        public async Task<bool> AddUserToSpaceAsync(long spaceId, string userName)
+        {
+            var user = await _userRepository.GetByNameAsync(userName);
+            var space = await _spaceRepository.GetByIdAsync(spaceId);
+            if (space == null || user == null) return false;
+
+            var newSpace = await _spaceRepository.AddToAsync(space, user.Id);
+            return newSpace != null;
         }
 
         public async Task<bool> DeleteSpaceAsync(long spaceId)
@@ -22,11 +38,10 @@ namespace EleksInternshipProj.Application.Services.Imp
             return await _spaceRepository.DeleteAsync(spaceId);
         }
 
-        public async Task<(IEnumerable<Space>, int)> GetSpacesAsync(long userId, int currentPage, int pageSize)
+        public async Task<(IEnumerable<Space>, int)> GetSpacesAsync(long userId)
         {
             var allSpaces = (await _spaceRepository.GetByUserAsync(userId)).ToList();
-            var pagedSpaces = allSpaces.Skip((currentPage - 1) * pageSize).Take(pageSize);
-            return (pagedSpaces, allSpaces.Count);
+            return (allSpaces, allSpaces.Count);
         }
 
         public async Task<Space?> RenameSpaceAsync(long spaceId, string newName)

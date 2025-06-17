@@ -1,5 +1,4 @@
-export interface SpacesDTO {
-  mock: string
-
-  mock2?: string
+export interface SpaceDto {
+  id: number;
+  name: string;
 }
