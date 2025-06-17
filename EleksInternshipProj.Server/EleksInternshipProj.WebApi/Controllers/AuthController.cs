@@ -1,3 +1,5 @@
+using System.Security.Claims;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -5,9 +7,8 @@ using Microsoft.AspNetCore.Authentication.Google;
 
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
-using System.Security.Claims;
 
-namespace EleksInternshipProj.Server.Controllers
+namespace EleksInternshipProj.WebApi.Controllers
 {
     [ApiController]
     [Route("api/auth")]
@@ -49,7 +50,7 @@ namespace EleksInternshipProj.Server.Controllers
                 return BadRequest(new { message = ex.Message });
             }
 
-            return Ok(new { accessToken = token});
+            return Ok(new { accessToken = token });
         }
 
         // Google auth

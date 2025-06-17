@@ -29,6 +29,7 @@ namespace EleksInternshipProj.WebApi.Extensions
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<ISpaceService, SpaceService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             return services;
         }

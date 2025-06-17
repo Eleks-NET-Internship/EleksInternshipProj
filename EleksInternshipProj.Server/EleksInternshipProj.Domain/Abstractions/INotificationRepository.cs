@@ -6,6 +6,8 @@ namespace EleksInternshipProj.Domain.Abstractions
     {
         Task<IEnumerable<Notification>> GetSpaceNotificationsAsync(long spaceId);
 
+        Task<IEnumerable<Notification>> GetUserNotificationsAsync(long spaceId);
+
         Task AddNotificationAsync(Notification notification);
 
         Task<bool> ExitstForRelatedAsync(string relatedType, long relatedId);

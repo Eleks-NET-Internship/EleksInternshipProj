@@ -22,6 +22,19 @@ namespace EleksInternshipProj.Infrastructure.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Notification>> GetUserNotificationsAsync(long userId)
+        {
+            var userSpaceIds = await _context.UserSpaces
+                .Where(us => us.UserId == userId)
+                .Select(us => us.SpaceId)
+                .ToListAsync();
+
+            return await _context.Notifications
+                .Where(notification => userSpaceIds.Contains(notification.SpaceId))
+                .OrderByDescending(n => n.SentAt) 
+                .ToListAsync();
+        }
+
         public async Task AddNotificationAsync(Notification notification)
         {
             await _context.Notifications.AddAsync(notification);

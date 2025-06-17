@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
 
-namespace EleksInternshipProj.Server.Controllers
+namespace EleksInternshipProj.WebApi.Controllers
 {
     [ApiController]
     [Route("api/profile")]

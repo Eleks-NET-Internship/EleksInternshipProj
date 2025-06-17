@@ -3,7 +3,6 @@
 using EleksInternshipProj.Domain.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using EleksInternshipProj.Domain.Models;
-using EleksInternshipProj.Application.DTOs;
 
 namespace EleksInternshipProj.Infrastructure.BackgroundTasks
 {
@@ -56,7 +55,7 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                     Id = 0,
                     RelatedId = task.Id,
                     RelatedType = "task",
-                    Message = $"Нагадування, що \"{task.Name}\" має дедлайн на {task.EventTime}!",
+                    Message = $"Нагадування: {task.Name} має дедлайн на {task.EventTime}!",
                     SpaceId = task.Event.SpaceId,
                     Title = "Дедлайн близько!",
                 };
