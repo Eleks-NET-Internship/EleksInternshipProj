@@ -58,7 +58,7 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 {
                     Id = 0,
                     Title = "Дедлайн близько!",
-                    Message = $"Нагадування: завдання {task.Name} має дедлайн на {task.EventTime}!",
+                    Message = $"Завдання {task.Name} має дедлайн на {task.EventTime}!",
                     RelatedType = "task",
                     RelatedId = task.Id,
                     SpaceId = task.Event.SpaceId,

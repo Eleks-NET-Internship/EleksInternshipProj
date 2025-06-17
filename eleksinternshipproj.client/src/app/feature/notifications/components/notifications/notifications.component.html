@@ -1,0 +1,9 @@
+<div class="notifications-page">
+  <h2>Notifications</h2>
+  <p *ngIf="notifications.length < 1">You don't have any</p>
+  <div  *ngFor="let notif of notifications">
+    <h3>{{notif.title}}</h3>
+    <p>{{notif.message}}</p>
+    <small>{{notif.sentAt}}</small>
+  </div>
+</div>

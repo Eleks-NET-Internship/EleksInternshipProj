@@ -16,6 +16,7 @@ export class SidebarComponent {
     { icon: 'note', label: 'Нотатки' },
     { icon: 'event', label: 'Події' },
     { icon: 'bar_chart', label: 'Статистика' },
+    { icon: 'notifications', label: 'Сповіщення' },
     { icon: 'person', label: 'Профіль' },
     { icon: 'settings', label: 'Налаштування' },
   ];
@@ -63,6 +64,11 @@ export class SidebarComponent {
 
       case 'Статистика': {
         this.router.navigate(['/statistics']);
+        break;
+      }
+
+      case 'Сповіщення': {
+        this.router.navigate(['/notifications']);
         break;
       }
 
