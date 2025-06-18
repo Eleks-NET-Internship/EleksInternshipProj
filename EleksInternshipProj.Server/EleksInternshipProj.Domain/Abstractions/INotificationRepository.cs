@@ -11,5 +11,7 @@ namespace EleksInternshipProj.Domain.Abstractions
         Task AddNotificationAsync(Notification notification);
 
         Task<bool> ExitstForRelatedAsync(string relatedType, long relatedId);
+        
+        Task DeleteRelatedAsync(string type, long id);
     }
 }

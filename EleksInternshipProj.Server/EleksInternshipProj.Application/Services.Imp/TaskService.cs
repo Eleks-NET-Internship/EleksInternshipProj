@@ -13,9 +13,11 @@ namespace EleksInternshipProj.Application.Services.Imp
     public class TaskService : ITaskService
     {
         private readonly ITaskRepository _taskRepository;
-        public TaskService(ITaskRepository taskRepository)
+        private readonly INotificationRepository _notificationRepository;
+        public TaskService(ITaskRepository taskRepository, INotificationRepository notificationRepository)
         {
             _taskRepository = taskRepository;
+            _notificationRepository = notificationRepository;
         }
 
         public async Task<TaskModel> AddAsync(TaskDto dto)
@@ -40,6 +42,8 @@ namespace EleksInternshipProj.Application.Services.Imp
             if (task == null)
                 throw new ArgumentException($"Task with ID {dto.Id} was not found for update.");
 
+            bool changedTime = task.EventTime != dto.EventTime;
+
             task.Name = dto.Name;
             task.EventId = dto.EventId;
             task.StatusId = dto.StatusId;
@@ -47,7 +51,9 @@ namespace EleksInternshipProj.Application.Services.Imp
             task.IsDeadline = dto.IsDeadline;
             task.Description = dto.Description;
 
-            return await _taskRepository.UpdateAsync(task);
+            bool updateStatus = await _taskRepository.UpdateAsync(task);
+            await _notificationRepository.DeleteRelatedAsync("task", task.Id);
+            return updateStatus;
         }
 
         public async Task<bool> UpdateStatusAsync(long taskId, long newStatusId)

@@ -47,5 +47,14 @@ namespace EleksInternshipProj.Infrastructure.Repositories
                  .AnyAsync(notification => notification.RelatedType == relatedType
                  && notification.RelatedId == relatedId);
         }
+        public async Task DeleteRelatedAsync(string type, long id)
+        {
+            IEnumerable<Notification> notifications = await _context.Notifications
+                .Where(n => n.RelatedType == type && n.RelatedId == id)
+                .ToListAsync();
+
+            _context.Notifications.RemoveRange(notifications);
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -12,6 +12,7 @@ namespace EleksInternshipProj.Application.Services.Imp
         {
             _notificationRepository = notificationRepository;
         }
+
         public async Task<IEnumerable<NotificationDTO>> GetNotificationsAsync(long userId)
         {
             IEnumerable<Notification> notificationsRaw = await _notificationRepository.GetUserNotificationsAsync(userId);
