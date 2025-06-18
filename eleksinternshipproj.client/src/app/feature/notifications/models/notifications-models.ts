@@ -6,6 +6,9 @@ export interface NotificationDTO {
   title: string;
   message: string;
   relatedType: string;
-  relatedId: string;
+  relatedId: number;
   sentAt: string;
+  deadlineAt: string;
+  spaceId: number;
+  read: boolean;
 }

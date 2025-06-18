@@ -22,7 +22,11 @@ namespace EleksInternshipProj.Application.Services.Imp
                     Message = notif.Message,
                     RelatedType = notif.RelatedType,
                     RelatedId = notif.RelatedId,
-                    SentAt = notif.SentAt
+                    SpaceId = notif.SpaceId,
+                    SentAt = notif.SentAt,
+                    DeadlineAt = notif.DeadlineAt,
+                    Read = notif.Read
+
                 });
             return notifications;
         }

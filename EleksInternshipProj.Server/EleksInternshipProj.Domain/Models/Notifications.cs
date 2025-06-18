@@ -35,5 +35,13 @@ namespace EleksInternshipProj.Domain.Models
         [Required]
         [Column("sent_at")]
         public DateTime SentAt { get; set; } = DateTime.UtcNow;
+
+        [Required]
+        [Column("deadline_at")]
+        public DateTime DeadlineAt { get; set; }
+
+        [Required]
+        [Column("read")]
+        public bool Read { get; set; } = false;
     }
 }

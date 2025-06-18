@@ -10,6 +10,11 @@ export class NotificationsSignalrService {
   private readonly apiBaseUrl = 'https://localhost:7050';
 
   startConnection(): void {
+    if (this.hubConnection && this.hubConnection.state === signalR.HubConnectionState.Connected) {
+      console.log('SignalR already connected.');
+      return;
+    }
+
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(`${this.apiBaseUrl}/hubs/notifications`)
       .build();
@@ -31,11 +36,14 @@ export class NotificationsSignalrService {
       }
     })
   }
+
   createNotification(data: any): Notification {
+    const deadlineDate = new Date(data.deadlineAt);
     return new Notification(data.title, {
-      body: data.message
+      body: `${data.message} Коли? ${deadlineDate.toLocaleString()}`
     });
   }
+
   stopConnection(): void {
     if (this.hubConnection) {
       this.hubConnection.stop();

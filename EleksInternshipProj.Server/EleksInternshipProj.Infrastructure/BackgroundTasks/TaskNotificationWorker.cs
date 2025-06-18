@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using EleksInternshipProj.Domain.Models;
 using Microsoft.AspNetCore.SignalR;
 using EleksInternshipProj.Infrastructure.Hubs;
+using EleksInternshipProj.Application.DTOs;
 
 namespace EleksInternshipProj.Infrastructure.BackgroundTasks
 {
@@ -57,11 +58,12 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 Notification notification = new Notification
                 {
                     Id = 0,
-                    Title = "Дедлайн близько!",
-                    Message = $"Завдання {task.Name} має дедлайн на {task.EventTime}!",
+                    Title = "Дедлайн близько!", // Shoud title and message be purely client-side?
+                    Message = $"Завдання '{task.Name}' має дедлайн!",
                     RelatedType = "task",
                     RelatedId = task.Id,
                     SpaceId = task.Event.SpaceId,
+                    DeadlineAt = task.EventTime
                 };
                 await notificationRepository.AddNotificationAsync(notification);
 
@@ -70,13 +72,19 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 // send notif via something
 
                 // signalR
-                await hubContext.Clients.All.SendAsync("ReceiveNotification", new
-                {
-                    title = notification.Title,
-                    message = notification.Message,
-                    relatedType = notification.RelatedType,
-                    relatedId = task.Id,
-                });
+                await hubContext.Clients.All.SendAsync("ReceiveNotification",
+                    new NotificationDTO
+                    {
+                        Title = notification.Title,
+                        Message = notification.Message,
+                        RelatedType = notification.RelatedType,
+                        RelatedId = notification.RelatedId,
+                        SpaceId = notification.SpaceId,
+                        SentAt = notification.SentAt,
+                        DeadlineAt = notification.DeadlineAt,
+                        Read = notification.Read
+                    }
+                );
                 // email
 
             }
