@@ -21,24 +21,20 @@ export class CalendarService {
   );
 }
 
-  private areSameDate(d1: Date, d2: Date): boolean {
-    return d1.getFullYear() === d2.getFullYear() &&
-          d1.getMonth() === d2.getMonth() &&
-          d1.getDate() === d2.getDate();
-  }
+  //returns tasks within week except today and tomorrow tasks
+  getTasksWithinWeek(): Observable<TaskDTO[]> {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-  getTasksWithinWeek(date: Date): Observable<TaskDTO[]> {
-    date.setHours(0, 0, 0, 0);
-
-    const oneWeekFromToday = new Date(date);
-    oneWeekFromToday.setDate(date.getDate() + 7);
+    const oneWeekFromToday = this.addDays(today, 6);
+    const tomorrow = this.addDays(today, 2);
 
     return this.http.get<{ data: TaskDTO[] }>(this.apiBaseUrl + '/api/Task/space/1').pipe(
       map(res => res.data.filter(task => {
         const d = new Date(task.eventTime);
         d.setHours(0, 0, 0, 0);
 
-        return d >= date && d <= oneWeekFromToday;
+        return d >= tomorrow && d <= oneWeekFromToday;
       }))
     );
   }
@@ -51,4 +47,16 @@ export class CalendarService {
       }))
     );
   }
+
+  private areSameDate(d1: Date, d2: Date): boolean {
+    return d1.getFullYear() === d2.getFullYear() &&
+          d1.getMonth() === d2.getMonth() &&
+          d1.getDate() === d2.getDate();
+  }
+
+  private addDays(date: Date, days: number): Date {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
 }
