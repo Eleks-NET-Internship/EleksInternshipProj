@@ -34,6 +34,8 @@ export class CalendarFormComponent implements OnChanges {
   }
 
   private loadDisplayData(): void {
+    this.calendarService.getTasks();
+
     this.today = new Date();
     this.calendarService.getTasksByDate(this.today).subscribe(tasks => {
       this.todayTasks = tasks;

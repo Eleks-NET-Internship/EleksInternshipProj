@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, shareReplay } from 'rxjs';
 
 import type { TaskDTO, UniqueEventDTO } from '../models/calendar-models';
 
@@ -9,11 +9,16 @@ import type { TaskDTO, UniqueEventDTO } from '../models/calendar-models';
 })
 export class CalendarService {
   private readonly apiBaseUrl = 'https://localhost:7050';
+  private tasks!: Observable<{ data: TaskDTO[] }>;
 
   constructor(private readonly http: HttpClient) { }
+
+  getTasks() {
+    this.tasks = this.http.get<{ data: TaskDTO[] }>(this.apiBaseUrl + '/api/Task/space/1').pipe(shareReplay(1));
+  }
   
   getTasksByDate(date: Date): Observable<TaskDTO[]> {
-  return this.http.get<{ data: TaskDTO[] }>(this.apiBaseUrl + '/api/Task/space/1').pipe(
+  return this.tasks.pipe(
     map(res => res.data.filter(task => {
       const taskDate = new Date(task.eventTime);
       return this.areSameDate(date, taskDate);
@@ -29,7 +34,7 @@ export class CalendarService {
     const oneWeekFromToday = this.addDays(today, 6);
     const tomorrow = this.addDays(today, 2);
 
-    return this.http.get<{ data: TaskDTO[] }>(this.apiBaseUrl + '/api/Task/space/1').pipe(
+    return this.tasks.pipe(
       map(res => res.data.filter(task => {
         const d = new Date(task.eventTime);
         d.setHours(0, 0, 0, 0);
