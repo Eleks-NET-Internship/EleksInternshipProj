@@ -45,7 +45,7 @@ export class CalendarFormComponent implements OnChanges {
       this.tomorrowTasks = tasks;
     });
 
-    this.calendarService.getTasksWithinWeek(this.today).subscribe(tasks => {
+    this.calendarService.getTasksWithinWeek().subscribe(tasks => {
       this.weekTasks = tasks;
     });
 
