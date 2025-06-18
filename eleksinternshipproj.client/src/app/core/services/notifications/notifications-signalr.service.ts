@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,20 +10,35 @@ export class NotificationsSignalrService {
 
   private readonly apiBaseUrl = 'https://localhost:7050';
 
+  constructor(private authService: AuthService) { }
+
   startConnection(): void {
     if (this.hubConnection && this.hubConnection.state === signalR.HubConnectionState.Connected) {
       console.log('SignalR already connected.');
       return;
     }
 
+    const options: signalR.IHttpConnectionOptions = {
+      accessTokenFactory: () => {
+        return this.authService.getToken() ?? ""
+      }
+    }
+
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(`${this.apiBaseUrl}/hubs/notifications`)
+      .withUrl(`${this.apiBaseUrl}/hubs/notifications`,
+        options
+      )
       .build();
 
     this.hubConnection
       .start()
-      .then(() => console.log("SignalR connected!!!"))
+      .then(() => {
+        console.log("SignalR connected!!!");
+        this.hubConnection.invoke("JoinSpaces")
+          .catch((err => console.error("Error joining spaces", err)));
+      })
       .catch((err => console.error("Error starting up signalR", err)));
+
 
     this.hubConnection.on("ReceiveNotification", (data) => {
       if (Notification.permission === "granted") {

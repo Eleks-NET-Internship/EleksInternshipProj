@@ -22,16 +22,20 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                await ProcessTaskNotificationAsync();
+                await ProcessTaskNotificationAsync(24 * 60);
+                await ProcessTaskNotificationAsync(1 * 60);
 
                 await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);
-                // change to a reasonable delay later
-                // take into account size of scanning window, so that its size is bigger than delay
             }
         }
 
-        private async Task ProcessTaskNotificationAsync()
+        private async Task ProcessTaskNotificationAsync(int minutes)
         {
+            if (minutes < 1)
+            {
+                throw new ArgumentException($"{minutes} minutes in the future isn't valid");
+            }
+
             using var scope = _serviceProvider.CreateScope();
             ITaskRepository taskService = scope.ServiceProvider.GetRequiredService<ITaskRepository>();
             INotificationRepository notificationRepository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
@@ -40,30 +44,24 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
 
             DateTime current = DateTime.UtcNow;
 
-            // testing reminders for 24 hours before deadline
-            DateTime begin = current.AddDays(1).AddMinutes(-6);
-            DateTime end = current.AddDays(1).AddMinutes(6);
+            DateTime begin = current.AddMinutes(minutes).AddMinutes(-6);
+            DateTime end = current.AddMinutes(minutes).AddMinutes(6);
 
-            // all tasks, even 'done'. We don't have standard statuses yet
-            IEnumerable<TaskModel> tasks = await taskService.GetByTimePeriodAsync(begin, end);
+            // all tasks without notifications. However, tasks' status isn't checked
+            IEnumerable<TaskModel> tasks = await taskService.GetByTimePeriodWithoutNotifAsync(begin, end, minutes);
 
             foreach (TaskModel task in tasks)
             {
-                // may move task extraction and filtering to a service
-                if (await notificationRepository.ExitstForRelatedAsync("task", task.Id))
-                {
-                    continue;
-                }
-
                 Notification notification = new Notification
                 {
                     Id = 0,
-                    Title = "Дедлайн близько!", // Shoud title and message be purely client-side?
+                    Title = minutes < 12*60 ? "Дедлайн дуже близько!" : "Дедлайн близько", // Should title and message be purely client-side?
                     Message = $"Завдання '{task.Name}' має дедлайн!",
                     RelatedType = "task",
                     RelatedId = task.Id,
                     SpaceId = task.Event.SpaceId,
-                    DeadlineAt = task.EventTime
+                    DeadlineAt = task.EventTime,
+                    SentBefore = minutes
                 };
                 await notificationRepository.AddNotificationAsync(notification);
 
@@ -72,19 +70,21 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 // send notif via something
 
                 // signalR
-                await hubContext.Clients.All.SendAsync("ReceiveNotification",
-                    new NotificationDTO
-                    {
-                        Title = notification.Title,
-                        Message = notification.Message,
-                        RelatedType = notification.RelatedType,
-                        RelatedId = notification.RelatedId,
-                        SpaceId = notification.SpaceId,
-                        SentAt = notification.SentAt,
-                        DeadlineAt = notification.DeadlineAt,
-                        Read = notification.Read
-                    }
-                );
+                await hubContext.Clients
+                    .Group($"space-{notification.SpaceId}")
+                    .SendAsync("ReceiveNotification",
+                        new NotificationDTO
+                        {
+                            Title = notification.Title,
+                            Message = notification.Message,
+                            RelatedType = notification.RelatedType,
+                            RelatedId = notification.RelatedId,
+                            SpaceId = notification.SpaceId,
+                            SentAt = notification.SentAt,
+                            DeadlineAt = notification.DeadlineAt,
+                            Read = notification.Read
+                        }
+                    );
                 // email
 
             }

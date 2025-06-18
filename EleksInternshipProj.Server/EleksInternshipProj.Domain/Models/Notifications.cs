@@ -43,5 +43,9 @@ namespace EleksInternshipProj.Domain.Models
         [Required]
         [Column("read")]
         public bool Read { get; set; } = false;
+
+        [Required]
+        [Column("sent_before")]
+        public int SentBefore {  get; set; }
     }
 }

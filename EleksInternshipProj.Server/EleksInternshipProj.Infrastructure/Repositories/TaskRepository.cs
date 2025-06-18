@@ -95,13 +95,20 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             return affectedRows > 0;
         }
 
-        public async Task<IEnumerable<TaskModel>> GetByTimePeriodAsync(DateTime begin, DateTime end)
+        public async Task<IEnumerable<TaskModel>> GetByTimePeriodWithoutNotifAsync(DateTime begin, DateTime end, int sentBeforeMinutes)
         {
-            IEnumerable<TaskModel> tasks = await _context.Tasks
+            return await _context.Tasks
                 .Include(task => task.Event)
-                .Where(task => task.EventTime > begin && task.EventTime < end)
+                .Where(task =>
+                    task.EventTime > begin
+                    && task.EventTime < end
+                    && !_context.Notifications.Any(n=> 
+                        n.RelatedType == "task"
+                        && n.RelatedId == task.Id
+                        && n.SentBefore == sentBeforeMinutes
+                    )
+                )
                 .ToListAsync();
-            return tasks;
         }
     }
 }

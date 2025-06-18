@@ -20,7 +20,6 @@ export class NotificationsComponent {
     this.notificationsService.getNotifications().subscribe({
       next: (response: NotificationsResponse) => {
         this.notifications = response.data;
-        console.log(this.notifications);
       },
       error: (error) => {
         console.error(error.error.message);

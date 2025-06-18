@@ -15,6 +15,6 @@ namespace EleksInternshipProj.Domain.Abstractions
         Task<bool> UpdateAsync(TaskModel task);
         Task<bool> UpdateStatusAsync(long taskId, long newStatusId);
         Task<bool> DeleteAsync(long id);
-        Task<IEnumerable<TaskModel>> GetByTimePeriodAsync(DateTime begin, DateTime end);
+        Task<IEnumerable<TaskModel>> GetByTimePeriodWithoutNotifAsync(DateTime begin, DateTime end, int sentBeforeMinutes);
     }
 }

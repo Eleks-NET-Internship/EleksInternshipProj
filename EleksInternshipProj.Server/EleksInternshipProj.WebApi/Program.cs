@@ -69,7 +69,8 @@ namespace EleksInternshipProj.WebApi
 
             app.MapControllers();
 
-            app.MapHub<NotificationHub>("/hubs/notifications");
+            app.MapHub<NotificationHub>("/hubs/notifications")
+                .RequireAuthorization();
 
             app.MapFallbackToFile("/index.html");
 
