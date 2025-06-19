@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { NotificationsSignalrService } from '../../../../core/services/notifications/notifications-signalr.service';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,10 @@ import { Router } from '@angular/router';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  constructor(private readonly authService: AuthService, private readonly snackBar: MatSnackBar, private readonly router: Router) {}
+  constructor(private readonly authService: AuthService,
+    private readonly snackBar: MatSnackBar,
+    private readonly router: Router,
+    private readonly notifSignalRService: NotificationsSignalrService) { }
 
   hide = signal(true);
   clickEvent(event: MouseEvent) {
@@ -26,6 +30,7 @@ export class LoginComponent {
     this.authService.login(this.loginPayload).subscribe({
       next: (response) => {
         this.authService.setToken(response.accessToken);
+        this.notifSignalRService.startConnection();
         this.router.navigate(['/spaces']);
       },
       error: (error) => {

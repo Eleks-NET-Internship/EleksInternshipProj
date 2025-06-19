@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { NotificationsSignalrService } from '../notifications/notifications-signalr.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class AuthService {
   private readonly apiBaseUrl = 'https://localhost:7050';
   private readonly TOKEN_KEY = 'access_token';
 
-  constructor(private readonly http: HttpClient, private router: Router) { }
+  constructor(private readonly http: HttpClient, private router: Router, private notificationSignalRService: NotificationsSignalrService) { }
 
   getToken() {
     return sessionStorage.getItem(this.TOKEN_KEY);
@@ -26,6 +27,7 @@ export class AuthService {
 
   logout() {
     sessionStorage.removeItem(this.TOKEN_KEY);
+    this.notificationSignalRService.stopConnection();
     this.router.navigate(['/login']);
   }
 

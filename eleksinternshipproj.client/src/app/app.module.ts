@@ -46,6 +46,7 @@ import { TasksComponent } from './feature/tasks/components/tasks/tasks.component
 import { AddEventDialogComponent } from './feature/events/components/add-event-dialog/add-event-dialog.component';
 import { EventDetailComponent } from './feature/events/components/event-detail/event-detail.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NotificationsComponent } from './feature/notifications/components/notifications/notifications.component';
 
 
 
@@ -68,7 +69,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     EventsComponent,
     TasksComponent,
     AddEventDialogComponent,
-    EventDetailComponent
+    EventDetailComponent,
+    NotificationsComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

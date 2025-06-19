@@ -11,6 +11,7 @@ using EleksInternshipProj.Application.Services.Imp;
 using EleksInternshipProj.Infrastructure.Repositories;
 using EleksInternshipProj.Infrastructure.Extensions;
 using EleksInternshipProj.Infrastructure.Services;
+using EleksInternshipProj.Infrastructure.BackgroundTasks;
 
 namespace EleksInternshipProj.WebApi.Extensions
 {
@@ -28,6 +29,7 @@ namespace EleksInternshipProj.WebApi.Extensions
             services.AddScoped<ITaskService, TaskService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<ISpaceService, SpaceService>();
+            services.AddScoped<INotificationService, NotificationService>();
 
             return services;
         }
@@ -41,6 +43,7 @@ namespace EleksInternshipProj.WebApi.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<ISpaceRepository, SpaceRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
 
             return services;
         }
@@ -115,6 +118,14 @@ namespace EleksInternshipProj.WebApi.Extensions
                 });
             });
 
+            return services;
+        }
+
+        public static IServiceCollection AddHostedServices(this IServiceCollection services)
+        {
+            services.AddSignalR();
+
+            services.AddHostedService<TaskNotificationWorker>();
             return services;
         }
     }

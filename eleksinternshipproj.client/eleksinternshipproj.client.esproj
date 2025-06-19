@@ -9,11 +9,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\core\guards\" />
+    <Folder Include="src\app\core\services\notifications\" />
     <Folder Include="src\app\feature\calendar\services\" />
     <Folder Include="src\app\feature\events\components\" />
     <Folder Include="src\app\feature\events\services\" />
     <Folder Include="src\app\feature\notes\components\" />
     <Folder Include="src\app\feature\notes\services\" />
+    <Folder Include="src\app\feature\notifications\components\" />
+    <Folder Include="src\app\feature\notifications\services\" />
     <Folder Include="src\app\feature\schedule\services\" />
     <Folder Include="src\app\feature\spaces\components\" />
     <Folder Include="src\app\feature\spaces\services\" />

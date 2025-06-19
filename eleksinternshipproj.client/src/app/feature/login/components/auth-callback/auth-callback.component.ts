@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth/auth.service';
+import { NotificationsSignalrService } from '../../../../core/services/notifications/notifications-signalr.service';
 
 @Component({
   selector: 'app-auth-callback',
@@ -11,7 +12,8 @@ export class AuthCallbackComponent {
   constructor(
     private route: ActivatedRoute,
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private readonly notifSignalRService: NotificationsSignalrService
   ) { }
 
   ngOnInit(): void {
@@ -22,7 +24,7 @@ export class AuthCallbackComponent {
 
         if (token) {
           this.auth.setToken(token);
-
+          this.notifSignalRService.startConnection();
           this.router.navigateByUrl(returnUrl);
         } else {
           this.router.navigate(['/login']);

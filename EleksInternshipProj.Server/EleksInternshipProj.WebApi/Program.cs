@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 using EleksInternshipProj.Infrastructure.Data;
 using EleksInternshipProj.WebApi.Extensions;
+using EleksInternshipProj.Infrastructure.Hubs;
 
 namespace EleksInternshipProj.WebApi
 {
@@ -40,6 +41,7 @@ namespace EleksInternshipProj.WebApi
             // From extensions
             builder.Services.AddApplicationServices();
             builder.Services.AddRepositories();
+            builder.Services.AddHostedServices();
             builder.Services.ConfigureAuth(builder.Configuration);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -66,6 +68,9 @@ namespace EleksInternshipProj.WebApi
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.MapHub<NotificationHub>("/hubs/notifications")
+                .RequireAuthorization();
 
             app.MapFallbackToFile("/index.html");
 
