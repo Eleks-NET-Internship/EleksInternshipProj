@@ -22,7 +22,7 @@ export class SpacesComponent implements OnInit {
   getSpaces(): void {
     this.spacesService.getSpaces().subscribe({
       next: (response) => {
-        this.spaces = response;
+        this.spaces = Array.isArray(response) ? response : [];
       },
       error: (err) => {
         console.error('Помилка завантаження просторів', err);
