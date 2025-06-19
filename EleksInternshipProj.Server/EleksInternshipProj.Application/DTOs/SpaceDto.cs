@@ -5,7 +5,7 @@
         public long Id { get; set; }
         public string Name { get; set; } = null!;
 
-        public List<UserSpaceDto>? UserSpaces { get; set; }
+        public List<UserSpaceDtoShort>? UserSpaces { get; set; }
     }
 }
 

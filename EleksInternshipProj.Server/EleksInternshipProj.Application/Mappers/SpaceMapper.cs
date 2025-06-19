@@ -11,7 +11,7 @@ public static class SpaceMapper
         {
             Id = entity.Id,
             Name = entity.Name,
-            UserSpaces = entity.UserSpaces?.Select(UserSpaceMapper.ToDto).ToList() ?? new List<UserSpaceDto>()
+            UserSpaces = entity.UserSpaces?.Select(UserSpaceMapper.ToDtoShort).ToList() ?? new List<UserSpaceDtoShort>()
         };
     }
 

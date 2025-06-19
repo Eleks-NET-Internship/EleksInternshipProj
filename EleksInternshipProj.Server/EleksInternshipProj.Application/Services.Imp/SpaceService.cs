@@ -24,6 +24,11 @@ namespace EleksInternshipProj.Application.Services.Imp
             };
             return await _spaceRepository.AddAsync(space, userId);
         }
+        
+        public async Task<Space?> AddSpaceAsync(SpaceDto spaceDto)
+        {
+            return await _spaceRepository.AddAsync(spaceDto.ToEntity());
+        }
 
         public async Task<bool> AddUserToSpaceAsync(UserSpaceDto userSpaceDto)
         {

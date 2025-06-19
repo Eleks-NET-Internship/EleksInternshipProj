@@ -51,6 +51,25 @@ namespace EleksInternshipProj.Infrastructure.Repositories
                 return null;
             }
         }
+        
+        public async Task<Space?> AddAsync(Space space)
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                await _context.Spaces.AddAsync(space);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+                return space;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex, $"Fail! Error occurred while adding new Space: '{space}'");
+                return null;
+            }
+        }
 
         public async Task<Space?> AddToAsync(long spaceId, long userId, long roleId)
         {

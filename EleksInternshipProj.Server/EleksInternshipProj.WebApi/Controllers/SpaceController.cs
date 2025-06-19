@@ -37,7 +37,7 @@ namespace EleksInternshipProj.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SpaceDto>> AddSpace([FromBody]string spaceName)
+        public async Task<ActionResult<SpaceDto>> AddSpace([FromBody] SpaceDto spaceDto)
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
@@ -45,7 +45,15 @@ namespace EleksInternshipProj.WebApi.Controllers
                 return Unauthorized("No id");
             }
 
-            var space = await _spaceService.AddSpaceAsync(long.Parse(userId), spaceName);
+            if (spaceDto.UserSpaces != null)
+            {
+                foreach (var userSpaceDto in spaceDto.UserSpaces)
+                {
+                    userSpaceDto.UserId = long.Parse(userId);
+                }
+            }
+
+            var space = await _spaceService.AddSpaceAsync(spaceDto);
             if (space == null) return BadRequest("Failed to create space.");
 
             return Ok(space.ToDto());

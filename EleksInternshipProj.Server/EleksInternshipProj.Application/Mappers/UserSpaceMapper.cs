@@ -17,6 +17,17 @@ public static class UserSpaceMapper
             User = entity.User?.ToDto()
         };
     }
+    
+    public static UserSpaceDtoShort ToDtoShort(this UserSpace entity)
+    {
+        return new UserSpaceDtoShort()
+        {
+            Id = entity.Id,
+            UserId = entity.UserId,
+            SpaceId = entity.SpaceId,
+            RoleId = entity.RoleId,
+        };
+    }
 
     public static UserSpace ToEntity(this UserSpaceDto dto)
     {
@@ -28,6 +39,17 @@ public static class UserSpaceMapper
             RoleId = dto.RoleId,
             Role =  dto.Role!.ToEntity(),
             User = dto.User?.ToEntity()
+        };
+    }
+    
+    public static UserSpace ToEntity(this UserSpaceDtoShort dto)
+    {
+        return new UserSpace
+        {
+            Id = dto.Id,
+            UserId = dto.UserId,
+            SpaceId = dto.SpaceId,
+            RoleId = dto.RoleId,
         };
     }
 }

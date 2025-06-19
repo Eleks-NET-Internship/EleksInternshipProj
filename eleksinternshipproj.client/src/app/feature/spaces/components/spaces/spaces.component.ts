@@ -61,7 +61,7 @@ export class SpacesComponent implements OnInit {
     const newName = prompt('Нова назва:', space.name);
     if (newName && newName.trim()) {
       space.name = newName.trim();
-      this.spacesService.renameSpace(space).subscribe({
+      this.spacesService.renameSpace(space.id, space.name).subscribe({
         next: (updatedSpace) => {
           space.name = updatedSpace.name;
         },
