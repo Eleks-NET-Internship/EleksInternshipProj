@@ -1,13 +1,8 @@
 // calendar-form.component.ts
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-interface TaskGroup {
-  task1?: string;
-  task2?: string;
-  task3?: string;
-  task4?: string;
-  task5?: string;
-}
+import type { TaskDTO } from '../../models/calendar-models';
+import { CalendarService } from '../../services/calendar.service';
 
 @Component({
   selector: 'app-calendar-form',
@@ -15,44 +10,58 @@ interface TaskGroup {
   styleUrls: ['./calendar-form.component.css']
 })
 export class CalendarFormComponent implements OnChanges {
-  @Input() selectedDate: Date | null = null; // variable that has the current chosen date, use it for the data fetching from the db
+  @Input({ required: true }) selectedDate: Date | null = null;
 
   displayTitle: string = 'СЬОГОДНІ';
+
+  today!: Date;
   
-  todayTasks: TaskGroup = {
-    task1: 'тралалейлотралала',
-    task2: 'пумпурумпумпум'
-  };
+  todayTasks: TaskDTO[] = [];
 
-  tomorrowTasks: TaskGroup = {
-    task1: 'лалалалала'
-  };
+  tomorrowTasks: TaskDTO[] = [];
 
-  weekTasks: TaskGroup = {
-    task1: 'тралалейлотралала',
-    task2: 'пумпурумпумпум',
-    task3: 'лалалалала',
-    task4: 'тактовоттактоарешилла',
-    task5: 'саміпосудите'
-  };
+  weekTasks: TaskDTO[] = [];
 
-  constructor() { }
+  selectedDateTasks: TaskDTO[] = [];
+
+  events: any[] = [];
+
+  constructor(private readonly calendarService: CalendarService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Initialize with default display values
-    // In a real application, you might load this data from a service
     this.loadDisplayData();
     this.updateDisplayTitle();
   }
 
   private loadDisplayData(): void {
-    // This method could be used to load data from a service
-    // For now, we're using the default values set above
-    console.log('Display data loaded');
+    this.today = new Date();
+    this.calendarService.getTasksByDate(this.today).subscribe(tasks => {
+      this.todayTasks = tasks;
+    });
+
+    const tomorrow = new Date();
+    tomorrow.setDate(this.today.getDate() + 1);
+    this.calendarService.getTasksByDate(tomorrow).subscribe(tasks => {
+      this.tomorrowTasks = tasks;
+    });
+
+    this.calendarService.getTasksWithinWeek(this.today).subscribe(tasks => {
+      this.weekTasks = tasks;
+    });
+
+    if (this.selectedDate) {
+      this.calendarService.getTasksByDate(this.selectedDate).subscribe(tasks => {
+        this.selectedDateTasks = tasks;
+      });
+
+      this.calendarService.getEventsByDate(this.selectedDate).subscribe(events => {
+        this.events = events;
+      });
+    }
   }
 
   // Method to update display data (could be called from parent component)
-  updateDisplayData(todayTasks?: TaskGroup, tomorrowTasks?: TaskGroup, weekTasks?: TaskGroup): void {
+  updateDisplayData(todayTasks?: TaskDTO[], tomorrowTasks?: TaskDTO[], weekTasks?: TaskDTO[]): void {
     if (todayTasks) {
       this.todayTasks = { ...this.todayTasks, ...todayTasks };
     }
@@ -65,7 +74,7 @@ export class CalendarFormComponent implements OnChanges {
   }
 
   // Helper method to get all tasks as a single object
-  getAllTasks(): { today: TaskGroup, tomorrow: TaskGroup, week: TaskGroup } {
+  getAllTasks(): { today: TaskDTO[], tomorrow: TaskDTO[], week: TaskDTO[] } {
     return {
       today: this.todayTasks,
       tomorrow: this.tomorrowTasks,
