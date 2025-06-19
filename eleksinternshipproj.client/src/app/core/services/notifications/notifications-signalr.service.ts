@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { AuthService } from '../auth/auth.service';
+import { TokenActionsService } from '../tokens/token-actions.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class NotificationsSignalrService {
 
   private readonly apiBaseUrl = 'https://localhost:7050';
 
-  constructor(private authService: AuthService) { }
+  constructor(private tokenActionsService: TokenActionsService) { }
 
   startConnection(): void {
     if (this.hubConnection && this.hubConnection.state === signalR.HubConnectionState.Connected) {
@@ -20,7 +21,7 @@ export class NotificationsSignalrService {
 
     const options: signalR.IHttpConnectionOptions = {
       accessTokenFactory: () => {
-        return this.authService.getToken() ?? ""
+        return this.tokenActionsService.getToken() ?? ""
       }
     }
 

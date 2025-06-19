@@ -3,6 +3,7 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { NotificationsSignalrService } from '../../../../core/services/notifications/notifications-signalr.service';
+import { TokenActionsService } from '../../../../core/services/tokens/token-actions.service';
 
 @Component({
   selector: 'app-login',
@@ -11,6 +12,7 @@ import { NotificationsSignalrService } from '../../../../core/services/notificat
 })
 export class LoginComponent {
   constructor(private readonly authService: AuthService,
+    private readonly tokenActionsService: TokenActionsService,
     private readonly snackBar: MatSnackBar,
     private readonly router: Router,
     private readonly notifSignalRService: NotificationsSignalrService) { }
@@ -29,7 +31,7 @@ export class LoginComponent {
   onSignIn() {
     this.authService.login(this.loginPayload).subscribe({
       next: (response) => {
-        this.authService.setToken(response.accessToken);
+        this.tokenActionsService.setToken(response.accessToken);
         this.notifSignalRService.startConnection();
         this.router.navigate(['/spaces']);
       },

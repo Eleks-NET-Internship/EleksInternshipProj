@@ -9,6 +9,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="src\app\core\guards\" />
+    <Folder Include="src\app\core\services\tokens\" />
     <Folder Include="src\app\core\services\notifications\" />
     <Folder Include="src\app\feature\calendar\services\" />
     <Folder Include="src\app\feature\events\components\" />
