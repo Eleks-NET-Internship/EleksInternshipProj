@@ -24,7 +24,7 @@
       <div class="empty-message">Пусто</div>
     } @else {
       @for (space of spaces; track space.id) {
-        <div class="space-card">
+        <div class="space-card" (click)="selectSpace(space)">
           <div class="space-info">
             <div class="space-name">{{ space.name }}</div>
             <div class="space-divider"></div>

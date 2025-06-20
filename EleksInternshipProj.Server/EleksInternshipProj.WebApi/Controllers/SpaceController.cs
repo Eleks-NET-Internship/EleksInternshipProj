@@ -76,10 +76,9 @@ namespace EleksInternshipProj.WebApi.Controllers
         }
 
         [HttpPatch]
-        [Route("{spaceId:long}")]
-        public async Task<IActionResult> RenameSpace(long spaceId, [FromBody] string newName)
+        public async Task<IActionResult> RenameSpace([FromBody]SpaceRenameDto spaceDto)
         {
-            var space = await _spaceService.RenameSpaceAsync(spaceId, newName);
+            var space = await _spaceService.RenameSpaceAsync(spaceDto.Id, spaceDto.Name);
             if (space == null) return NotFound();
 
             return Ok(new SpaceDto { Id = space.Id, Name = space.Name });
