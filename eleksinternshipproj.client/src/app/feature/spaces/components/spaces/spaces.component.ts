@@ -26,8 +26,13 @@ export class SpacesComponent implements OnInit {
 
   getSpaces(): void {
     this.spacesService.getSpaces().subscribe({
-      next: (res) => this.spaces = Array.isArray(res) ? res : [],
-      error: (err) => console.error('Помилка завантаження просторів', err)
+      next: (response) => {
+        this.spaces = Array.isArray(response) ? response : [];
+        sessionStorage.setItem('spaces', JSON.stringify(this.spaces));
+      },
+      error: (err) => {
+        console.error('Помилка завантаження просторів', err);
+      }
     });
   }
 
