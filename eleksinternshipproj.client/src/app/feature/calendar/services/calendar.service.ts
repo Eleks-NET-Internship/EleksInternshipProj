@@ -9,7 +9,7 @@ import type { AddUniqueEventDto, TaskDTO, UniqueEventDTO } from '../models/calen
 })
 export class CalendarService {
   private readonly apiBaseUrl = 'https://localhost:7050';
-  private readonly spaceId = sessionStorage.getItem('selectedSpace');
+  private readonly spaceId = JSON.parse(sessionStorage.getItem('selectedSpace') ?? '').id;
   private tasks!: Observable<{ data: TaskDTO[] }>;
 
   constructor(private readonly http: HttpClient) { }
