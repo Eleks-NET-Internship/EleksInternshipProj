@@ -14,7 +14,7 @@ public class UserSpace
     [ForeignKey(nameof(User))]
     [Column("user_id")]
     public long UserId { get; set; }
-    public User User { get; set; } = null!;
+    public User? User { get; set; } = null!;
 
     [Required]
     [ForeignKey(nameof(Space))]
@@ -26,5 +26,5 @@ public class UserSpace
     [ForeignKey(nameof(Role))]
     [Column("role_id")]
     public long RoleId { get; set; }
-    public Role Role { get; set; } = null!;
+    public Role? Role { get; set; } = null!;
 }

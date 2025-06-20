@@ -1,29 +1,60 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SpaceDto } from '../models/spaces-models';
+import { environment} from '../../../shared/.env/environment';
+import { SpaceDto, UserSpaceDto } from '../models/spaces-models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpacesService {
-  private readonly apiBaseUrl = 'https://localhost:7050';
+  private readonly apiBaseUrl = `${environment.apiUrl}/Space`;
 
   constructor(private readonly http: HttpClient) { }
 
   getSpaces(): Observable<SpaceDto[]> {
-    return this.http.get<SpaceDto[]>(`${this.apiBaseUrl}/api/Space/all`);
+    return this.http.get<SpaceDto[]>(`${this.apiBaseUrl}/all`);
   }
 
   createSpace(spaceName: string): Observable<SpaceDto> {
-    return this.http.post<SpaceDto>(`${this.apiBaseUrl}/api/Space/add`, spaceName);
+    if (!spaceName || spaceName.trim() === '') {
+      throw new Error('Space name cannot be empty');
+    }
+
+    const spaceDto: SpaceDto = {
+      id: 0,
+      name: spaceName.trim(),
+      userSpaces: [
+        {
+          id: 0,
+          userId: 0,
+          spaceId: 0,
+          roleId: 1
+        }
+      ]
+    }
+
+    return this.http.post<SpaceDto>(this.apiBaseUrl, spaceDto, {
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 
-  deleteSpace(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiBaseUrl}/api/Space/delete/${id}`);
+  addUserToSpace(spaceId: number, userId: number, roleId: number): Observable<UserSpaceDto> {
+    return this.http.post<UserSpaceDto>(
+      `${this.apiBaseUrl}/${spaceId}?userId=${userId}&roleId=${roleId}`,
+      null
+    );
   }
 
-  renameSpace(space: SpaceDto): Observable<SpaceDto> {
-    return this.http.patch<SpaceDto>(`${this.apiBaseUrl}/api/Space/rename/${space.id}`, space.name);
+  deleteSpace(spaceId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiBaseUrl}/${spaceId}`);
+  }
+
+  renameSpace(spaceId: number, newName: string): Observable<SpaceDto> {
+    return this.http.patch<SpaceDto>(
+      `${this.apiBaseUrl}/${spaceId}`,
+      newName,
+      { headers: { 'Content-Type': 'application/json' } }
+    );
   }
 }

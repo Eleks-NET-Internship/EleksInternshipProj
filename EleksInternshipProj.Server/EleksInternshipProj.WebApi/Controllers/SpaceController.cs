@@ -1,8 +1,12 @@
-﻿using EleksInternshipProj.Application.DTOs;
+using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
+using EleksInternshipProj.Domain.Abstractions;
+using EleksInternshipProj.Domain.Models;
+using EleksInternshipProj.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using EleksInternshipProj.Application.Mappers;
 
 namespace EleksInternshipProj.WebApi.Controllers
 {
@@ -20,27 +24,20 @@ namespace EleksInternshipProj.WebApi.Controllers
 
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetSpaces()
+        public async Task<ActionResult<IEnumerable<SpaceDto>>> GetSpaces()
         {
-            string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
             {
                 return Unauthorized("No id");
             }
 
-            var (spaces, totalCount) = await _spaceService.GetSpacesAsync(long.Parse(userId));
-
-            var result = new
-            {
-                TotalCount = totalCount,
-                Items = spaces.Select(s => new SpaceDto { Id = s.Id, Name = s.Name })
-            };
-
-            return Ok(result);
+            var spaces = await _spaceService.GetSpacesAsync(long.Parse(userId));
+            return Ok(spaces);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddSpace([FromBody]string spaceName)
+        public async Task<ActionResult<SpaceDto>> AddSpace([FromBody] SpaceDto spaceDto)
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)
@@ -48,17 +45,32 @@ namespace EleksInternshipProj.WebApi.Controllers
                 return Unauthorized("No id");
             }
 
-            var space = await _spaceService.AddSpaceAsync(long.Parse(userId), spaceName);
+            if (spaceDto.UserSpaces != null)
+            {
+                foreach (var userSpaceDto in spaceDto.UserSpaces)
+                {
+                    userSpaceDto.UserId = long.Parse(userId);
+                }
+            }
+
+            var space = await _spaceService.AddSpaceAsync(spaceDto);
             if (space == null) return BadRequest("Failed to create space.");
 
-            return Ok(new SpaceDto { Id = space.Id, Name = space.Name });
+            return Ok(space.ToDto());
         }
 
         [HttpPost]
         [Route("{spaceId:long}")]
-        public async Task<IActionResult> AddToSpace(long spaceId, [FromBody] string userName)
+        public async Task<ActionResult<UserSpaceDto>> AddToSpace(long spaceId, [FromRoute] long userId, [FromRoute] long roleId)
         {
-            var result = await _spaceService.AddUserToSpaceAsync(spaceId, userName);
+            var userSpaceDto = new UserSpaceDto
+            {
+                SpaceId = spaceId,
+                UserId = userId,
+                RoleId = roleId
+            };
+            
+            var result = await _spaceService.AddUserToSpaceAsync(userSpaceDto);
 
             return Ok(result);
         }

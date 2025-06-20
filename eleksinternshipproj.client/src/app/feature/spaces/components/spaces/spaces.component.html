@@ -20,14 +20,18 @@
 
   <!-- Main content -->
   <div class="space-content">
-    <div *ngIf="spaces.length === 0" class="empty-message">Пусто</div>
-
-    <div *ngFor="let space of spaces" class="space-card">
-      <div class="space-name">{{ space.name }}</div>
-      <div class="space-actions">
-        <button class="action-btn" (click)="renameSpace(space)">Редагувати</button>
-        <button class="action-btn delete" (click)="deleteSpace(space.id)">Видалити</button>
-      </div>
-    </div>
+    @if (spaces.length === 0) {
+      <div class="empty-message">Пусто</div>
+    } @else {
+      @for (space of spaces; track space.id) {
+        <div class="space-card">
+          <div class="space-name">{{ space.name }}</div>
+          <div class="space-actions">
+            <button class="action-btn" (click)="renameSpace(space)">Редагувати</button>
+            <button class="action-btn delete" (click)="deleteSpace(space.id)">Видалити</button>
+          </div>
+        </div>
+      }
+    }
   </div>
 </div>

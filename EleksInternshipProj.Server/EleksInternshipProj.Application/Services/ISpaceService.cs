@@ -1,12 +1,14 @@
-﻿using EleksInternshipProj.Domain.Models;
+﻿using EleksInternshipProj.Application.DTOs;
+using EleksInternshipProj.Domain.Models;
 
 namespace EleksInternshipProj.Application.Services
 {
     public interface ISpaceService
     {
-        public Task<(IEnumerable<Space>, int)> GetSpacesAsync(long userId);
+        public Task<IEnumerable<SpaceDto>> GetSpacesAsync(long userId);
         public Task<Space?> AddSpaceAsync(long userId, string name);
-        public Task<bool> AddUserToSpaceAsync(long spaceId, string userName);
+        public Task<Space?> AddSpaceAsync(SpaceDto spaceDto);
+        public Task<bool> AddUserToSpaceAsync(UserSpaceDto userSpaceDto);
         public Task<bool> DeleteSpaceAsync(long spaceId);
         public Task<Space?> RenameSpaceAsync(long spaceId, string newName);
     }
