@@ -19,6 +19,12 @@
         
         public TimetableDtoShort? Timetable { get; set; } = null!;
     }
+
+    public class SpaceRenameDto
+    {
+        public long Id { get; set; }
+        public string Name { get; set; }
+    }
 }
 
 

@@ -38,3 +38,8 @@ export interface TimetableDtoShort {
   id: number;
   spaceId: number;
 }
+
+export interface SpaceRenameDto {
+  id: number;
+  name: string;
+}
