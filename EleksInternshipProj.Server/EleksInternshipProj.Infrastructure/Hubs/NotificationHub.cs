@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-
+using EleksInternshipProj.Application.Mappers;
 using Microsoft.AspNetCore.SignalR;
 
 using EleksInternshipProj.Application.Services;
@@ -26,7 +26,7 @@ namespace EleksInternshipProj.Infrastructure.Hubs
 
             long userId = long.Parse(id);
 
-            (IEnumerable<Space> spaces, _) = await _spaceService.GetSpacesAsync(userId);
+            IEnumerable<Space> spaces = (await _spaceService.GetSpacesAsync(userId)).Select(s => s.ToEntity());
             foreach (Space space in spaces)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, $"space-{space.Id}");
@@ -43,7 +43,7 @@ namespace EleksInternshipProj.Infrastructure.Hubs
 
             long userId = long.Parse(id);
 
-            (IEnumerable<Space> spaces, _) = await _spaceService.GetSpacesAsync(userId);
+            IEnumerable<Space> spaces = (await _spaceService.GetSpacesAsync(userId)).Select(s => s.ToEntity());
             foreach (Space space in spaces)
             {
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, $"space-{space.Id}");
