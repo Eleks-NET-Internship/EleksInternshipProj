@@ -61,7 +61,16 @@ namespace EleksInternshipProj.Infrastructure.Repositories
                 await _context.SaveChangesAsync();
 
                 await transaction.CommitAsync();
-                return space;
+                
+                var result = await _context.Spaces.FindAsync(space.Id);
+                
+                if (result == null)
+                {
+                    _logger.LogWarning($"Fail! Space '{space.Name}' not created.");
+                    return null;
+                }
+                
+                return result;
             }
             catch (Exception ex)
             {
@@ -71,7 +80,7 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             }
         }
 
-        public async Task<Space?> AddToAsync(long spaceId, long userId, long roleId)
+        public async Task<UserSpace?> AddToAsync(long spaceId, long userId, long roleId)
         {
             _logger.LogInformation($"Adding new User ID = {userId} to Space with Id '{spaceId}'");
 
@@ -90,9 +99,18 @@ namespace EleksInternshipProj.Infrastructure.Repositories
 
                 await transaction.CommitAsync();
 
-                var space = await _context.Spaces.FindAsync(spaceId);
-                _logger.LogInformation($"Success! User ID = {userId} assigned to Space ID = {space?.Id}");
-                return space;
+                var result = await _context.UserSpaces.FindAsync(userSpace.Id);
+                
+                if (result == null)
+                {
+                    _logger.LogWarning($"Fail! User ID = {userId} not assigned to Space ID = {spaceId}");
+                    return null;
+                }
+                else
+                {
+                    _logger.LogWarning($"Success! User ID = {userId} assigned to Space ID = {spaceId}");
+                    return result;
+                }
             }
             catch (Exception ex)
             {

@@ -94,13 +94,16 @@
 }
 
 .space-name {
-  font-size: 16px;
+  font-size: 24px;
   font-weight: 500;
+  text-align: left;
 }
 
 .space-actions {
   display: flex;
+  flex-direction: column;
   gap: 8px;
+  padding-left: 16px;
 }
 
 .action-btn {
@@ -125,3 +128,31 @@
 .action-btn.delete:hover {
   background-color: #fbb;
 }
+
+.user-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.user-chip {
+  background-color: #e0e0e0;
+  padding: 4px 10px;
+  font-size: 13px;
+  border-radius: 999px;
+  display: inline-block;
+  cursor: default;
+  color: #333;
+}
+
+.user-chip.admin {
+  background-color: #ffeb3b; /* yellow */
+  color: #000;
+  font-weight: 600;
+}
+
+.space-info {
+  flex-grow: 1;
+}
+

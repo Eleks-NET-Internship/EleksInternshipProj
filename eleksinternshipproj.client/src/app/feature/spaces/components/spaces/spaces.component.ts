@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { SpacesService } from '../../services/spaces.service';
-import { SpaceDto } from '../../models/spaces-models';
+import {SpaceDto, UserSpaceDto} from '../../models/spaces-models';
 
 @Component({
   selector: 'app-spaces',
@@ -71,6 +71,25 @@ export class SpacesComponent implements OnInit {
       });
     }
   }
+
+  addUserToSpace(spaceId: number): void {
+    const username = prompt('Введіть email користувача, якого додати до простору:');
+    if (username && username.trim()) {
+      this.spacesService.addUserToSpace(spaceId, username.trim()).subscribe({
+        next: (updatedUserSpace: UserSpaceDto) => {
+          const space = this.spaces.find(s => s.id === spaceId);
+          if (space) {
+            if (!space.userSpaces) space.userSpaces = [];
+            space.userSpaces.push(updatedUserSpace);
+          }
+        },
+        error: (err) => {
+          console.error('Не вдалося додати користувача до простору', err);
+        }
+      });
+    }
+  }
+
 
   deleteSpace(id: number): void {
     const confirmed = confirm('Ви впевнені, що хочете видалити цей простір?');

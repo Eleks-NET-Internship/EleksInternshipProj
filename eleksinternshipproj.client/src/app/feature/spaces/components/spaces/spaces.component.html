@@ -25,12 +25,26 @@
     } @else {
       @for (space of spaces; track space.id) {
         <div class="space-card">
-          <div class="space-name">{{ space.name }}</div>
+          <div class="space-info">
+            <div class="space-name">{{ space.name }}</div>
+            <div class="space-divider"></div>
+            <div class="user-chips">
+      <span *ngFor="let us of space.userSpaces"
+            class="user-chip"
+            [class.admin]="us.roleId === 1"
+            [title]="us.user.firstName + ' ' + us.user.lastName + ' (' + us.user.email + ')'">
+        {{ us.user.username }}
+      </span>
+            </div>
+          </div>
+
           <div class="space-actions">
             <button class="action-btn" (click)="renameSpace(space)">Редагувати</button>
+            <button class="action-btn" (click)="addUserToSpace(space.id)">+ Користувач</button>
             <button class="action-btn delete" (click)="deleteSpace(space.id)">Видалити</button>
           </div>
         </div>
+
       }
     }
   </div>
