@@ -37,7 +37,7 @@ namespace EleksInternshipProj.WebApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SpaceDto>> AddSpace([FromBody] SpaceDto spaceDto)
+        public async Task<ActionResult<SpaceDto>> AddSpace([FromBody] SpaceDtoShort spaceDto)
         {
             string? userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null)

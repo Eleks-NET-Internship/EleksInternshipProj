@@ -11,7 +11,19 @@ public static class SpaceMapper
         {
             Id = entity.Id,
             Name = entity.Name,
-            UserSpaces = entity.UserSpaces?.Select(UserSpaceMapper.ToDtoShort).ToList() ?? new List<UserSpaceDtoShort>()
+            UserSpaces = entity.UserSpaces?.Select(UserSpaceMapper.ToDto).ToList() ?? new List<UserSpaceDto>(),
+            Timetable = entity.Timetable.ToDtoShort()
+        };
+    }
+    
+    public static SpaceDtoShort ToDtoShort(this Space entity)
+    {
+        return new SpaceDtoShort
+        {
+            Id = entity.Id,
+            Name = entity.Name,
+            UserSpaces = entity.UserSpaces?.Select(UserSpaceMapper.ToDtoShort).ToList() ?? new List<UserSpaceDtoShort>(),
+            Timetable = entity.Timetable.ToDtoShort()
         };
     }
 
@@ -22,6 +34,18 @@ public static class SpaceMapper
             Id = dto.Id,
             Name = dto.Name,
             UserSpaces = dto.UserSpaces?.Select(UserSpaceMapper.ToEntity).ToList() ?? new List<UserSpace>(),
+            Timetable = dto.Timetable.ToEntity(),
+        };
+    }
+    
+    public static Space ToEntity(this SpaceDtoShort dto)
+    {
+        return new Space
+        {
+            Id = dto.Id,
+            Name = dto.Name,
+            UserSpaces = dto.UserSpaces?.Select(UserSpaceMapper.ToEntity).ToList() ?? new List<UserSpace>(),
+            Timetable = dto.Timetable.ToEntity(),
         };
     }
 }
