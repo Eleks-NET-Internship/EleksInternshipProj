@@ -23,6 +23,7 @@ export class SpacesComponent implements OnInit {
     this.spacesService.getSpaces().subscribe({
       next: (response) => {
         this.spaces = Array.isArray(response) ? response : [];
+        sessionStorage.setItem('spaces', JSON.stringify(this.spaces));
       },
       error: (err) => {
         console.error('Помилка завантаження просторів', err);
@@ -84,5 +85,10 @@ export class SpacesComponent implements OnInit {
         }
       });
     }
+  }
+
+  selectSpace(space: SpaceDto): void {
+    sessionStorage.setItem('selectedSpace', JSON.stringify(space));
+    // Тут можна додати логіку для переходу до вибраного простору, наприклад, через роутинг
   }
 }
