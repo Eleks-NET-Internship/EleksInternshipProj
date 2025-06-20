@@ -64,7 +64,13 @@ namespace EleksInternshipProj.WebApi.Controllers
         public async Task<ActionResult<UserSpaceDto>> AddToSpace(long spaceId, string username)
         {
             var result = await _spaceService.AddUserToSpaceAsync(spaceId, username);
-            return Ok(result);
+            
+            if (result == null)
+            {
+                return NotFound($"User '{username}' not found or could not be added to space with ID {spaceId}.");
+            }
+            
+            return Ok(result.ToDto());
         }
 
         [HttpDelete]

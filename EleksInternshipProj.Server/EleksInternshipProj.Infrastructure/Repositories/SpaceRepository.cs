@@ -62,7 +62,7 @@ namespace EleksInternshipProj.Infrastructure.Repositories
 
                 await transaction.CommitAsync();
                 
-                var result = await _context.Spaces.FindAsync(space.Id);
+                var result = await this.GetByIdAsync(space.Id);
                 
                 if (result == null)
                 {
@@ -99,7 +99,8 @@ namespace EleksInternshipProj.Infrastructure.Repositories
 
                 await transaction.CommitAsync();
 
-                var result = await _context.UserSpaces.FindAsync(userSpace.Id);
+                var result = await _context.UserSpaces.Include(us => us.User)
+                    .FirstOrDefaultAsync(us => us.SpaceId == spaceId && us.UserId == userId);;
                 
                 if (result == null)
                 {
@@ -151,6 +152,8 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             _logger.LogInformation($"Searching for Space with ID: {id}");
 
             var space = await _context.Spaces
+                .Include(s => s.UserSpaces).ThenInclude(us => us.User)
+                .Include(s => s.Timetable)
                 .FirstOrDefaultAsync(s => s.Id == id);
 
             if (space == null)
