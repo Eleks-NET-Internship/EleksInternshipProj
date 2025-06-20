@@ -8,7 +8,7 @@ import { SpaceDto, UserSpaceDto } from '../models/spaces-models';
   providedIn: 'root'
 })
 export class SpacesService {
-  private readonly apiBaseUrl = `${environment.apiUrl}/Space`;
+  private readonly apiBaseUrl = `${environment.apiUrl}/api/Space`;
 
   constructor(private readonly http: HttpClient) { }
 
