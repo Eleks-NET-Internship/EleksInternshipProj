@@ -29,6 +29,7 @@
       <div class="day-cell"
            *ngFor="let day of calendarDays; let i = index"
            [class.selected]="isSelectedDay(day)"
+           [style.visibility]="day === 0 ? 'hidden' : 'visible'"
            (click)="selectDay(day)">
         {{ day || '' }}
       </div>
