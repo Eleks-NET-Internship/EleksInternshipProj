@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, shareReplay } from 'rxjs';
+import { environment } from '../../../shared/.env/environment';
 
 import type { AddUniqueEventDto, TaskDTO, UniqueEventDTO } from '../models/calendar-models';
 
@@ -8,7 +9,7 @@ import type { AddUniqueEventDto, TaskDTO, UniqueEventDTO } from '../models/calen
   providedIn: 'root'
 })
 export class CalendarService {
-  private readonly apiBaseUrl = 'https://localhost:7050';
+  private readonly apiBaseUrl = environment.apiUrl;
   private readonly spaceId = JSON.parse(sessionStorage.getItem('selectedSpace') ?? '').id;
   private tasks!: Observable<{ data: TaskDTO[] }>;
 
