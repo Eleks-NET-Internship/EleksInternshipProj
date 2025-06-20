@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment} from '../../../shared/.env/environment';
-import {SpaceDto, SpaceDtoShort, UserSpaceDto} from '../models/spaces-models';
+import {SpaceDto, SpaceDtoShort, SpaceRenameDto, UserSpaceDto} from '../models/spaces-models';
 
 @Injectable({
   providedIn: 'root'
@@ -55,9 +55,14 @@ export class SpacesService {
   }
 
   renameSpace(spaceId: number, newName: string): Observable<SpaceDto> {
+    const spaceRenameDto: SpaceRenameDto = 
+    { 
+      id: spaceId,
+      name: newName.trim()
+    };
     return this.http.patch<SpaceDto>(
-      `${this.apiBaseUrl}/${spaceId}`,
-      newName,
+      `${this.apiBaseUrl}`,
+      spaceRenameDto,
       { headers: { 'Content-Type': 'application/json' } }
     );
   }
