@@ -2,19 +2,20 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable, shareReplay } from 'rxjs';
 
-import type { TaskDTO, UniqueEventDTO } from '../models/calendar-models';
+import type { AddUniqueEventDto, TaskDTO, UniqueEventDTO } from '../models/calendar-models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarService {
   private readonly apiBaseUrl = 'https://localhost:7050';
+  private readonly spaceId = sessionStorage.getItem('selectedSpace');
   private tasks!: Observable<{ data: TaskDTO[] }>;
 
   constructor(private readonly http: HttpClient) { }
 
   getTasks() {
-    this.tasks = this.http.get<{ data: TaskDTO[] }>(this.apiBaseUrl + '/api/Task/space/1').pipe(shareReplay(1));
+    this.tasks = this.http.get<{ data: TaskDTO[] }>(this.apiBaseUrl + '/api/Task/space/' + this.spaceId).pipe(shareReplay(1));
   }
   
   getTasksByDate(date: Date): Observable<TaskDTO[]> {
@@ -45,11 +46,25 @@ export class CalendarService {
   }
 
   getEventsByDate(date: Date): Observable<UniqueEventDTO[]> {
-    return this.http.get<{ data: UniqueEventDTO[] }>(this.apiBaseUrl + '/api/UniqueEvents/all/1').pipe(
+    return this.http.get<{ data: UniqueEventDTO[] }>(this.apiBaseUrl + '/api/UniqueEvents/all/' + this.spaceId).pipe(
       map(res => res.data.filter(event => {
         const eventDate = new Date(event.eventTime);
         return this.areSameDate(date, eventDate);
       }))
+    );
+  }
+
+  addUniqueEvent(event: AddUniqueEventDto) {
+    event.spaceId = Number(this.spaceId);
+    this.http.post<{ message: string, data: { id: number, eventId: number } }>(this.apiBaseUrl + '/api/UniqueEvents', event, { observe: 'response' }).subscribe(
+      (response) => {
+        if (response.ok) {
+          console.log('Unique event successfully created with ID=' + response.body?.data.id);
+        }
+        else {
+          console.log('Error creating unique event: ', response.body);
+        }
+      }
     );
   }
 
@@ -63,5 +78,5 @@ export class CalendarService {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
-}
+  }
 }

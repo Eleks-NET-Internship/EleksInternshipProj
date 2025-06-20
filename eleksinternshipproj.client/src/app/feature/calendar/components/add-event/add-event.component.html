@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Нова подія</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" style="width: 100%;">
+    <mat-label>Назва події</mat-label>
+    <input matInput [(ngModel)]="eventName" />
+  </mat-form-field>
+
+  <label for="appt" class="material-label">Choose a time:</label><br>
+  <input type="time" id="appt" name="appt" class="material-timepicker" [(ngModel)]="eventTime" required>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Скасувати</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Зберегти</button>
+</mat-dialog-actions>

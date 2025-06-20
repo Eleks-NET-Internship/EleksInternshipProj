@@ -1,4 +1,9 @@
 import { Component, signal, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AddEventComponent } from '../add-event/add-event.component';
+
+import type { AddUniqueEventDto } from '../../models/calendar-models'; 
+import { CalendarService } from '../../services/calendar.service';
 
 @Component({
   selector: 'app-calendar',
@@ -17,7 +22,7 @@ export class CalendarComponent implements OnInit {
     'ЛИПЕНЬ', 'СЕРПЕНЬ', 'ВЕРЕСЕНЬ', 'ЖОВТЕНЬ', 'ЛИСТОПАД', 'ГРУДЕНЬ'
   ];
 
-  constructor() {}
+  constructor( private readonly calendarService: CalendarService, private readonly dialog: MatDialog ) {}
 
   ngOnInit(): void {
     this.generateCalendar();
@@ -109,4 +114,47 @@ export class CalendarComponent implements OnInit {
 
     this.generateCalendar();
   }
+
+  onEventCreating() {
+    const dialogRef = this.dialog.open(AddEventComponent, {
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next: (result: { eventName: string, eventTime: string }) => {
+        if (this.selectedDateSignal()?.toISOString() !== undefined) {
+          const addedEvent: AddUniqueEventDto = {
+            id: 0,
+            eventName: result.eventName,
+            eventTime: this.getFullDate(this.selectedDateSignal() as Date, result.eventTime),
+            spaceId: 0,
+          };
+          this.calendarService.addUniqueEvent(addedEvent);
+        }
+      },
+      error: (err) => {
+        console.error('Error during event creating: ', err);
+      }
+    });
+  }
+
+  private getFullDate(date: Date, time: string): string {
+    const [hours, minutes] = time.split(':').map(Number);
+    const timeAsDate = new Date();
+    timeAsDate.setHours(hours, minutes, 0, 0);
+
+    const fullDate = new Date(date);
+    fullDate.setUTCHours(timeAsDate.getUTCHours());
+    fullDate.setUTCMinutes(timeAsDate.getUTCMinutes());
+    fullDate.setUTCSeconds(timeAsDate.getUTCSeconds());
+    fullDate.setUTCMilliseconds(timeAsDate.getUTCMilliseconds());
+
+    return fullDate.toISOString();
+  }
+
+  // private toLocalISOString(date: Date): string {
+  //   const pad = (n: number) => String(n).padStart(2, '0');
+  //   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T` +
+  //         `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+  // }
 }
