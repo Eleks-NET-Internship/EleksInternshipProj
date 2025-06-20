@@ -1,5 +1,18 @@
-export interface TasksDTO {
-  mock: string
+export interface TaskDto {
+  id: number;
+  eventId: number;
+  statusId: number;
 
-  mock2?: string
+  // Опційне поле (для POST/PUT)
+  statusName?: string;
+
+  name: string;
+  eventTime: string;
+  isDeadline: boolean;
+  description: string;
+}
+
+export interface TaskModelStatusDto {
+  id: number;
+  name: string;
 }
