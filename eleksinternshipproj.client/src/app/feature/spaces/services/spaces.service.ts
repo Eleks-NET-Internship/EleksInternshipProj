@@ -2,13 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment} from '../../../shared/.env/environment';
-import { SpaceDto, UserSpaceDto } from '../models/spaces-models';
+import {SpaceDto, SpaceDtoShort, UserSpaceDto} from '../models/spaces-models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpacesService {
-  private readonly apiBaseUrl = `${environment.apiUrl}/Space`;
+  private readonly apiBaseUrl = `${environment.apiUrl}/api/Space`;
 
   constructor(private readonly http: HttpClient) { }
 
@@ -21,7 +21,7 @@ export class SpacesService {
       throw new Error('Space name cannot be empty');
     }
 
-    const spaceDto: SpaceDto = {
+    const spaceDtoShort: SpaceDtoShort = {
       id: 0,
       name: spaceName.trim(),
       userSpaces: [
@@ -31,10 +31,14 @@ export class SpacesService {
           spaceId: 0,
           roleId: 1
         }
-      ]
+      ],
+      timetable: {
+        id: 0,
+        spaceId: 0
+      }
     }
 
-    return this.http.post<SpaceDto>(this.apiBaseUrl, spaceDto, {
+    return this.http.post<SpaceDto>(this.apiBaseUrl, spaceDtoShort, {
       headers: { 'Content-Type': 'application/json' }
     });
   }

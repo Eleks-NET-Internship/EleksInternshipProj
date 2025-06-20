@@ -147,9 +147,11 @@ namespace EleksInternshipProj.Infrastructure.Repositories
         {
             _logger.LogInformation($"Fetching Spaces for User with ID = {userId}");
 
-            var spaces = await _context.UserSpaces
-                .Where(us => us.UserId == userId)
-                .Select(us => us.Space)
+            var spaces = await _context.Spaces
+                .Where(s => s.UserSpaces.Any(us => us.UserId == userId))
+                .Include(s => s.UserSpaces)
+                .ThenInclude(us => us.User)
+                .Include(s => s.Timetable)
                 .ToListAsync();
 
             _logger.LogInformation($"Found {spaces.Count} Space(s) for User ID = {userId}");
