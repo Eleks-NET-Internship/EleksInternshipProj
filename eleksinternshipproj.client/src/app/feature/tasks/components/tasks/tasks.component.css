@@ -1,0 +1,132 @@
+.task-container {
+  padding: 24px;
+  width: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.header-actions {
+  position: relative;
+}
+
+.add-task-btn {
+  background-color: transparent;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.add-task-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.task-divider {
+  height: 1px;
+  background-color: #ccc;
+  margin: 8px 0 20px;
+}
+
+.task-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px; /* Збільшений відступ між карточками */
+}
+
+.task-card {
+  padding: 20px; /* трохи більше паддінгу */
+  border-radius: 12px;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.07);
+  cursor: pointer;
+  transition: box-shadow 0.25s ease;
+}
+
+.task-card:hover {
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.12);
+}
+
+.task-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px; /* збільшений відступ між назвою та метаінформацією */
+}
+
+.task-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #222;
+  flex: 1 1 auto;
+  word-break: break-word;
+}
+
+.task-meta {
+  display: flex;
+  align-items: center;
+  gap: 36px; /* збільшений відступ між статусом і дедлайном */
+  min-width: 280px;
+}
+
+.task-meta-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* більший відступ між підписом і значенням */
+  min-width: 140px;
+}
+
+.deadline-field .task-deadline {
+  align-items: center; /* по центру по вертикалі */
+  display: flex;
+  gap: 8px;
+  font-size: 16px;
+  color: #555;
+  font-weight: 600;
+}
+
+.field-label {
+  font-weight: 600;
+  font-size: 14px;
+  color: #777;
+  user-select: none;
+}
+
+.task-status {
+  font-size: 14px;
+  height: 30px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.task-deadline {
+  font-weight: 600;
+  color: #555;
+}
+
+.clock-icon {
+  font-size: 20px;
+  color: #d32f2f;
+}
+
+.empty-message {
+  font-size: 18px;
+  color: #aaa;
+  text-align: center;
+  margin-top: 80px;
+  font-style: italic;
+}
