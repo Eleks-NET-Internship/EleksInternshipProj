@@ -38,7 +38,7 @@
 
   <!-- Calendar Form Section -->
   <div class="form-section">
-    <app-calendar-form [selectedDate]="selectedDateSignal()" />
+    <app-calendar-form [selectedDate]="selectedDateSignal()" [trigger]="triggerForForm" />
     @if (selectedDateSignal()) {
       <button class="create-event-btn" mat-button (click)="onEventCreating()">Створити подію</button>
     }

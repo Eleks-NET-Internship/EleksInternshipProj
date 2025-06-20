@@ -10,7 +10,8 @@ import { CalendarService } from '../../services/calendar.service';
   styleUrls: ['./calendar-form.component.css']
 })
 export class CalendarFormComponent implements OnChanges {
-  @Input({ required: true }) selectedDate: Date | null = null;
+  @Input({ required: true }) selectedDate!: Date | null;
+  @Input({ required: true }) trigger!: boolean;
 
   displayTitle: string = 'СЬОГОДНІ';
 
