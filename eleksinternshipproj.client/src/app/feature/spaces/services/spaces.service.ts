@@ -43,12 +43,11 @@ export class SpacesService {
     });
   }
 
-  addUserToSpace(spaceId: number, userId: number, roleId: number): Observable<UserSpaceDto> {
-    return this.http.post<UserSpaceDto>(
-      `${this.apiBaseUrl}/${spaceId}?userId=${userId}&roleId=${roleId}`,
-      null
-    );
+  addUserToSpace(spaceId: number, username: string): Observable<UserSpaceDto> {
+    return this.http.post<UserSpaceDto>(`${this.apiBaseUrl}/${spaceId}/add/${encodeURIComponent(username)}`, {});
   }
+
+
 
   deleteSpace(spaceId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiBaseUrl}/${spaceId}`);

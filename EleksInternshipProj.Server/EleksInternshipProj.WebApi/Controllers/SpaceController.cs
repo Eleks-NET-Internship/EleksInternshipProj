@@ -60,19 +60,17 @@ namespace EleksInternshipProj.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("{spaceId:long}")]
-        public async Task<ActionResult<UserSpaceDto>> AddToSpace(long spaceId, [FromRoute] long userId, [FromRoute] long roleId)
+        [Route("{spaceId:long}/add/{username}")]
+        public async Task<ActionResult<UserSpaceDto>> AddToSpace(long spaceId, string username)
         {
-            var userSpaceDto = new UserSpaceDto
-            {
-                SpaceId = spaceId,
-                UserId = userId,
-                RoleId = roleId
-            };
+            var result = await _spaceService.AddUserToSpaceAsync(spaceId, username);
             
-            var result = await _spaceService.AddUserToSpaceAsync(userSpaceDto);
-
-            return Ok(result);
+            if (result == null)
+            {
+                return NotFound($"User '{username}' not found or could not be added to space with ID {spaceId}.");
+            }
+            
+            return Ok(result.ToDto());
         }
 
         [HttpDelete]

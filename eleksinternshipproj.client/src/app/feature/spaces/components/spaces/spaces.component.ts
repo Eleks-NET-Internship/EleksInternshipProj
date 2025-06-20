@@ -1,17 +1,22 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SpaceDto, UserSpaceDto } from '../../models/spaces-models';
 import { SpacesService } from '../../services/spaces.service';
-import { SpaceDto } from '../../models/spaces-models';
 
 @Component({
   selector: 'app-spaces',
   templateUrl: './spaces.component.html',
-  styleUrls: ['./spaces.component.css'] // або .scss
+  styleUrls: ['./spaces.component.css']
 })
 export class SpacesComponent implements OnInit {
   spaces: SpaceDto[] = [];
-  showAddMenu: boolean = false;
+  createFormVisible = false;
+  renameFormId: number | null = null;
+  addUserFormId: number | null = null;
+  newSpaceName: string = '';
+  newUserEmail: string = '';
 
-  @ViewChild('addMenuWrapper') addMenuWrapper!: ElementRef;
+  deleteConfirmDialog = false;
+  spaceToDelete: SpaceDto | null = null;
 
   constructor(private spacesService: SpacesService) {}
 
@@ -31,64 +36,73 @@ export class SpacesComponent implements OnInit {
     });
   }
 
-  toggleAddMenu(): void {
-    this.showAddMenu = !this.showAddMenu;
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    const target = event.target as HTMLElement;
-    if (this.showAddMenu && this.addMenuWrapper && !this.addMenuWrapper.nativeElement.contains(target)) {
-      this.showAddMenu = false;
-    }
-  }
-
-  createSpace(): void {
-    const name = prompt('Введіть назву простору:');
-    if (name && name.trim()) {
-      this.spacesService.createSpace(name.trim()).subscribe({
+  onCreateSpace(): void {
+    if (this.newSpaceName.trim()) {
+      this.spacesService.createSpace(this.newSpaceName.trim()).subscribe({
         next: (newSpace) => {
           this.spaces.push(newSpace);
+          this.newSpaceName = '';
+          this.createFormVisible = false;
         },
-        error: (err) => {
-          console.error('Не вдалося створити простір', err);
-        }
+        error: (err) => console.error('Не вдалося створити простір', err)
       });
     }
-    this.showAddMenu = false;
   }
 
-  renameSpace(space: SpaceDto): void {
-    const newName = prompt('Нова назва:', space.name);
-    if (newName && newName.trim()) {
-      space.name = newName.trim();
+  onRenameSpace(space: SpaceDto): void {
+    if (space.name.trim()) {
       this.spacesService.renameSpace(space.id, space.name).subscribe({
-        next: (updatedSpace) => {
-          space.name = updatedSpace.name;
+        next: (updated) => {
+          space.name = updated.name;
+          this.renameFormId = null;
+        },
+        error: (err) => console.error('Не вдалося перейменувати', err)
+      });
+    }
+  }
+
+  addUserToSpace(spaceId: number): void {
+    const username = this.newUserEmail.trim();
+    if (username && username.trim()) {
+      this.spacesService.addUserToSpace(spaceId, username.trim()).subscribe({
+        next: (updatedUserSpace: UserSpaceDto) => {
+          const space = this.spaces.find(s => s.id === spaceId);
+          if (space) {
+            if (!space.userSpaces) space.userSpaces = [];
+            space.userSpaces.push(updatedUserSpace);
+          }
+          this.newUserEmail = '';
+          this.addUserFormId = null;
         },
         error: (err) => {
-          console.error('Не вдалося перейменувати простір', err);
+          console.error('Не вдалося додати користувача до простору', err);
         }
       });
     }
   }
 
-  deleteSpace(id: number): void {
-    const confirmed = confirm('Ви впевнені, що хочете видалити цей простір?');
-    if (confirmed) {
-      this.spacesService.deleteSpace(id).subscribe({
-        next: () => {
-          this.spaces = this.spaces.filter(space => space.id !== id);
-        },
-        error: (err) => {
-          console.error('Не вдалося видалити простір', err);
-        }
-      });
-    }
+  confirmDelete(space: SpaceDto): void {
+    this.spaceToDelete = space;
+    this.deleteConfirmDialog = true;
+  }
+
+  deleteSpaceConfirmed(): void {
+    if (!this.spaceToDelete) return;
+    this.spacesService.deleteSpace(this.spaceToDelete.id).subscribe({
+      next: () => {
+        this.spaces = this.spaces.filter(s => s.id !== this.spaceToDelete?.id);
+        this.deleteConfirmDialog = false;
+        this.spaceToDelete = null;
+      },
+      error: (err) => console.error('Не вдалося видалити', err)
+    });
   }
 
   selectSpace(space: SpaceDto): void {
     sessionStorage.setItem('selectedSpace', JSON.stringify(space));
-    // Тут можна додати логіку для переходу до вибраного простору, наприклад, через роутинг
+  }
+
+  trackBySpaceId(index: number, space: SpaceDto): number {
+    return space.id;
   }
 }

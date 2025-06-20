@@ -30,10 +30,24 @@ namespace EleksInternshipProj.Application.Services.Imp
             return await _spaceRepository.AddAsync(spaceDto.ToEntity());
         }
 
-        public async Task<bool> AddUserToSpaceAsync(UserSpaceDto userSpaceDto)
+        public async Task<UserSpace?> AddUserToSpaceAsync(long spaceId, string username)
         {
-            var newSpace = await _spaceRepository.AddToAsync(userSpaceDto.SpaceId, userSpaceDto.UserId, userSpaceDto.RoleId);
-            return newSpace != null;
+            var user = await _userRepository.GetByNameAsync(username);
+            
+            if (user == null)
+            {
+                return null; // User not found
+            }
+            
+            var userSpaceDto = new UserSpaceDto
+            {
+                SpaceId = spaceId,
+                UserId = user.Id,
+                RoleId = 2
+            };
+            
+            var newUserSpace = await _spaceRepository.AddToAsync(userSpaceDto.SpaceId, userSpaceDto.UserId, userSpaceDto.RoleId);
+            return newUserSpace;
         }
 
         public async Task<bool> DeleteSpaceAsync(long spaceId)
