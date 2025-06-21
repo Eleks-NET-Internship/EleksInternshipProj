@@ -1,5 +1,5 @@
 // calendar-form.component.ts
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, effect, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import type { TaskDTO, UniqueEventDTO } from '../../models/calendar-models';
 import { CalendarService } from '../../services/calendar.service';
@@ -11,7 +11,6 @@ import { CalendarService } from '../../services/calendar.service';
 })
 export class CalendarFormComponent implements OnChanges {
   @Input({ required: true }) selectedDate!: Date | null;
-  @Input({ required: true }) trigger!: boolean;
 
   displayTitle: string = 'СЬОГОДНІ';
 
@@ -27,7 +26,19 @@ export class CalendarFormComponent implements OnChanges {
 
   events: UniqueEventDTO[] = [];
 
-  constructor(private readonly calendarService: CalendarService) {}
+  constructor(private readonly calendarService: CalendarService) {
+    effect(() => {
+      if (this.calendarService.trigger()) {
+        this.loadDisplayData();
+        this.updateDisplayTitle();
+
+        this.calendarService.trigger.set(false);
+      }
+    },
+    {
+      allowSignalWrites: true
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.loadDisplayData();

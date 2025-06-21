@@ -17,8 +17,6 @@ export class CalendarComponent implements OnInit {
   currentMonth: number = new Date().getMonth();
   currentYear: number = new Date().getFullYear();
 
-  triggerForForm!: boolean;
-
   monthNames: string[] = [
     'СІЧЕНЬ', 'ЛЮТИЙ', 'БЕРЕЗЕНЬ', 'КВІТЕНЬ', 'ТРАВЕНЬ', 'ЧЕРВЕНЬ',
     'ЛИПЕНЬ', 'СЕРПЕНЬ', 'ВЕРЕСЕНЬ', 'ЖОВТЕНЬ', 'ЛИСТОПАД', 'ГРУДЕНЬ'
@@ -64,7 +62,6 @@ export class CalendarComponent implements OnInit {
       ) {
         this.selectedDate = null;
         this.selectedDateSignal.set(null);
-        console.log(this.selectedDateSignal());//REMOVE AFTER DEBUG
       } else {
         this.selectedDate = {
           day: day,
@@ -72,7 +69,6 @@ export class CalendarComponent implements OnInit {
           year: this.currentYear
         };
         this.selectedDateSignal.set(new Date(this.selectedDate.year, this.selectedDate.month, this.selectedDate.day));
-        console.log(this.selectedDateSignal());//REMOVE AFTER DEBUG
       }
 
       console.log(
@@ -133,7 +129,6 @@ export class CalendarComponent implements OnInit {
           spaceId: 0,
         };
         this.calendarService.addUniqueEvent(addedEvent);
-        this.triggerForForm = !this.triggerForForm;
       },
       error: (err) => {
         console.error('Error during event creating: ', err);
