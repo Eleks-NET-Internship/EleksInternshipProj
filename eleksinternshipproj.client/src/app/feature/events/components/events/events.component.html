@@ -10,12 +10,12 @@
 
   <div class="header-divider"></div>
 
-  <div class="list-container">
-    <!-- Якщо подій немає -->
-    <div *ngIf="events.length === 0" class="empty-message">
-      Додайте свою першу подію
-    </div>
+  <div *ngIf="events.length === 0" class="empty-message">
+    Додайте свою першу подію
+  </div>
 
+  <div *ngIf="events.length !== 0" class="list-container">
+    <!-- Якщо подій немає -->
     <!-- Якщо події є -->
     <mat-card class="list-item" *ngFor="let event of events" (click)="goToEvent(event)" style="cursor: pointer;">
       <div class="card-content">
