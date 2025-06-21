@@ -56,6 +56,7 @@ export class SpacesComponent implements OnInit {
       this.spacesService.renameSpace(space.id, space.name).subscribe({
         next: (updated) => {
           space.name = updated.name;
+          this.spaceContextService.storeSpaceContext(space);
           this.renameFormId = null;
         },
         error: (err) => console.error('Не вдалося перейменувати', err)
@@ -95,6 +96,7 @@ export class SpacesComponent implements OnInit {
         this.spaces = this.spaces.filter(s => s.id !== this.spaceToDelete?.id);
         this.deleteConfirmDialog = false;
         this.spaceToDelete = null;
+        this.spaceContextService.clearSpaceContext();
       },
       error: (err) => console.error('Не вдалося видалити', err)
     });
