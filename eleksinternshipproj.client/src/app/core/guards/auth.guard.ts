@@ -7,12 +7,10 @@ import { TokenActionsService } from '../services/tokens/token-actions.service';
 export const authGuard: CanActivateFn = (route, state) => {
   const tokenActionsService = inject(TokenActionsService);
   const router = inject(Router);
-  const notificationSignalRService = inject(NotificationsSignalrService);
 
   const token = tokenActionsService.getToken();
 
   if (token) {
-    notificationSignalRService.startConnection();
     return true;
   }
 
