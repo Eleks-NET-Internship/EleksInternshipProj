@@ -47,7 +47,7 @@ const routes: Routes = [
       { path: 'events', component: EventsComponent, canActivate: [authGuard, spaceContextGuard] },
       { path: 'event/:id', component: EventDetailComponent, canActivate: [authGuard, spaceContextGuard] },
       //{ path: 'statistics', component: StatisticsComponent, canActivate: [authGuard, spaceContextGuard] },
-      { path: 'notifications', component: NotificationsComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'notifications', component: NotificationsComponent, canActivate: [authGuard] },
       { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
       { path: 'settings', component: SettingsComponent, canActivate: [authGuard] }
     ]

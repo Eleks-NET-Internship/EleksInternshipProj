@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { SpaceContextService } from '../../../../core/services/space-context/space-context.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,21 +11,28 @@ import { Subscription } from 'rxjs';
 export class SidebarComponent {
 
   sidenavItems = [
-    { icon: 'workspace', label: 'Простір', route: "/spaces", active:false },
-    { icon: 'calendar_today', label: 'Календар', route: "/calendar", active: false },
-    { icon: 'schedule', label: 'Розклад', route: "/schedule", active: false },
-    { icon: 'assignment', label: 'Завдання', route: "/tasks", active: false },
-    { icon: 'note', label: 'Нотатки', route: "/notes", active: false },
-    { icon: 'event', label: 'Події', route: "/events", active: false },
-  //  { icon: 'bar_chart', label: 'Статистика', route: "/statistics", active:false },
-    { icon: 'notifications', label: 'Сповіщення', route: "/notifications", active: false },
-    { icon: 'person', label: 'Профіль', route: "/profile", active: false },
-    { icon: 'settings', label: 'Налаштування', route: "/settings", active: false },
-  ];
+    { icon: 'workspace', label: 'Простір', route: "/spaces" },
+    { icon: 'calendar_today', label: 'Календар', route: "/calendar" },
+    { icon: 'schedule', label: 'Розклад', route: "/schedule" },
+    { icon: 'assignment', label: 'Завдання', route: "/tasks" },
+    { icon: 'note', label: 'Нотатки', route: "/notes" },
+    { icon: 'event', label: 'Події', route: "/events" },
+    //  { icon: 'bar_chart', label: 'Статистика', route: "/statistics" },
+    { icon: 'notifications', label: 'Сповіщення', route: "/notifications" },
+    { icon: 'person', label: 'Профіль', route: "/profile" },
+    { icon: 'settings', label: 'Налаштування', route: "/settings" },
+  ].map(item => ({
+    ...item,
+    active: false,
+    disabled: true
+  }));
+
+  alwaysEnabled = ["/spaces", "/notifications", "/profile", "/settings"]
 
   private routerSubscription?: Subscription;
+  private spaceSubscription?: Subscription;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private spaceContextService: SpaceContextService) { }
 
   ngOnInit() {
     this.updateActiveItem(this.router.url);
@@ -33,14 +41,25 @@ export class SidebarComponent {
       if (event instanceof NavigationEnd) {
         this.updateActiveItem(event.urlAfterRedirects);
       }
+    });
+
+    this.spaceSubscription = this.spaceContextService.space$.subscribe(space => {
+      if (space) {
+        this.setDisabledState(true);
+      } else {
+        this.setDisabledState(false);
+      }
     })
   }
 
   ngOnDestroy() {
     this.routerSubscription?.unsubscribe();
+    this.spaceSubscription?.unsubscribe();
   }
 
   onMenuClick(clickedItem: any) {
+    if (clickedItem.disabled)
+      return;
     this.router.navigate([clickedItem.route]);
   }
 
@@ -49,5 +68,12 @@ export class SidebarComponent {
       ...item,
       active: url.startsWith(item.route)
     }));
+  }
+
+  private setDisabledState(spaceSelected: boolean) {
+    this.sidenavItems = this.sidenavItems.map(item => ({
+      ...item,
+      disabled: spaceSelected ? false : !this.alwaysEnabled.includes(item.route)
+    }))
   }
 }
