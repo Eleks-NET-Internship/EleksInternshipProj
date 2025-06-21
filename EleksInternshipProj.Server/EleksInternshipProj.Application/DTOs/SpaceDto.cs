@@ -1,4 +1,4 @@
-﻿namespace EleksInternshipProj.Application.DTOs
+namespace EleksInternshipProj.Application.DTOs
 {
     public class SpaceDto
     {

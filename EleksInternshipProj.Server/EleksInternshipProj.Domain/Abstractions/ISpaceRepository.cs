@@ -9,7 +9,7 @@ namespace EleksInternshipProj.Domain.Abstractions
         Task<Space?> GetByIdAsync(long id);
         Task<Space?> AddAsync(Space space, long userId);
         Task<Space?> AddAsync(Space space);
-        Task<Space?> AddToAsync(long spaceId, long userId, long roleId);
+        Task<UserSpace?> AddToAsync(long spaceId, long userId, long roleId);
         Task<Space?> UpdateAsync(Space space);
         Task<bool> DeleteAsync(long id);
     }

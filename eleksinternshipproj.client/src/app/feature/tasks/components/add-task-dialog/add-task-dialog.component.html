@@ -1,0 +1,40 @@
+<h2 mat-dialog-title class="dialog-title">Нове завдання</h2>
+
+<mat-dialog-content class="dialog-content">
+  <form #taskForm="ngForm" class="task-form">
+    <!-- Назва завдання -->
+    <mat-form-field class="full-width">
+      <mat-label>Назва завдання</mat-label>
+      <input matInput [(ngModel)]="task.name" name="name" required />
+    </mat-form-field>
+
+    <!-- Подія (звичайний select) -->
+    <div class="form-group">
+      <label for="eventId">Подія:</label>
+      <select
+        id="eventId"
+        class="custom-select"
+        [(ngModel)]="task.eventId"
+        name="eventId"
+        required
+      >
+        <option [value]="''" disabled selected>Оберіть подію</option>
+        <option *ngFor="let event of events" [value]="event.id">
+          {{ event.name }}
+        </option>
+      </select>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button (click)="close()">Скасувати</button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="save()"
+    [disabled]="!taskForm.form.valid"
+  >
+    Створити
+  </button>
+</mat-dialog-actions>

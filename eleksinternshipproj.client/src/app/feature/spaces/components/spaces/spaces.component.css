@@ -16,10 +16,6 @@
   margin-bottom: 8px;
 }
 
-.header-actions .add-space-wrapper {
-  position: relative;
-}
-
 .add-space-btn {
   background-color: transparent;
   border: 1px solid #999;
@@ -33,40 +29,6 @@
 
 .add-space-btn:hover {
   background-color: #f0f0f0;
-}
-
-.add-dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-top: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-  width: 180px;
-}
-
-.dropdown-item {
-  width: 100%;
-  background: none;
-  border: none;
-  text-align: left;
-  padding: 10px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  color: #333;
-  transition: background-color 0.2s;
-}
-
-.dropdown-item:hover:enabled {
-  background-color: #f9f9f9;
-}
-
-.dropdown-item:disabled {
-  color: #aaa;
-  cursor: default;
 }
 
 .space-divider {
@@ -84,8 +46,8 @@
 
 .space-card {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  align-items: center;
   padding: 12px 16px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
@@ -93,14 +55,21 @@
   margin-bottom: 12px;
 }
 
+.space-info {
+  width: 100%;
+}
+
 .space-name {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 500;
+  text-align: left;
 }
 
 .space-actions {
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 16px;
 }
 
 .action-btn {
@@ -111,6 +80,8 @@
   font-size: 14px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  height: 30%;
+  width: 150px;
 }
 
 .action-btn:hover {
@@ -124,4 +95,117 @@
 
 .action-btn.delete:hover {
   background-color: #fbb;
+}
+
+.user-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.user-chip {
+  background-color: #e0e0e0;
+  padding: 4px 10px;
+  font-size: 13px;
+  border-radius: 999px;
+  display: inline-block;
+  cursor: default;
+  color: #333;
+}
+
+.user-chip.admin {
+  background-color: #ffeb3b;
+  color: #000;
+  font-weight: 600;
+}
+
+.space-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.space-form input {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.space-form input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.space-form button {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  background-color: #e0e0e0;
+  cursor: pointer;
+}
+
+.space-form button:hover {
+  background-color: #d0d0d0;
+}
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dialog-box {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.dialog-box p {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.dialog-box button {
+  margin: 0 10px;
+  padding: 6px 14px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.dialog-box button:first-of-type {
+  background-color: #f44336;
+  color: white;
+}
+
+.dialog-box button:last-of-type {
+  background-color: #e0e0e0;
+}
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

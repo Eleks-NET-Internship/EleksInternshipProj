@@ -47,6 +47,10 @@ import { AddEventDialogComponent } from './feature/events/components/add-event-d
 import { EventDetailComponent } from './feature/events/components/event-detail/event-detail.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NotificationsComponent } from './feature/notifications/components/notifications/notifications.component';
+import { TaskDetailsDialogComponent } from './feature/tasks/components/task-details-dialog/task-details-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { AddTaskDialogComponent } from './feature/tasks/components/add-task-dialog/add-task-dialog.component'; 
 
 
 
@@ -71,13 +75,18 @@ import { NotificationsComponent } from './feature/notifications/components/notif
     AddEventDialogComponent,
     EventDetailComponent,
     NotificationsComponent,
-    AddEventComponent
+    AddEventComponent,
+    TaskDetailsDialogComponent,
+    AddTaskDialogComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,
     AppRoutingModule,
     SharedModule,
     // Material modules
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatSidenavModule,
     MatListModule,
     AppRoutingModule,

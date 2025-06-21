@@ -1,37 +1,81 @@
+<!-- spaces.component.html -->
 <div class="space-container">
   <!-- Header -->
   <div class="space-header">
     <div class="header-title">Мої простори</div>
 
     <div class="header-actions">
-      <div class="add-space-wrapper" #addMenuWrapper>
-      <button class="add-space-btn" (click)="toggleAddMenu()">+ Додати простір</button>
-
-        <div class="add-dropdown" *ngIf="showAddMenu">
-          <button class="dropdown-item" (click)="createSpace()">Створити власний</button>
-          <button class="dropdown-item" disabled title="Незабаром">Приєднатись до існуючого</button>
-        </div>
-      </div>
+      <button class="add-space-btn" (click)="createFormVisible = !createFormVisible">+ Додати простір</button>
     </div>
   </div>
 
-  <!-- Divider -->
+  <!-- Create Space Form -->
+  @if (createFormVisible) {
+    <form (ngSubmit)="onCreateSpace()" #createForm="ngForm" class="space-form">
+      <input type="text" [(ngModel)]="newSpaceName" name="spaceName" placeholder="Назва простору" required />
+      <button type="submit">Створити</button>
+      <button type="button" (click)="createFormVisible = false">Скасувати</button>
+    </form>
+  }
+
   <div class="space-divider"></div>
 
   <!-- Main content -->
   <div class="space-content">
     @if (spaces.length === 0) {
       <div class="empty-message">Пусто</div>
-    } @else {
-      @for (space of spaces; track space.id) {
-        <div class="space-card" (click)="selectSpace(space)">
-          <div class="space-name">{{ space.name }}</div>
-          <div class="space-actions">
-            <button class="action-btn" (click)="renameSpace(space)">Редагувати</button>
-            <button class="action-btn delete" (click)="deleteSpace(space.id)">Видалити</button>
+    }
+
+    @for (space of spaces; track space.id) {
+      <div class="space-card">
+        <div class="space-info">
+          @if (renameFormId !== space.id) {
+            <div class="space-name" (click)="selectSpace(space)">{{ space.name }}</div>
+          } @else {
+            <form (ngSubmit)="onRenameSpace(space)" class="space-form">
+              <input type="text" [(ngModel)]="space.name" name="newName" required />
+              <button type="submit">Оновити</button>
+              <button type="button" (click)="renameFormId = null">Скасувати</button>
+            </form>
+          }
+
+          <div class="space-divider"></div>
+          <div class="user-chips">
+            @for (us of space.userSpaces; track us.id) {
+              <span class="user-chip" [class.admin]="us.roleId === 1"
+                    [title]="us.user.firstName + ' ' + us.user.lastName + ' (' + us.user.email + ')'">
+                {{ us.user.username }}
+              </span>
+            }
           </div>
+          @if (addUserFormId === space.id && renameFormId !== space.id) {
+            <form (ngSubmit)="addUserToSpace(space.id)" class="space-form">
+              <input type="email" [(ngModel)]="newUserEmail" name="email" placeholder="Email користувача" required />
+              <button type="submit">Додати</button>
+              <button type="button" (click)="addUserFormId = null">Скасувати</button>
+            </form>
+          }
         </div>
-      }
+
+        @if (renameFormId !== space.id && addUserFormId !== space.id) {
+          <div class="space-actions">
+            <button class="action-btn" (click)="renameFormId = space.id">Редагувати</button>
+            <button class="action-btn" (click)="addUserFormId = space.id">+ Користувач</button>
+            <button class="action-btn delete" (click)="confirmDelete(space)">Видалити</button>
+          </div>
+        }
+      </div>
     }
   </div>
+
+  <!-- Delete Confirmation Dialog -->
+  @if (deleteConfirmDialog) {
+    <div class="dialog-overlay">
+      <div class="dialog-box">
+        <p>Ви впевнені, що хочете видалити простір "{{ spaceToDelete?.name }}"?</p>
+        <button (click)="deleteSpaceConfirmed()">Так, видалити</button>
+        <button (click)="deleteConfirmDialog = false">Скасувати</button>
+      </div>
+    </div>
+  }
 </div>
