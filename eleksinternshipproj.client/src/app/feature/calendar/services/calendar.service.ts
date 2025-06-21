@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { map, Observable, shareReplay } from 'rxjs';
 import { environment } from '../../../shared/.env/environment';
 
@@ -10,12 +10,15 @@ import type { AddUniqueEventDto, TaskDTO, UniqueEventDTO } from '../models/calen
 })
 export class CalendarService {
   private readonly apiBaseUrl = environment.apiUrl;
-  private readonly spaceId = JSON.parse(sessionStorage.getItem('selectedSpace') ?? '').id;
+  private spaceId = JSON.parse(sessionStorage.getItem('selectedSpace') ?? '').id;
   private tasks!: Observable<{ data: TaskDTO[] }>;
+
+  trigger = signal<boolean>(false);
 
   constructor(private readonly http: HttpClient) { }
 
   getTasks() {
+    this.spaceId = JSON.parse(sessionStorage.getItem('selectedSpace') ?? '').id;
     this.tasks = this.http.get<{ data: TaskDTO[] }>(this.apiBaseUrl + '/api/Task/space/' + this.spaceId).pipe(shareReplay(1));
   }
   
@@ -57,16 +60,15 @@ export class CalendarService {
 
   addUniqueEvent(event: AddUniqueEventDto) {
     event.spaceId = Number(this.spaceId);
-    this.http.post<{ message: string, data: { id: number, eventId: number } }>(this.apiBaseUrl + '/api/UniqueEvents', event, { observe: 'response' }).subscribe(
-      (response) => {
-        if (response.ok) {
-          console.log('Unique event successfully created with ID=' + response.body?.data.id);
-        }
-        else {
-          console.log('Error creating unique event: ', response.body);
-        }
+    this.http.post<{ message: string, data: { id: number, eventId: number } }>(this.apiBaseUrl + '/api/UniqueEvents', event).subscribe({
+      next: (response) => {
+        console.log('Unique event successfully created with ID=' + response.data.id);
+        this.trigger.set(true);
+      },
+      error: (error) => {
+        console.log('Error creating unique event: ', error);
       }
-    );
+    });
   }
 
   private areSameDate(d1: Date, d2: Date): boolean {
