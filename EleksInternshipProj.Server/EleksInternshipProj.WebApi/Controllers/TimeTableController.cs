@@ -19,16 +19,18 @@ public class TimeTableController : ControllerBase
     }
 
     [HttpGet("space/{spaceId:long}")]
-    public async Task<IActionResult> GetBySpace(long spaceId)
+    public async Task<ActionResult<TimetableDto>> GetBySpace(long spaceId)
     {
         var timetable = await _timetableService.GetBySpaceAsync(spaceId);
         if (timetable == null)
             return NotFound();
-        return Ok(timetable.ToDto());
+        
+        var dto = timetable.ToDto();
+        return Ok(dto);
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update([FromBody] TimetableDto dto)
+    public async Task<ActionResult<TimetableDto>> Update([FromBody] TimetableDto dto)
     {
         var updated = await _timetableService.UpdateAsync(dto);
         if (updated == null)

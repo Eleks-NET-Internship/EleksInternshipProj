@@ -6,6 +6,8 @@ import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { ScheduleService } from '../../services/schedule.service';
+import { MarkerDto } from '../../models/schedule-models';
 
 export interface EventData {
   id?: string;
@@ -24,20 +26,13 @@ export class EventEditFormComponent implements OnInit {
   eventForm: FormGroup;
   tagInput!: ElementRef<HTMLInputElement>;
 
-
   @ViewChild('tagInput') set tagInputRef(ref: ElementRef<HTMLInputElement>) {
     if (ref) {
       this.tagInput = ref;
     }
   };
-  
-  // Доступні мітки для автозаповнення
-  availableTags: string[] = [
-    'робота', 'особисте', 'здоров\'я', 'спорт', 'навчання',
-    'зустріч', 'проект', 'дедлайн', 'відпочинок', 'подорож',
-    'сім\'я', 'друзі', 'покупки', 'лікар', 'важливо'
-  ];
-  
+
+  availableTags: string[] = [];
   selectedTags: string[] = [];
   filteredTags!: Observable<string[]>;
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -46,7 +41,8 @@ export class EventEditFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<EventEditFormComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: EventData
+    private scheduleService: ScheduleService,
+    @Inject(MAT_DIALOG_DATA) public data: EventData & { spaceId?: number }
   ) {
     this.eventForm = this.createForm();
     this.filteredTags = this.tagControl.valueChanges.pipe(
@@ -56,12 +52,33 @@ export class EventEditFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Load markers/tags dynamically from backend if spaceId provided
+    if (this.data.spaceId) {
+      this.scheduleService.getMarkersBySpace(this.data.spaceId).subscribe({
+        next: (markers: MarkerDto[]) => {
+          this.availableTags = markers.map(m => m.name);
+          this.filteredTags = this.tagControl.valueChanges.pipe(
+            startWith(''),
+            map(value => value ? this._filter(value) : this.availableTags.slice())
+          );
+        },
+        error: (err) => {
+          console.error('Failed to load markers', err);
+          // fallback: use empty or predefined list if needed
+          this.availableTags = [];
+        }
+      });
+    }
+
     if (this.data) {
+      // Initialize selectedTags from incoming tags string (comma separated)
+      this.selectedTags = this.data.tags ? this.data.tags.split(',').map(t => t.trim()).filter(t => t) : [];
+
       this.eventForm.patchValue({
         name: this.data.name || '',
         startTime: this.data.startTime || '',
         endTime: this.data.endTime || '',
-        tags: this.data.tags || ''
+        tags: this.selectedTags.join(', ')  // show tags as string
       });
     }
   }
@@ -78,25 +95,32 @@ export class EventEditFormComponent implements OnInit {
   private timeOrderValidator(group: FormGroup) {
     const startTime = group.get('startTime')?.value;
     const endTime = group.get('endTime')?.value;
-    
+
     if (startTime && endTime && startTime >= endTime) {
       return { timeOrder: true };
     }
     return null;
   }
 
-  onSave(): void {
-  if (this.eventForm.valid) {
-    const formValue = this.eventForm.value;
-    this.dialogRef.close({
-      ...this.data,
-      ...formValue
-    });
-  } else {
-    this.eventForm.markAllAsTouched(); // Важливо!
+  // Wrapper method to safely check errors on form controls (fixes TS errors)
+  hasError(controlName: string, errorCode: string): boolean {
+    const control = this.eventForm.get(controlName);
+    return control ? control.hasError(errorCode) : false;
   }
-}
 
+  onSave(): void {
+    if (this.eventForm.valid) {
+      const formValue = this.eventForm.value;
+      // Return tags as CSV string built from selectedTags, not formControl (which may lag)
+      this.dialogRef.close({
+        ...this.data,
+        ...formValue,
+        tags: this.selectedTags.join(', ')
+      });
+    } else {
+      this.eventForm.markAllAsTouched();
+    }
+  }
 
   onCancel(): void {
     this.dialogRef.close();
@@ -106,7 +130,6 @@ export class EventEditFormComponent implements OnInit {
     const value = (event.value || '').trim();
     if (value && !this.selectedTags.includes(value)) {
       this.selectedTags.push(value);
-      this.updateFormTags();
     }
     event.chipInput!.clear();
     this.tagControl.setValue(null);
@@ -116,7 +139,6 @@ export class EventEditFormComponent implements OnInit {
     const index = this.selectedTags.indexOf(tag);
     if (index >= 0) {
       this.selectedTags.splice(index, 1);
-      this.updateFormTags();
     }
   }
 
@@ -124,20 +146,15 @@ export class EventEditFormComponent implements OnInit {
     const value = event.option.viewValue;
     if (!this.selectedTags.includes(value)) {
       this.selectedTags.push(value);
-      this.updateFormTags();
     }
     this.tagInput.nativeElement.value = '';
     this.tagControl.setValue(null);
   }
 
-  private updateFormTags(): void {
-    this.eventForm.patchValue({ tags: this.selectedTags });
-  }
-
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
-    return this.availableTags.filter(tag => 
-      tag.toLowerCase().includes(filterValue) && 
+    return this.availableTags.filter(tag =>
+      tag.toLowerCase().includes(filterValue) &&
       !this.selectedTags.includes(tag)
     );
   }

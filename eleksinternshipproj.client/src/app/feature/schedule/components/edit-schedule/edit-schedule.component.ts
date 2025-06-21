@@ -1,21 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { Router } from '@angular/router';
 import { EventEditFormComponent, EventData } from '../event-edit-form/event-edit-form.component';
-
-export interface ScheduleEvent {
-  id: string;
-  title: string;
-  time: string;
-  description?: string;
-  color?: string;
-}
-
-export interface DaySchedule {
-  day: string;
-  date: string;
-  events: ScheduleEvent[];
-}
+import { TimetableContextService } from '../../services/timetable-context-service';
+import { ScheduleService } from '../../services/schedule.service';
+import { TimetableDto, TimetableDayDto, EventDayDto } from '../../models/schedule-models';
 
 @Component({
   selector: 'app-edit-schedule',
@@ -23,85 +13,45 @@ export interface DaySchedule {
   styleUrls: ['./edit-schedule.component.scss']
 })
 export class EditScheduleComponent implements OnInit {
-  
-  
-  currentWeekStart: Date = new Date();
-  
-  schedule: DaySchedule[] = [
-    {
-      day: 'Понеділок',
-      date: '14:50 - 16:10',
-      events: [
-        {
-          id: '1',
-          title: 'Сховища даних',
-          time: '14:50 - 16:10',
-          description: '',
-          color: '#e3f2fd'
-        }
-      ]
-    },
-    {
-      day: 'Вівторок',
-      date: '',
-      events: []
-    },
-    {
-      day: 'Середа',
-      date: '',
-      events: []
-    },
-    {
-      day: 'Четвер',
-      date: '',
-      events: []
-    },
-    {
-      day: "П'ятниця",
-      date: '',
-      events: []
-    },
-    {
-      day: 'Субота',
-      date: '16:25 - 17:45',
-      events: [
-        {
-          id: '2',
-          title: 'Сховища даних',
-          time: '16:25 - 17:45',
-          description: '5 ауд. лекційно-сесійний',
-          color: '#ffebee'
-        }
-      ]
-    },
-    {
-      day: 'Неділя',
-      date: '',
-      events: []
-    }
-  ];
-
+  timetable: TimetableDto | null = null;
   connectedDropLists: string[] = [];
 
-  ngOnInit() {
-    // Створюємо список усіх drop zones для кожного дня
-    this.connectedDropLists = this.schedule.map((_, index) => `day-${index}`);
+  readonly allWeekDays = [
+    'Понеділок',
+    'Вівторок',
+    'Середа',
+    'Четвер',
+    'П’ятниця',
+    'Субота',
+    'Неділя'
+  ];
+
+  constructor(
+    private dialog: MatDialog,
+    private context: TimetableContextService,
+    private scheduleService: ScheduleService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.timetable = structuredClone(this.context.currentTimetable); // Deep clone so edits do not affect original immediately
+    if (this.timetable) {
+      this.connectedDropLists = this.timetable.days.map((_, i) => `day-${i}`);
+    }
   }
 
-  get currentWeekEnd(): Date {
-    return new Date(this.currentWeekStart.getTime() + 6 * 24 * 60 * 60 * 1000);
+  // Returns array of 7 days (TimetableDayDto or null for missing days)
+  get daysForDisplay(): (TimetableDayDto | null)[] {
+    if (!this.timetable) return [];
+
+    const dayMap = new Map(this.timetable.days.map(d => [d.dayName, d]));
+    return this.allWeekDays.map(dayName => dayMap.get(dayName) ?? null);
   }
 
-  getWeekDateRange(): string {
-    return `${this.currentWeekStart.toLocaleDateString('uk-UA')} - ${this.currentWeekEnd.toLocaleDateString('uk-UA')}`;
-  }
-
-  onEventDrop(event: CdkDragDrop<ScheduleEvent[]>) {
+  onEventDrop(event: CdkDragDrop<EventDayDto[]>) {
     if (event.previousContainer === event.container) {
-      // Переміщення в межах одного дня
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      // Переміщення між днями
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -112,72 +62,104 @@ export class EditScheduleComponent implements OnInit {
   }
 
   addEvent(dayIndex: number) {
-    const newEvent: ScheduleEvent = {
-      id: Date.now().toString(),
-      title: 'Нова подія',
-      time: '00:00 - 00:00',
-      description: '',
-      color: '#f3e5f5'
+    if (!this.timetable) return;
+
+    let day = this.timetable.days.find(d => d.dayName === this.allWeekDays[dayIndex]);
+
+    // If the day is missing, create it and add to timetable
+    if (!day) {
+      day = {
+        id: 0,  // Use 0 or generate a temporary unique id if needed
+        dayName: this.allWeekDays[dayIndex],
+        timetableId: this.timetable.id,
+        eventDays: []
+      };
+      this.timetable.days.push(day);
+
+      // Rebuild connectedDropLists because days array changed
+      this.connectedDropLists = this.timetable.days.map((_, i) => `day-${i}`);
+    }
+
+    const newEvent: EventDayDto = {
+      id: 0,
+      eventId: 0,
+      dayId: day.id,
+      startTime: '00:00:00',
+      endTime: '00:00:00',
+      event: {
+        id: 0,
+        name: 'Нова подія',
+        spaceId: this.timetable.spaceId,
+        markers: []
+      }
     };
-    this.schedule[dayIndex].events.push(newEvent);
+
+    day.eventDays.push(newEvent);
   }
 
-  
-  constructor(private dialog: MatDialog) {}
-  editEvent(event: ScheduleEvent) {
-    const existingEvent: EventData = {
-      id: '1',
-      name: 'Зустріч з командою',
-      startTime: '14:00',
-      endTime: '15:30',
-      tags: 'робота, зустріч, команда'
-    };
-
+  editEvent(eventDay: EventDayDto) {
     const dialogRef = this.dialog.open(EventEditFormComponent, {
       width: '500px',
-      data: existingEvent
+      data: {
+        id: eventDay.event.id.toString(),
+        name: eventDay.event.name,
+        startTime: eventDay.startTime.substring(0, 5),
+        endTime: eventDay.endTime.substring(0, 5),
+        tags: eventDay.event.markers.map(m => m.marker.name).join(', ')
+      } as EventData
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Подія оновлена:', result);
-        // Тут можна додати логіку оновлення події
-        this.updateEvent(result);
+        eventDay.startTime = result.startTime + ':00';
+        eventDay.endTime = result.endTime + ':00';
+        eventDay.event.name = result.name;
+        eventDay.event.markers = result.tags.split(',').map((tag: string) => ({
+          id: 0,
+          eventId: eventDay.event.id,
+          markerId: 0,
+          marker: {
+            id: 0,
+            name: tag.trim(),
+            type: '',
+            spaceId: this.timetable!.spaceId
+          }
+        }));
       }
     });
-    // Логіка для редагування події
-    // console.log('Редагування події:', event);
   }
 
-  private saveEvent(event: EventData): void {
-    // Логіка збереження нової події
-    console.log('Збереження події:', event);
-  }
-
-  private updateEvent(event: EventData): void {
-    // Логіка оновлення існуючої події
-    console.log('Оновлення події:', event);
-  }
-  
   deleteEvent(dayIndex: number, eventIndex: number) {
-    this.schedule[dayIndex].events.splice(eventIndex, 1);
+    const day = this.timetable!.days.find(d => d.dayName === this.allWeekDays[dayIndex]);
+    if (!day) return;
+
+    day.eventDays.splice(eventIndex, 1);
+
+    // Optional: Remove day from timetable if it has no events
+    if (day.eventDays.length === 0) {
+      this.timetable!.days = this.timetable!.days.filter(d => d !== day);
+      this.connectedDropLists = this.timetable!.days.map((_, i) => `day-${i}`);
+    }
   }
 
   cancelChanges() {
-    // Логіка для скасування змін
-    console.log('Скасування змін');
+    this.router.navigate(['/schedule']);
   }
 
   saveChanges() {
-    // Логіка для збереження змін
-    console.log('Збереження змін', this.schedule);
+    if (!this.timetable) return;
+
+    this.scheduleService.updateTimetable(this.timetable).subscribe({
+      next: () => this.router.navigate(['/schedule']),
+      error: err => console.error('Error saving timetable', err)
+    });
   }
 
-  previousWeek() {
-    this.currentWeekStart = new Date(this.currentWeekStart.getTime() - 7 * 24 * 60 * 60 * 1000);
+  getEventTime(ed: EventDayDto): string {
+    return `${ed.startTime.substring(0, 5)} - ${ed.endTime.substring(0, 5)}`;
   }
 
-  nextWeek() {
-    this.currentWeekStart = new Date(this.currentWeekStart.getTime() + 7 * 24 * 60 * 60 * 1000);
+  getEventDescription(ed: EventDayDto): string {
+    return ed.event.markers.map(m => m.marker.name).join(', ');
   }
 }

@@ -5,6 +5,6 @@
         public long Id { get; set; }
         public string DayName { get; set; } = null!;
         public long TimetableId { get; set; }
-        public IEnumerable<EventDayDto> EventDays { get; set; } = Enumerable.Empty<EventDayDto>();
+        public IEnumerable<EventDayDto> EventDays { get; set; } = [];
     }
 }
