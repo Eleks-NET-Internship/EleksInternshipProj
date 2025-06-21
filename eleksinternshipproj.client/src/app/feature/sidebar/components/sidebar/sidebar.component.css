@@ -9,6 +9,15 @@
   overflow: hidden;
 }
 
+.logo {
+  font-style: italic;
+  font-size: 24px;
+  font-weight: bold;
+  user-select: none;
+  padding: 0px;
+  margin: 8px 0px 0px 0px;
+}
+
 .sidenav-header {
   padding: 16px;
   border-bottom: 1px solid #e0e0e0;

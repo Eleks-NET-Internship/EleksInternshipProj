@@ -1,26 +1,31 @@
-<div class="main-wrapper">
-  <div class="header-icons">
-    <mat-icon class="add-icon" (click)="addEvent()">add_circle_outline</mat-icon>
+<div class="events-container">
+
+  <div class="events-header">
+    <div class="header-title">Події</div>
+
+    <div class="header-actions">
+      <button class="add-event-btn" (click)="addEvent()">+ Додати подію</button>
+    </div>
   </div>
 
-  <div class="list-container">
-    <!-- Якщо подій немає -->
-    <div *ngIf="events.length === 0" class="empty-message">
-      Додайте свою першу подію
-    </div>
+  <div class="header-divider"></div>
 
+  <div *ngIf="events.length === 0" class="empty-message">
+    Додайте свою першу подію
+  </div>
+
+  <div *ngIf="events.length !== 0" class="list-container">
+    <!-- Якщо подій немає -->
     <!-- Якщо події є -->
     <mat-card class="list-item" *ngFor="let event of events" (click)="goToEvent(event)" style="cursor: pointer;">
       <div class="card-content">
         <span class="card-title">{{ event.name }}</span>
 
         <!-- Меню кнопка -->
-        <button
-          mat-icon-button
-          class="more-options"
-          [matMenuTriggerFor]="menu"
-          (click)="selectedEvent = event; $event.stopPropagation()"
-        >
+        <button mat-icon-button
+                class="more-options"
+                [matMenuTriggerFor]="menu"
+                (click)="selectedEvent = event; $event.stopPropagation()">
           <mat-icon>more_horiz</mat-icon>
         </button>
       </div>

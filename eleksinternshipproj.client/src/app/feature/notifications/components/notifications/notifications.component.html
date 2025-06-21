@@ -1,12 +1,15 @@
-<div class="notifications-page">
-  <h2 class="notifications-page-header">Сповіщення</h2>
-  <p *ngIf="notifications.length < 1">Сповіщень немає</p>
+<div class="notifications-container">
+  <div class="notifications-header">
+    <div class="header-title">Сповіщення</div>
+  </div>
+  <div class="header-divider"></div>
+
+  <div *ngIf="notifications.length < 1" class="empty-message">Пусто</div>
+
   <div class="notification-list">
     <div *ngFor="let notif of notifications" class="notification"
-         [ngClass]="!notif.read ? 'clickableNotification' : ''"
-    >
-      <div class="notifications-header"
-           [ngClass]="notif.read ? 'readHeader' : 'notReadHeader'">
+         [ngClass]="!notif.read ? 'clickableNotification' : ''">
+      <div [ngClass]="notif.read ? 'readHeader' : 'notReadHeader'">
         <h3 class="notification-title">{{notif.title}}</h3>
       </div>
       <div [ngClass]="notif.read ? 'readContent' : 'notReadContent'">
