@@ -22,7 +22,33 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             var timetable = await _context.Timetables
                 .Include(t => t.Space)
                 .Include(t => t.Days)
+                    .ThenInclude(d => d.EventDays)
+                    .ThenInclude(ed => ed.Event)
+                    .ThenInclude(e => e.EventMarkers)
+                    .ThenInclude(em => em.Marker)
                 .FirstOrDefaultAsync(t => t.SpaceId == spaceId);
+
+            if (timetable == null)
+            {
+                _logger.LogWarning($"Fail! Timetable with ID = {timetable.Id} not found!");
+            }
+            else
+            {
+                _logger.LogInformation($"Success! Timetable with ID = { timetable.Id} found.");
+            }
+
+            return timetable;
+        }
+        
+        public async Task<Timetable?> GetByIdAsync(long id)
+        {
+            var timetable = await _context.Timetables
+                .Include(t => t.Days)
+                    .ThenInclude(d => d.EventDays)
+                    .ThenInclude(ed => ed.Event)
+                    .ThenInclude(e => e.EventMarkers)
+                    .ThenInclude(em => em.Marker)
+                .FirstOrDefaultAsync(t => t.Id == id);
 
             if (timetable == null)
             {
@@ -40,7 +66,7 @@ namespace EleksInternshipProj.Infrastructure.Repositories
         {
             _logger.LogInformation($"Updating Timetable with ID = {entity.Id}");
 
-            var existing = await _context.Timetables.FindAsync(entity.Id);
+            var existing = await this.GetByIdAsync(entity.Id);
             if (existing == null)
             {
                 _logger.LogWarning($"Fail! Timetable with ID = {entity.Id} not found!");
@@ -49,9 +75,35 @@ namespace EleksInternshipProj.Infrastructure.Repositories
 
             try
             {
-                existing.Space = entity.Space;
                 existing.SpaceId = entity.SpaceId;
+                existing.Days = entity.Days;
 
+                foreach (var eventDay in existing.Days.SelectMany(day => day.EventDays))
+                {
+                    if (eventDay.EventId != 0)
+                    {
+                        var hasNewMarkers = eventDay.Event.EventMarkers.Any(em => em.Id == 0);
+                        if (hasNewMarkers)
+                        {
+                            foreach (var marker in eventDay.Event.EventMarkers)
+                            {
+                                if (marker.Id == 0)
+                                {
+                                    _context.EventMarkers.Add(marker);
+                                }
+                            }
+                        }
+                        eventDay.Event = null!;
+                    }
+                    else
+                    {
+                        foreach (var eventMarker in eventDay.Event.EventMarkers.Where(eventMarker => eventMarker.MarkerId != 0))
+                        {
+                            eventMarker.Marker = null!;
+                        }
+                    }
+                }
+                
                 _context.Timetables.Update(existing);
                 await _context.SaveChangesAsync();
 

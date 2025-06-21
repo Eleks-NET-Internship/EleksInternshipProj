@@ -22,6 +22,7 @@ public static class EventMapper
             Id = dto.Id,
             Name = dto.Name,
             EventMarkers = dto.Markers?.Select(EventMarkerMapper.ToEntity).ToList() ?? new List<EventMarker>(),
+            SpaceId = dto.SpaceId,
         };
     }
 }
