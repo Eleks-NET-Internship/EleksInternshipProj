@@ -24,7 +24,6 @@ export class CalendarService {
   }
 
   getTasks() {
-    this.spaceId = JSON.parse(sessionStorage.getItem('selectedSpace') ?? '').id;
     this.tasks = this.http.get<{ data: TaskDTO[] }>(this.apiBaseUrl + '/api/Task/space/' + this.spaceId).pipe(shareReplay(1));
   }
   
