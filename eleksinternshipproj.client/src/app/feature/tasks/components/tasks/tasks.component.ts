@@ -13,40 +13,46 @@ import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.compo
 })
 export class TasksComponent implements OnInit {
 
-  constructor(private tasksService: TasksService, private dialog: MatDialog) { }
-   private spaceId: number = 1; 
-   tasks: TaskDto[] = [];
+  private spaceId: number;
+  tasks: TaskDto[] = [];
 
-
+  constructor(
+    private tasksService: TasksService,
+    private dialog: MatDialog
+  ) {
+    const storedSpace = sessionStorage.getItem('selectedSpace');
+    this.spaceId = storedSpace ? JSON.parse(storedSpace).id : 1; 
+  }
+  
   ngOnInit(): void {
   this.loadTasks();
-}
+  }
 
-loadTasks(): void {
-  this.tasksService.getAllBySpaceId(this.spaceId)
-    .pipe(map((response: { data: TaskDto[] }) => response.data))
-    .subscribe({
-      next: (tasks) => {
-        const now = new Date();
+  loadTasks(): void {
+    this.tasksService.getAllBySpaceId(this.spaceId)
+      .pipe(map((response: { data: TaskDto[] }) => response.data))
+      .subscribe({
+        next: (tasks) => {
+          const now = new Date();
 
-        this.tasks = tasks.sort((a, b) => {
-          const dateA = new Date(a.eventTime);
-          const dateB = new Date(b.eventTime);
+          this.tasks = tasks.sort((a, b) => {
+            const dateA = new Date(a.eventTime);
+            const dateB = new Date(b.eventTime);
 
-          const isPastA = dateA.getTime() < now.getTime();
-          const isPastB = dateB.getTime() < now.getTime();
+            const isPastA = dateA.getTime() < now.getTime();
+            const isPastB = dateB.getTime() < now.getTime();
 
-          if (isPastA && !isPastB) return 1;     
-          if (!isPastA && isPastB) return -1;   
-          
-          return dateA.getTime() - dateB.getTime();
-        });
-      },
-      error: (err) => {
-        console.error('Помилка при завантаженні завдань:', err);
-      }
-    });
-}
+            if (isPastA && !isPastB) return 1;     
+            if (!isPastA && isPastB) return -1;   
+            
+            return dateA.getTime() - dateB.getTime();
+          });
+        },
+        error: (err) => {
+          console.error('Помилка при завантаженні завдань:', err);
+        }
+      });
+  }
 
   deleteTask(id: number, event: MouseEvent): void {
   event.stopPropagation();
