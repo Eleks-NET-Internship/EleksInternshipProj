@@ -209,3 +209,9 @@
     transform: translateY(0);
   }
 }
+
+.space-name:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}

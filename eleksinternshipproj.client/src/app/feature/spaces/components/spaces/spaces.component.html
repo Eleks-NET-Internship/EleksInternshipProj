@@ -29,7 +29,7 @@
     @for (space of spaces; track space.id) {
       <div class="space-card">
         <div class="space-info">
-          @if (renameFormId !== space.id) {
+          @if (renameFormId !== space.id) { <!-- Fix those hovers and clicks later-->
             <div class="space-name" (click)="selectSpace(space)">{{ space.name }}</div>
           } @else {
             <form (ngSubmit)="onRenameSpace(space)" class="space-form">

@@ -46,8 +46,10 @@ export class SidebarComponent {
     this.spaceSubscription = this.spaceContextService.space$.subscribe(space => {
       if (space) {
         this.setDisabledState(true);
+        this.sidenavItems[0].label = this.spaceContextService.getSpaceName()??"";
       } else {
         this.setDisabledState(false);
+        this.sidenavItems[0].label = "Простір";
       }
     })
   }
