@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,79 +10,44 @@ import { Router } from '@angular/router';
 export class SidebarComponent {
 
   sidenavItems = [
-    { icon: 'workspace', label: 'Простір', active: true },
-    { icon: 'calendar_today', label: 'Календар' },
-    { icon: 'schedule', label: 'Розклад' },
-    { icon: 'assignment', label: 'Завдання' },
-    { icon: 'note', label: 'Нотатки' },
-    { icon: 'event', label: 'Події' },
-  //  { icon: 'bar_chart', label: 'Статистика' },
-    { icon: 'notifications', label: 'Сповіщення' },
-    { icon: 'person', label: 'Профіль' },
-    { icon: 'settings', label: 'Налаштування' },
+    { icon: 'workspace', label: 'Простір', route: "/spaces", active:false },
+    { icon: 'calendar_today', label: 'Календар', route: "/calendar", active: false },
+    { icon: 'schedule', label: 'Розклад', route: "/schedule", active: false },
+    { icon: 'assignment', label: 'Завдання', route: "/tasks", active: false },
+    { icon: 'note', label: 'Нотатки', route: "/notes", active: false },
+    { icon: 'event', label: 'Події', route: "/events", active: false },
+  //  { icon: 'bar_chart', label: 'Статистика', route: "/statistics", active:false },
+    { icon: 'notifications', label: 'Сповіщення', route: "/notifications", active: false },
+    { icon: 'person', label: 'Профіль', route: "/profile", active: false },
+    { icon: 'settings', label: 'Налаштування', route: "/settings", active: false },
   ];
+
+  private routerSubscription?: Subscription;
 
   constructor(private router: Router) { }
 
-  onMenuClick(clickedItem: any) {
+  ngOnInit() {
+    this.updateActiveItem(this.router.url);
 
-    this.sidenavItems = this.sidenavItems.map(item => ({
-      ...item,
-      active: item.label === clickedItem.label
-    }));
-
-    switch (clickedItem.label) {
-
-      case 'Простір': {
-        this.router.navigate(['/spaces']);
-        break;
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.updateActiveItem(event.urlAfterRedirects);
       }
-
-      case 'Календар': {
-        this.router.navigate(['/calendar']);
-        break;
-      }
-
-      case 'Розклад': {
-        this.router.navigate(['/schedule']);
-        break;
-      }
-
-      case 'Завдання': {
-        this.router.navigate(['/tasks']);
-        break;
-      }
-
-      case 'Нотатки': {
-        this.router.navigate(['/notes']);
-        break;
-      }
-
-      case 'Події': {
-        this.router.navigate(['/events']);
-        break;
-      }
-
-      //case 'Статистика': {
-      //  this.router.navigate(['/statistics']);
-      //  break;
-      //}
-
-      case 'Сповіщення': {
-        this.router.navigate(['/notifications']);
-        break;
-      }
-
-      case 'Профіль': {
-        this.router.navigate(['/profile']);
-        break;
-      }
-
-      case 'Налаштування': {
-        this.router.navigate(['/settings']);
-        break;
-      }
-    }
+    })
   }
 
+  ngOnDestroy() {
+    this.routerSubscription?.unsubscribe();
+  }
+
+  onMenuClick(clickedItem: any) {
+    this.router.navigate([clickedItem.route]);
+  }
+
+  private updateActiveItem(url: string) {
+    this.sidenavItems = this.sidenavItems.map(item => ({
+      ...item,
+      active: url.startsWith(item.route)
+    }));
+  }
 }
