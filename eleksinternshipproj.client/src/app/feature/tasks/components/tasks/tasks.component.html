@@ -3,7 +3,7 @@
   <div class="task-header">
     <div class="header-title">📋 Мої завдання</div>
     <div class="header-actions">
-      <button class="add-task-btn">+ Додати завдання</button>
+      <button class="add-task-btn" (click)="openAddTaskDialog()">+ Додати завдання</button>
     </div>
   </div>
 
@@ -12,8 +12,8 @@
 
   <!-- Task List -->
   <div class="task-content" *ngIf="tasks.length > 0; else noTasks">
-    <mat-card class="task-card" *ngFor="let task of tasks" (click)="openTaskDetails(task)">
-      <div class="task-card-content">
+    <mat-card class="task-card" *ngFor="let task of tasks">
+      <div class="task-card-content" (click)="openTaskDetails(task)">
         <div class="task-name">{{ task.name }}</div>
 
         <div class="task-meta">
@@ -28,10 +28,22 @@
             <span class="field-label">Дедлайн:</span>
             <div class="task-deadline">
               <mat-icon class="clock-icon" color="warn">schedule</mat-icon>
-              {{ task.eventTime | date:'dd.MM.yyyy HH:mm' }}
+              <span *ngIf="task.eventTime !== '0001-01-01T00:00:00'; else noDeadline">
+                {{ task.eventTime | date:'dd.MM.yyyy HH:mm' }}
+              </span>
+              <ng-template #noDeadline>
+                <span class="no-deadline">Дедлайн не задано</span>
+              </ng-template>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Кнопка видалення -->
+      <div class="task-actions">
+        <button mat-icon-button color="warn" (click)="deleteTask(task.id, $event)">
+          <mat-icon>delete</mat-icon>
+        </button>
       </div>
     </mat-card>
   </div>

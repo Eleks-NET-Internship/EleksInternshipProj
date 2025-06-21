@@ -64,8 +64,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 24px; /* збільшений відступ між назвою та метаінформацією */
+  gap: 24px;
+  padding-right: 40px; 
 }
+
 
 .task-name {
   font-size: 20px;
@@ -110,7 +112,9 @@
   height: 30px;
   padding: 0 14px;
   display: inline-flex;
-  align-items: center;
+  align-items: center;    
+  justify-content: center; 
+  text-align: center;
 }
 
 .task-deadline {
@@ -129,4 +133,20 @@
   text-align: center;
   margin-top: 80px;
   font-style: italic;
+}
+
+.no-deadline {
+  color: #999;
+  font-style: italic;
+  font-size: 14px;
+}
+
+.task-card {
+  position: relative;
+}
+
+.task-actions {
+  position: absolute;
+  top: 8px;
+  right: 8px;
 }

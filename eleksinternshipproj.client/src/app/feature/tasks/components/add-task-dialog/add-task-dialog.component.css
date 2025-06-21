@@ -1,0 +1,51 @@
+.dialog-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.dialog-content {
+  padding-top: 8px;
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-weight: 500;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.custom-select {
+  height: 40px;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.custom-select:focus {
+  border-color: #3f51b5;
+  box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.1);
+}
+
+.dialog-actions {
+  margin-top: 16px;
+}

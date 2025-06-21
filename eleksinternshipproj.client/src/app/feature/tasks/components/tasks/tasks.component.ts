@@ -4,6 +4,7 @@ import { TaskDto } from '../../models/tasks-models';
 import { map } from 'rxjs';
 import { TaskDetailsDialogComponent } from '../task-details-dialog/task-details-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AddTaskDialogComponent } from '../add-task-dialog/add-task-dialog.component';
 
 @Component({
   selector: 'app-tasks',
@@ -38,7 +39,6 @@ loadTasks(): void {
           if (isPastA && !isPastB) return 1;     
           if (!isPastA && isPastB) return -1;   
           
-          // Обидва або актуальні, або прострочені — за датою
           return dateA.getTime() - dateB.getTime();
         });
       },
@@ -47,6 +47,19 @@ loadTasks(): void {
       }
     });
 }
+
+  deleteTask(id: number, event: MouseEvent): void {
+  event.stopPropagation();
+  if (confirm('Ви впевнені, що хочете видалити це завдання?')) {
+    this.tasksService.delete(id).subscribe({
+      next: () => {
+        this.tasks = this.tasks.filter(t => t.id !== id);
+      },
+      error: err => console.error('Помилка при видаленні завдання:', err)
+    });
+  }
+}
+
 
   openTaskDetails(task: TaskDto): void {
   const dialogRef = this.dialog.open(TaskDetailsDialogComponent, {
@@ -71,4 +84,30 @@ loadTasks(): void {
   });
 }
   
+
+  openAddTaskDialog(): void {
+  const dialogRef = this.dialog.open(AddTaskDialogComponent, {
+    width: '400px'
+  });
+
+  dialogRef.afterClosed().subscribe((newTask: Partial<TaskDto>) => {
+    if (newTask) {
+       const newTaskDto: TaskDto = {
+        id: 0,
+        name: newTask.name || '',
+        description: '',
+        eventId: newTask.eventId || 0,
+        eventTime: '0001-01-01T00:00:00',
+        isDeadline: true,
+        statusId: 1, 
+        statusName: 'Очікує' 
+      };
+      this.tasksService.create(newTaskDto).subscribe({
+        next: () => this.loadTasks(),
+        error: err => console.error('Помилка при створенні завдання:', err)
+      });
+    }
+  });
+}
+
 }
