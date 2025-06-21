@@ -1,20 +1,26 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, shareReplay } from 'rxjs';
+import { environment } from '../../../shared/.env/environment';
 
-import type { TaskDTO } from '../models/calendar-models';
-import type { UniqueEventDTO } from '../models/calendar-models';
+import type { AddUniqueEventDto, TaskDTO, UniqueEventDTO } from '../models/calendar-models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarService {
-  private readonly apiBaseUrl = 'https://localhost:7050';
+  private readonly apiBaseUrl = environment.apiUrl;
+  private readonly spaceId = JSON.parse(sessionStorage.getItem('selectedSpace') ?? '').id;
+  private tasks!: Observable<{ data: TaskDTO[] }>;
 
   constructor(private readonly http: HttpClient) { }
+
+  getTasks() {
+    this.tasks = this.http.get<{ data: TaskDTO[] }>(this.apiBaseUrl + '/api/Task/space/' + this.spaceId).pipe(shareReplay(1));
+  }
   
   getTasksByDate(date: Date): Observable<TaskDTO[]> {
-  return this.http.get<{ data: TaskDTO[] }>(this.apiBaseUrl + '/api/Task/space/1').pipe(
+  return this.tasks.pipe(
     map(res => res.data.filter(task => {
       const taskDate = new Date(task.eventTime);
       return this.areSameDate(date, taskDate);
@@ -22,34 +28,56 @@ export class CalendarService {
   );
 }
 
+  //returns tasks within week except today and tomorrow tasks
+  getTasksWithinWeek(): Observable<TaskDTO[]> {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const oneWeekFromToday = this.addDays(today, 6);
+    const tomorrow = this.addDays(today, 2);
+
+    return this.tasks.pipe(
+      map(res => res.data.filter(task => {
+        const d = new Date(task.eventTime);
+        d.setHours(0, 0, 0, 0);
+
+        return d >= tomorrow && d <= oneWeekFromToday;
+      }))
+    );
+  }
+
+  getEventsByDate(date: Date): Observable<UniqueEventDTO[]> {
+    return this.http.get<{ data: UniqueEventDTO[] }>(this.apiBaseUrl + '/api/UniqueEvents/all/' + this.spaceId).pipe(
+      map(res => res.data.filter(event => {
+        const eventDate = new Date(event.eventTime);
+        return this.areSameDate(date, eventDate);
+      }))
+    );
+  }
+
+  addUniqueEvent(event: AddUniqueEventDto) {
+    event.spaceId = Number(this.spaceId);
+    this.http.post<{ message: string, data: { id: number, eventId: number } }>(this.apiBaseUrl + '/api/UniqueEvents', event, { observe: 'response' }).subscribe(
+      (response) => {
+        if (response.ok) {
+          console.log('Unique event successfully created with ID=' + response.body?.data.id);
+        }
+        else {
+          console.log('Error creating unique event: ', response.body);
+        }
+      }
+    );
+  }
+
   private areSameDate(d1: Date, d2: Date): boolean {
     return d1.getFullYear() === d2.getFullYear() &&
           d1.getMonth() === d2.getMonth() &&
           d1.getDate() === d2.getDate();
   }
 
-  getTasksWithinWeek(date: Date): Observable<TaskDTO[]> {
-    date.setHours(0, 0, 0, 0);
-
-    const oneWeekFromToday = new Date(date);
-    oneWeekFromToday.setDate(date.getDate() + 7);
-
-    return this.http.get<{ data: TaskDTO[] }>(this.apiBaseUrl + '/api/Task/space/1').pipe(
-      map(res => res.data.filter(task => {
-        const d = new Date(task.eventTime);
-        d.setHours(0, 0, 0, 0);
-
-        return d >= date && d <= oneWeekFromToday;
-      }))
-    );
-  }
-
-  getEventsByDate(date: Date): Observable<UniqueEventDTO[]> {
-    return this.http.get<{ data: UniqueEventDTO[] }>(this.apiBaseUrl + '/api/UniqueEvents/all/1').pipe(
-      map(res => res.data.filter(event => {
-        const eventDate = new Date(event.eventTime);
-        return this.areSameDate(date, eventDate);
-      }))
-    );
+  private addDays(date: Date, days: number): Date {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
   }
 }

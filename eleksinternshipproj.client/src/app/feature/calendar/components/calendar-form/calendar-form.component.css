@@ -57,13 +57,6 @@
   line-height: 1.4;
 }
 
-/* Remove any hover effects since these are display-only */
-.display-field:hover {
-  background: rgba(255, 255, 255, 0.7);
-  transform: none;
-  box-shadow: none;
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
   .display-container {

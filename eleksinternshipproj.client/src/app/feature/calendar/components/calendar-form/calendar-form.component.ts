@@ -1,7 +1,7 @@
 // calendar-form.component.ts
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import type { TaskDTO } from '../../models/calendar-models';
+import type { TaskDTO, UniqueEventDTO } from '../../models/calendar-models';
 import { CalendarService } from '../../services/calendar.service';
 
 @Component({
@@ -10,7 +10,8 @@ import { CalendarService } from '../../services/calendar.service';
   styleUrls: ['./calendar-form.component.css']
 })
 export class CalendarFormComponent implements OnChanges {
-  @Input({ required: true }) selectedDate: Date | null = null;
+  @Input({ required: true }) selectedDate!: Date | null;
+  @Input({ required: true }) trigger!: boolean;
 
   displayTitle: string = 'СЬОГОДНІ';
 
@@ -24,7 +25,7 @@ export class CalendarFormComponent implements OnChanges {
 
   selectedDateTasks: TaskDTO[] = [];
 
-  events: any[] = [];
+  events: UniqueEventDTO[] = [];
 
   constructor(private readonly calendarService: CalendarService) {}
 
@@ -34,6 +35,8 @@ export class CalendarFormComponent implements OnChanges {
   }
 
   private loadDisplayData(): void {
+    this.calendarService.getTasks();
+
     this.today = new Date();
     this.calendarService.getTasksByDate(this.today).subscribe(tasks => {
       this.todayTasks = tasks;
@@ -45,7 +48,7 @@ export class CalendarFormComponent implements OnChanges {
       this.tomorrowTasks = tasks;
     });
 
-    this.calendarService.getTasksWithinWeek(this.today).subscribe(tasks => {
+    this.calendarService.getTasksWithinWeek().subscribe(tasks => {
       this.weekTasks = tasks;
     });
 

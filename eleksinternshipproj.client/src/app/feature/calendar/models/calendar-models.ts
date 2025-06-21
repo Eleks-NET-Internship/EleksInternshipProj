@@ -24,3 +24,10 @@ export interface MarkerDto {
   type: string,
   spaceId: number
 }
+
+export interface AddUniqueEventDto {
+  id: number,
+  eventName: string,
+  eventTime: string,
+  spaceId: number
+}

@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { AddEventComponent } from '../add-event/add-event.component';
+
+import type { AddUniqueEventDto } from '../../models/calendar-models'; 
+import { CalendarService } from '../../services/calendar.service';
 
 @Component({
   selector: 'app-calendar',
@@ -8,15 +13,18 @@ import { Component, OnInit } from '@angular/core';
 export class CalendarComponent implements OnInit {
   calendarDays: number[] = [];
   selectedDate: { day: number, month: number, year: number } | null = null;
+  selectedDateSignal = signal<Date | null>(null);
   currentMonth: number = new Date().getMonth();
   currentYear: number = new Date().getFullYear();
+
+  triggerForForm!: boolean;
 
   monthNames: string[] = [
     'СІЧЕНЬ', 'ЛЮТИЙ', 'БЕРЕЗЕНЬ', 'КВІТЕНЬ', 'ТРАВЕНЬ', 'ЧЕРВЕНЬ',
     'ЛИПЕНЬ', 'СЕРПЕНЬ', 'ВЕРЕСЕНЬ', 'ЖОВТЕНЬ', 'ЛИСТОПАД', 'ГРУДЕНЬ'
   ];
 
-  constructor() {}
+  constructor( private readonly calendarService: CalendarService, private readonly dialog: MatDialog ) {}
 
   ngOnInit(): void {
     this.generateCalendar();
@@ -55,12 +63,16 @@ export class CalendarComponent implements OnInit {
         this.selectedDate.year === this.currentYear
       ) {
         this.selectedDate = null;
+        this.selectedDateSignal.set(null);
+        console.log(this.selectedDateSignal());//REMOVE AFTER DEBUG
       } else {
         this.selectedDate = {
           day: day,
           month: this.currentMonth,
           year: this.currentYear
         };
+        this.selectedDateSignal.set(new Date(this.selectedDate.year, this.selectedDate.month, this.selectedDate.day));
+        console.log(this.selectedDateSignal());//REMOVE AFTER DEBUG
       }
 
       console.log(
@@ -79,12 +91,6 @@ export class CalendarComponent implements OnInit {
       this.selectedDate.month === this.currentMonth &&
       this.selectedDate.year === this.currentYear
     );
-  }
-
-  getSelectedDate(): Date | null {
-    return this.selectedDate
-      ? new Date(this.selectedDate.year, this.selectedDate.month, this.selectedDate.day)
-      : null;
   }
 
   getCurrentMonthName(): string {
@@ -111,5 +117,41 @@ export class CalendarComponent implements OnInit {
     }
 
     this.generateCalendar();
+  }
+
+  onEventCreating() {
+    const dialogRef = this.dialog.open(AddEventComponent, {
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe({
+      next: (result: { eventName: string, eventTime: string }) => {
+        const addedEvent: AddUniqueEventDto = {
+          id: 0,
+          eventName: result.eventName,
+          eventTime: this.getFullDate(this.selectedDateSignal() as Date, result.eventTime),
+          spaceId: 0,
+        };
+        this.calendarService.addUniqueEvent(addedEvent);
+        this.triggerForForm = !this.triggerForForm;
+      },
+      error: (err) => {
+        console.error('Error during event creating: ', err);
+      }
+    });
+  }
+
+  private getFullDate(date: Date, time: string): string {
+    const [hours, minutes] = time.split(':').map(Number);
+    const timeAsDate = new Date();
+    timeAsDate.setHours(hours, minutes, 0, 0);
+
+    const fullDate = new Date(date);
+    fullDate.setHours(timeAsDate.getHours());
+    fullDate.setMinutes(timeAsDate.getMinutes());
+    fullDate.setSeconds(timeAsDate.getSeconds());
+    fullDate.setMilliseconds(timeAsDate.getMilliseconds());
+
+    return fullDate.toISOString();
   }
 }

@@ -29,6 +29,7 @@
       <div class="day-cell"
            *ngFor="let day of calendarDays; let i = index"
            [class.selected]="isSelectedDay(day)"
+           [style.visibility]="day === 0 ? 'hidden' : 'visible'"
            (click)="selectDay(day)">
         {{ day || '' }}
       </div>
@@ -37,7 +38,9 @@
 
   <!-- Calendar Form Section -->
   <div class="form-section">
-    <app-calendar-form [selectedDate]="getSelectedDate()">
-    </app-calendar-form>
+    <app-calendar-form [selectedDate]="selectedDateSignal()" [trigger]="triggerForForm" />
+    @if (selectedDateSignal()) {
+      <button class="create-event-btn" mat-button (click)="onEventCreating()">Створити подію</button>
+    }
   </div>
 </div>
