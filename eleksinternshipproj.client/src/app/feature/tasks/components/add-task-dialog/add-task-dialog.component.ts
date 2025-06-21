@@ -13,12 +13,15 @@ import { map } from 'rxjs';
 export class AddTaskDialogComponent implements OnInit {
   task: Partial<TaskDto> = { name: '', eventId: 0 };
   events: EventDto[] = [];
-  private readonly spaceId = 1;
+  private spaceId: number;
 
   constructor(
     private dialogRef: MatDialogRef<AddTaskDialogComponent>,
     private eventsService: EventsService
-  ) {}
+  ) {
+     const storedSpace = sessionStorage.getItem('selectedSpace');
+    this.spaceId = storedSpace ? JSON.parse(storedSpace).id : 1;
+  }
 
   ngOnInit(): void {
     this.eventsService.getAll(this.spaceId)

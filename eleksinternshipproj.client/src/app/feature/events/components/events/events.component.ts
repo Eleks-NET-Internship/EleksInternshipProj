@@ -14,14 +14,16 @@ import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.co
 export class EventsComponent implements OnInit {
   events: EventDto[] = [];
   selectedEvent!: EventDto;
-  // private spaceId = this.spaceService.getSpaceId();     Тут буде витягнення spaceId з сервісу, коли він буде реалізований, поки що дефолтне значення 1
-  private spaceId: number = 1; 
+   private spaceId: number;
 
   constructor(
     private eventsService: EventsService,
     private dialog: MatDialog,
-     private router: Router
-  ) {}
+    private router: Router
+  ) {
+    const storedSpace = sessionStorage.getItem('selectedSpace');
+    this.spaceId = storedSpace ? JSON.parse(storedSpace).id : 1; 
+  }
 
   ngOnInit(): void {
     this.eventsService.getAll(this.spaceId)
