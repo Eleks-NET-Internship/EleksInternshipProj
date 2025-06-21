@@ -12,7 +12,7 @@
 
   <!-- Task List -->
   <div class="task-content" *ngIf="tasks.length > 0; else noTasks">
-    <mat-card class="task-card" *ngFor="let task of tasks">
+    <mat-card class="task-card" *ngFor="let task of tasks" (click)="openTaskDetails(task)">
       <div class="task-card-content">
         <div class="task-name">{{ task.name }}</div>
 
