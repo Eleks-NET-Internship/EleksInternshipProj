@@ -17,9 +17,10 @@ export class AuthService {
     return this.http.post<{ accessToken: string }>(`${this.apiBaseUrl}/api/auth/login`, credentials);
   }
 
-  logout() {
-    this.tokenService.removeToken();
+  logOut() {
     this.notificationSignalRService.stopConnection();
+    window.sessionStorage.clear();
+    window.localStorage.clear();
     this.router.navigate(['/login']);
   }
 

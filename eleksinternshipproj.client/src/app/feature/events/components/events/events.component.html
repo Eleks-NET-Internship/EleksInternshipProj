@@ -1,7 +1,14 @@
-<div class="main-wrapper">
-  <div class="header-icons">
-    <mat-icon class="add-icon" (click)="addEvent()">add_circle_outline</mat-icon>
+<div class="events-container">
+
+  <div class="events-header">
+    <div class="header-title">Події</div>
+
+    <div class="header-actions">
+      <button class="add-event-btn" (click)="addEvent()">+ Додати подію</button>
+    </div>
   </div>
+
+  <div class="header-divider"></div>
 
   <div class="list-container">
     <!-- Якщо подій немає -->
@@ -15,12 +22,10 @@
         <span class="card-title">{{ event.name }}</span>
 
         <!-- Меню кнопка -->
-        <button
-          mat-icon-button
-          class="more-options"
-          [matMenuTriggerFor]="menu"
-          (click)="selectedEvent = event; $event.stopPropagation()"
-        >
+        <button mat-icon-button
+                class="more-options"
+                [matMenuTriggerFor]="menu"
+                (click)="selectedEvent = event; $event.stopPropagation()">
           <mat-icon>more_horiz</mat-icon>
         </button>
       </div>

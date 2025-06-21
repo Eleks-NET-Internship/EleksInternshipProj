@@ -13,8 +13,9 @@
 }
 
 .header-title {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 600;
+  margin-bottom: 8px;
 }
 
 .header-actions {
@@ -128,11 +129,10 @@
 }
 
 .empty-message {
-  font-size: 18px;
-  color: #aaa;
+  font-size: 16px;
+  color: #777;
   text-align: center;
-  margin-top: 80px;
-  font-style: italic;
+  margin-top: 40px;
 }
 
 .no-deadline {

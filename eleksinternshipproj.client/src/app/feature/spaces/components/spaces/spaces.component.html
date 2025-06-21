@@ -2,7 +2,7 @@
 <div class="space-container">
   <!-- Header -->
   <div class="space-header">
-    <div class="header-title">Мої простори</div>
+    <div class="header-title">Простори</div>
 
     <div class="header-actions">
       <button class="add-space-btn" (click)="createFormVisible = !createFormVisible">+ Додати простір</button>
@@ -23,7 +23,7 @@
   <!-- Main content -->
   <div class="space-content">
     @if (spaces.length === 0) {
-      <div class="empty-message">Пусто</div>
+      <div class="empty-message">Просторів поки немає. Створіть простір або приєднайтесь до існуючого</div>
     }
 
     @for (space of spaces; track space.id) {
