@@ -15,7 +15,7 @@ export class SidebarComponent {
     { icon: 'assignment', label: 'Завдання' },
     { icon: 'note', label: 'Нотатки' },
     { icon: 'event', label: 'Події' },
-    { icon: 'bar_chart', label: 'Статистика' },
+  //  { icon: 'bar_chart', label: 'Статистика' },
     { icon: 'notifications', label: 'Сповіщення' },
     { icon: 'person', label: 'Профіль' },
     { icon: 'settings', label: 'Налаштування' },
@@ -62,10 +62,10 @@ export class SidebarComponent {
         break;
       }
 
-      case 'Статистика': {
-        this.router.navigate(['/statistics']);
-        break;
-      }
+      //case 'Статистика': {
+      //  this.router.navigate(['/statistics']);
+      //  break;
+      //}
 
       case 'Сповіщення': {
         this.router.navigate(['/notifications']);

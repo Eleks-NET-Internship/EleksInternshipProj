@@ -17,10 +17,14 @@ export class AuthService {
     return this.http.post<{ accessToken: string }>(`${this.apiBaseUrl}/api/auth/login`, credentials);
   }
 
-  logOut() {
+  clearState() {
     this.notificationSignalRService.stopConnection();
     window.sessionStorage.clear();
     window.localStorage.clear();
+  }
+
+  logOut() {
+    this.clearState();
     this.router.navigate(['/login']);
   }
 

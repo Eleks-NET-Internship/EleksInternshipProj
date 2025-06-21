@@ -15,7 +15,9 @@ export class LoginComponent {
     private readonly tokenActionsService: TokenActionsService,
     private readonly snackBar: MatSnackBar,
     private readonly router: Router,
-    private readonly notifSignalRService: NotificationsSignalrService) { }
+    private readonly notifSignalRService: NotificationsSignalrService) {
+    authService.clearState();
+  }
 
   hide = signal(true);
   clickEvent(event: MouseEvent) {
