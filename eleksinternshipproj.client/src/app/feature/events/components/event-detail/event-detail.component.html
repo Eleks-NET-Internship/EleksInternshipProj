@@ -1,0 +1,32 @@
+<div class="event-detail-wrapper">
+  <h4 *ngIf="event" class="event-title">{{ event.name }}</h4>
+  <p *ngIf="!event">Завантаження події...</p>
+
+  <div *ngIf="event" class="content-blocks-container">
+    <mat-card class="content-block">
+      <mat-card-header class="card-header">
+        <div class="header-title-center">
+          <mat-card-title>Завдання</mat-card-title>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>Сюди додати завдання</mat-list-item>
+          <mat-list-item>Коли це буде</mat-list-item>
+          <mat-list-item>реалізовано в сервісі</mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="content-block">
+      <mat-card-header class="card-header">
+        <div class="header-title-center">
+          <mat-card-title>Нотатки</mat-card-title>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <p>З нотатками так само</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

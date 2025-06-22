@@ -2,30 +2,29 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { NotificationsSignalrService } from '../notifications/notifications-signalr.service';
+import { TokenActionsService } from '../tokens/token-actions.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private readonly apiBaseUrl = 'https://localhost:7050';
-  private readonly TOKEN_KEY = 'access_token';
 
-  constructor(private readonly http: HttpClient, private router: Router) { }
-
-  getToken() {
-    return sessionStorage.getItem(this.TOKEN_KEY);
-  }
-
-  setToken(token: string) {
-    sessionStorage.setItem(this.TOKEN_KEY, token);
-  }
+  constructor(private readonly http: HttpClient, private router: Router, private tokenService: TokenActionsService, private notificationSignalRService: NotificationsSignalrService) { }
 
   login(credentials: { email: string; password: string }): Observable<{ accessToken: string }> {
     return this.http.post<{ accessToken: string }>(`${this.apiBaseUrl}/api/auth/login`, credentials);
   }
 
-  logout() {
-    sessionStorage.removeItem(this.TOKEN_KEY);
+  clearState() {
+    this.notificationSignalRService.stopConnection();
+    window.sessionStorage.clear();
+    window.localStorage.clear();
+  }
+
+  logOut() {
+    this.clearState();
     this.router.navigate(['/login']);
   }
 
@@ -34,6 +33,6 @@ export class AuthService {
   }
 
   loginWithGoogle() {
-    window.location.href = `${this.apiBaseUrl}/api/auth/login/google?returnUrl=/forecast`;
+    window.location.href = `${this.apiBaseUrl}/api/auth/login/google?returnUrl=/spaces`;
   }
 }

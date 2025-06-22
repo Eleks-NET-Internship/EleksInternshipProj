@@ -9,7 +9,9 @@ import { Router } from '@angular/router';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  constructor(private readonly authService: AuthService, private readonly snackBar: MatSnackBar, private readonly router: Router) {}
+  constructor(private readonly authService: AuthService, private readonly snackBar: MatSnackBar, private readonly router: Router) {
+    authService.clearState();
+  }
 
   hide = signal(true);
   clickEvent(event: MouseEvent) {

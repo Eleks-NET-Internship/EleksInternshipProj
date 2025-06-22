@@ -11,6 +11,7 @@ export interface EventGroup {
   notes: NoteDto[];
 }
 
+
 @Component({
   selector: 'app-notes',
   templateUrl: './notes.component.html',

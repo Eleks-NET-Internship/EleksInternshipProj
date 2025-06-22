@@ -1,0 +1,38 @@
+.profile-container {
+  padding: 24px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-divider {
+  height: 1px;
+  background-color: #ccc;
+  margin: 8px 0 16px;
+}
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  /*align-items:center;*/
+}
+
+form {
+    max-width: 400px;
+}
+
+.form-field {
+  width: 100%;
+  margin-bottom: 16px;
+}

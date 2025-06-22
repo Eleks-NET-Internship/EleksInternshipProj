@@ -1,0 +1,22 @@
+<div class="notifications-container">
+  <div class="notifications-header">
+    <div class="header-title">Сповіщення</div>
+  </div>
+  <div class="header-divider"></div>
+
+  <div *ngIf="notifications.length < 1" class="empty-message">Пусто</div>
+
+  <div class="notification-list">
+    <div *ngFor="let notif of notifications" class="notification"
+         [ngClass]="!notif.read ? 'clickableNotification' : ''">
+      <div [ngClass]="notif.read ? 'readHeader' : 'notReadHeader'">
+        <h3 class="notification-title">{{notif.title}}</h3>
+      </div>
+      <div [ngClass]="notif.read ? 'readContent' : 'notReadContent'">
+        <p class="notification-description">{{notif.message}}</p>
+        <p class="notification-description">Коли? {{notif.deadlineAt | date:"medium"}}</p>
+        <small class="notification-description">Надіслано {{notif.sentAt | date:"medium"}}</small>
+      </div>
+    </div>
+  </div>
+</div>

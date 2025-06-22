@@ -4,6 +4,7 @@ using EleksInternshipProj.Domain.Models;
 
 namespace EleksInternshipProj.Domain.Abstractions
 {
+    // just exemple, this folder for repository interfaces
     public interface IUserRepository
     {
         Task<User?> GetByEmailAndProviderAsync(string email, string provider);
@@ -13,6 +14,7 @@ namespace EleksInternshipProj.Domain.Abstractions
         Task AddUserAsync(User user);
 
         Task<User?> GetByIdAsync(long userId);
+        Task<User?> GetByNameAsync(string name);
 
         Task UpdateUserAsync(User user);
     }

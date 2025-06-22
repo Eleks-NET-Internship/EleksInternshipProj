@@ -8,7 +8,7 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Назва</mat-label>
         <input matInput formControlName="name" placeholder="Введіть назву події">
-        <mat-error *ngIf="eventForm.get('name')?.hasError('required')">
+        <mat-error *ngIf="hasError('name', 'required')">
           Назва є обов'язковою
         </mat-error>
       </mat-form-field>
@@ -21,7 +21,7 @@
                  type="time"
                  formControlName="startTime"
                  [attr.step]="300">
-          <mat-error *ngIf="eventForm.get('startTime')?.hasError('required')">
+          <mat-error *ngIf="hasError('startTime', 'required')">
             Час початку є обов'язковим
           </mat-error>
         </mat-form-field>
@@ -32,7 +32,7 @@
                  type="time"
                  formControlName="endTime"
                  [attr.step]="300">
-          <mat-error *ngIf="eventForm.get('endTime')?.hasError('required')">
+          <mat-error *ngIf="hasError('endTime', 'required')">
             Час закінчення є обов'язковим
           </mat-error>
           <mat-error *ngIf="eventForm.hasError('timeOrder')">
@@ -67,7 +67,6 @@
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
-
 
     </form>
   </mat-dialog-content>

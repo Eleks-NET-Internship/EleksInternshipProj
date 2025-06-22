@@ -7,15 +7,24 @@ import { AuthCallbackComponent } from './feature/login/components/auth-callback/
 import { CalendarComponent } from './feature/calendar/components/calendar/calendar.component';
 import { ScheduleComponent } from './feature/schedule/components/schedule/schedule.component';
 import { EditScheduleComponent } from './feature/schedule/components/edit-schedule/edit-schedule.component';
-
 import { ProfileComponent } from './feature/profile/components/profile/profile.component';
 import { MainLayoutComponent } from './shared/components/layouts/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/auth-layout.component';
+import { SettingsComponent } from './feature/settings/components/settings/settings.component';
+import { StatisticsComponent } from './feature/statistics/components/statistics/statistics.component';
+import { TasksComponent } from './feature/tasks/components/tasks/tasks.component';
 import { NotesComponent } from './feature/notes/components/notes/notes.component';
+import { EventsComponent } from './feature/events/components/events/events.component';
+import { SpacesComponent } from './feature/spaces/components/spaces/spaces.component';
+import { EventDetailComponent } from './feature/events/components/event-detail/event-detail.component';
+import { NotificationsComponent } from './feature/notifications/components/notifications/notifications.component';
+import { spaceContextGuard } from './core/guards/space-context.guard';
 import { EventNotesComponent } from './feature/notes/components/event-notes/event-notes.component';
 import { NoteDetailComponent } from './feature/notes/components/note-detail/note-detail.component';
 
 const routes: Routes = [
+
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
 
   {
     path: '',
@@ -31,17 +40,24 @@ const routes: Routes = [
     path: '',
     component: MainLayoutComponent,
     children: [
-      { path: 'calendar', component: CalendarComponent, canActivate: [authGuard] },
-      { path: 'schedule', component: ScheduleComponent, canActivate: [authGuard] },
-      { path: 'notes', component: NotesComponent, canActivate: [authGuard] },
+      { path: 'spaces', component: SpacesComponent, canActivate: [authGuard] },
+      { path: 'calendar', component: CalendarComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'schedule', component: ScheduleComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'edit-schedule', component: EditScheduleComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'tasks', component: TasksComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'notes', component: NotesComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'events', component: EventsComponent, canActivate: [authGuard, spaceContextGuard] },
       { path: 'event-notes', component: EventNotesComponent, canActivate: [authGuard] },
       { path: 'notes/:id', component: NoteDetailComponent, canActivate: [authGuard] },
-      { path: 'edit-schedule', component: EditScheduleComponent, canActivate: [authGuard] },
+      { path: 'event/:id', component: EventDetailComponent, canActivate: [authGuard, spaceContextGuard] },
+      //{ path: 'statistics', component: StatisticsComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'notifications', component: NotificationsComponent, canActivate: [authGuard] },
       { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+      { path: 'settings', component: SettingsComponent, canActivate: [authGuard] }
     ]
   },
 
-  { path: '**', redirectTo: '/profile' } // change to space selection page later
+  { path: '**', redirectTo: '/spaces' }
 ];
 
 @NgModule({

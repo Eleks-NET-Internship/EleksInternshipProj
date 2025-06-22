@@ -24,9 +24,8 @@ public class Event
     public Space Space { get; set; } = null!;
 
     public List<EventMarker> EventMarkers { get; set; } = new();
-    public List<EventTimetableDay> EventTimetableDays { get; set; } = new();
+    public List<EventDay> EventDays { get; set; } = new();
     public List<SoloEvent> SoloEvents { get; set; } = new();
     public List<Note> Notes { get; set; } = new();
     public List<TaskModel> Tasks { get; set; } = new();
 }
-

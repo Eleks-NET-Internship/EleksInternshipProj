@@ -2,14 +2,19 @@ using Microsoft.EntityFrameworkCore;
 
 using EleksInternshipProj.Infrastructure.Data;
 using EleksInternshipProj.WebApi.Extensions;
+using EleksInternshipProj.Infrastructure.Hubs;
 
-namespace EleksInternshipProj.Server
+namespace EleksInternshipProj.WebApi
 {
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
+            builder.Logging.AddDebug();
 
             // GET Connection String
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -36,6 +41,7 @@ namespace EleksInternshipProj.Server
             // From extensions
             builder.Services.AddApplicationServices();
             builder.Services.AddRepositories();
+            builder.Services.AddHostedServices();
             builder.Services.ConfigureAuth(builder.Configuration);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -62,6 +68,9 @@ namespace EleksInternshipProj.Server
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.MapHub<NotificationHub>("/hubs/notifications")
+                .RequireAuthorization();
 
             app.MapFallbackToFile("/index.html");
 

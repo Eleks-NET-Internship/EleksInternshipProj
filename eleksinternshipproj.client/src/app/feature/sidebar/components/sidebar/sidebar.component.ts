@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { SpaceContextService } from '../../../../core/services/space-context/space-context.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,82 +11,71 @@ import { Router } from '@angular/router';
 export class SidebarComponent {
 
   sidenavItems = [
-    { icon: 'workspace', label: 'Простір' },
-    { icon: 'calendar_today', label: 'Календар' },
-    { icon: 'schedule', label: 'Розклад' },
-    { icon: 'assignment', label: 'Завдання' },
-    { icon: 'note', label: 'Нотатки' },
-    { icon: 'event', label: 'Події' },
-    { icon: 'bar_chart', label: 'Статистика' },
-    { icon: 'person', label: 'Профіль', active: true },
-    { icon: 'settings', label: 'Налаштування' },
-  ];
+    { icon: 'workspace', label: 'Простір', route: "/spaces" },
+    { icon: 'calendar_today', label: 'Календар', route: "/calendar" },
+    { icon: 'schedule', label: 'Розклад', route: "/schedule" },
+    { icon: 'assignment', label: 'Завдання', route: "/tasks" },
+    { icon: 'note', label: 'Нотатки', route: "/notes" },
+    { icon: 'event', label: 'Події', route: "/events" },
+    //  { icon: 'bar_chart', label: 'Статистика', route: "/statistics" },
+    { icon: 'notifications', label: 'Сповіщення', route: "/notifications" },
+    { icon: 'person', label: 'Профіль', route: "/profile" },
+    { icon: 'settings', label: 'Налаштування', route: "/settings" },
+  ].map(item => ({
+    ...item,
+    active: false,
+    disabled: true
+  }));
 
-  constructor(private router: Router) { }
+  alwaysEnabled = ["/spaces", "/notifications", "/profile", "/settings"]
 
-  onMenuClick(clickedItem: any) {
+  private routerSubscription?: Subscription;
+  private spaceSubscription?: Subscription;
 
-    this.sidenavItems = this.sidenavItems.map(item => ({
-      ...item,
-      active: item.label === clickedItem.label
-    }));
+  constructor(private router: Router, private spaceContextService: SpaceContextService) { }
 
-    switch (clickedItem.label) {
+  ngOnInit() {
+    this.updateActiveItem(this.router.url);
 
-      case 'Простір': {
-        console.log('Простір');
-        alert("Not implemented :("); // no component for space selection
-        break;
+    this.routerSubscription = this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.updateActiveItem(event.urlAfterRedirects);
       }
+    });
 
-      case 'Календар': {
-        console.log('Календар');
-        this.router.navigate(['/calendar']);
-        break;
+    this.spaceSubscription = this.spaceContextService.space$.subscribe(space => {
+      if (space) {
+        this.setDisabledState(true);
+        this.sidenavItems[0].label = this.spaceContextService.getSpaceName()??"";
+      } else {
+        this.setDisabledState(false);
+        this.sidenavItems[0].label = "Простір";
       }
-
-      case 'Розклад': {
-        console.log('Розклад');
-        this.router.navigate(['/schedule']);
-        break;
-      }
-
-      case 'Завдання': {
-        console.log('Завдання'); // same
-        alert("Not implemented :(");
-        break;
-      }
-
-      case 'Нотатки': {
-        console.log('Нотатки'); // same
-        this.router.navigate(['/notes']);
-        break;
-      }
-
-      case 'Події': {
-        console.log('Події'); // same
-        alert("Not implemented :(");
-        break;
-      }
-
-      case 'Статистика': {
-        console.log('Статистика'); // same
-        alert("Not implemented :(");
-        break;
-      }
-
-      case 'Профіль': {
-        console.log('Профіль');
-        this.router.navigate(['/profile']);
-        break;
-      }
-
-      case 'Налаштування': {
-        console.log('Налаштування'); // same
-        alert("Not implemented :(");
-        break;
-      }
-    }
+    })
   }
 
+  ngOnDestroy() {
+    this.routerSubscription?.unsubscribe();
+    this.spaceSubscription?.unsubscribe();
+  }
+
+  onMenuClick(clickedItem: any) {
+    if (clickedItem.disabled)
+      return;
+    this.router.navigate([clickedItem.route]);
+  }
+
+  private updateActiveItem(url: string) {
+    this.sidenavItems = this.sidenavItems.map(item => ({
+      ...item,
+      active: url.startsWith(item.route)
+    }));
+  }
+
+  private setDisabledState(spaceSelected: boolean) {
+    this.sidenavItems = this.sidenavItems.map(item => ({
+      ...item,
+      disabled: spaceSelected ? false : !this.alwaysEnabled.includes(item.route)
+    }))
+  }
 }

@@ -2,9 +2,9 @@
 .calendar-container {
   display: flex;
   gap: 20px;
-  padding: 70px 30px 20px 30px;
+  padding-top: 70px;
+  padding-bottom: 20px;
   background: #ffffff00;
-  height: 480px;
   font-family: Arial, sans-serif;
   width: calc(100vw - 270px);
   flex-direction: row;
@@ -122,6 +122,10 @@
 .form-section {
   flex: 1;
   max-width: 300px;
+}
+
+.create-event-btn {
+  margin: 20px 0;
 }
 
 @media (max-width: 768px) {

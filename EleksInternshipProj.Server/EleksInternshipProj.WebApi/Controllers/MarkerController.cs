@@ -1,14 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
-using EleksInternshipProj.Application.DTOs;
-using EleksInternshipProj.Application.Services;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using EleksInternshipProj.Application.DTOs;
+using EleksInternshipProj.Application.Services;
 
 namespace EleksInternshipProj.WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class MarkerController : ControllerBase
     {
         private readonly IMarkerService _markerService;
@@ -20,12 +20,12 @@ namespace EleksInternshipProj.WebApi.Controllers
 
         [HttpGet]
         [Route("by-space/{spaceId:long}")]
-        public async Task<IActionResult> GetAllBySpaceId(long spaceId)
+        public async Task<ActionResult<IEnumerable<MarkerDto>>> GetAllBySpaceId(long spaceId)
         {
             try
             {
                 var markers = await _markerService.GetAllBySpaceIdAsync(spaceId);
-                return Ok(new { data = markers });
+                return Ok(markers);
             }
             catch (Exception ex)
             {
@@ -35,12 +35,12 @@ namespace EleksInternshipProj.WebApi.Controllers
 
         [HttpGet]
         [Route("{id:long}")]
-        public async Task<IActionResult> GetById(long id)
+        public async Task<ActionResult<MarkerDto?>> GetById(long id)
         {
             try
             {
                 var marker = await _markerService.GetByIdAsync(id);
-                return Ok(new { data = marker });
+                return Ok(marker);
             }
             catch (ArgumentException ex)
             {

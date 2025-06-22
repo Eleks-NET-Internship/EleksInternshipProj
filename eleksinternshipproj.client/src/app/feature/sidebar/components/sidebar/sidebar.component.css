@@ -9,6 +9,15 @@
   overflow: hidden;
 }
 
+.logo {
+  font-style: italic;
+  font-size: 24px;
+  font-weight: bold;
+  user-select: none;
+  padding: 0px;
+  margin: 8px 0px 0px 0px;
+}
+
 .sidenav-header {
   padding: 16px;
   border-bottom: 1px solid #e0e0e0;
@@ -16,8 +25,16 @@
   justify-content: flex-start;
 }
 
-.sidenav-header button {
-  color: #666;
+  .sidenav-header button {
+    color: #666;
+  }
+
+.disabled,
+.disabled * {
+  pointer-events: none !important;
+  opacity: 0.5 !important;
+  cursor: default !important;
+  user-select: none !important;
 }
 
 /* Навігаційне меню */
@@ -26,17 +43,23 @@
   height: auto;
 }
 
-.nav-list mat-list-item {
-  height: 56px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin: 2px 8px;
-  border-radius: 8px;
-  text-align: start;
-}
+  .nav-list mat-list-item {
+    height: 56px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin: 2px 8px;
+    border-radius: 8px;
+    text-align: start;
+  }
 
-.nav-list mat-list-item:hover {
-  background-color: rgba(25, 118, 210, 0.08);
+    .nav-list mat-list-item:not(.active, .disabled):hover {
+      background-color: rgba(25, 118, 210, 0.08);
+    }
+
+mdc-list-item:hover::before,
+.mat-mdc-list-item:hover::before {
+  background-color: transparent !important;
+  opacity: 0 !important;
 }
 
 .nav-list mat-list-item.active {
@@ -44,9 +67,9 @@
   color: white;
 }
 
-.nav-list mat-list-item.active mat-icon {
-  color: white;
-}
+  .nav-list mat-list-item.active mat-icon {
+    color: white;
+  }
 
 .nav-list mat-list-item mat-icon {
   color: #666;
@@ -67,7 +90,7 @@ mat-list-item {
   .days-header {
     grid-template-columns: repeat(3, 1fr);
   }
-  
+
   .day-column:nth-child(n+4) {
     display: none;
   }
@@ -77,24 +100,24 @@ mat-list-item {
   .sidenav {
     width: 70px;
   }
-  
+
   .nav-list mat-list-item span {
     display: none;
   }
-  
+
   .nav-list mat-list-item mat-icon {
     margin-right: 0;
   }
-  
+
   .schedule-grid,
   .days-header {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .day-column:nth-child(n+3) {
     display: none;
   }
-  
+
   .main-content {
     padding: 16px;
   }
@@ -105,7 +128,7 @@ mat-list-item {
   .days-header {
     grid-template-columns: 1fr;
   }
-  
+
   .day-column:nth-child(n+2) {
     display: none;
   }

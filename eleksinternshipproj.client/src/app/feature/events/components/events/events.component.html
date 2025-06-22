@@ -1,0 +1,46 @@
+<div class="events-container">
+
+  <div class="events-header">
+    <div class="header-title">Події</div>
+
+    <div class="header-actions">
+      <button class="add-event-btn" (click)="addEvent()">+ Додати подію</button>
+    </div>
+  </div>
+
+  <div class="header-divider"></div>
+
+  <div *ngIf="events.length === 0" class="empty-message">
+    Додайте свою першу подію
+  </div>
+
+  <div *ngIf="events.length !== 0" class="list-container">
+    <!-- Якщо подій немає -->
+    <!-- Якщо події є -->
+    <mat-card class="list-item" *ngFor="let event of events" (click)="goToEvent(event)" style="cursor: pointer;">
+      <div class="card-content">
+        <span class="card-title">{{ event.name }}</span>
+
+        <!-- Меню кнопка -->
+        <button mat-icon-button
+                class="more-options"
+                [matMenuTriggerFor]="menu"
+                (click)="selectedEvent = event; $event.stopPropagation()">
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+      </div>
+    </mat-card>
+
+    <!-- Меню -->
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="editEvent()">
+        <mat-icon>edit</mat-icon>
+        <span>Редагувати</span>
+      </button>
+      <button mat-menu-item (click)="deleteEvent()">
+        <mat-icon>delete</mat-icon>
+        <span>Видалити</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>

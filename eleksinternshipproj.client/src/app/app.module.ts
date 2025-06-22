@@ -11,9 +11,10 @@ import { CalendarFormComponent } from './feature/calendar/components/calendar-fo
 import { ScheduleComponent } from './feature/schedule/components/schedule/schedule.component';
 import { SidebarComponent } from './feature/sidebar/components/sidebar/sidebar.component';
 import { EditScheduleComponent } from './feature/schedule/components/edit-schedule/edit-schedule.component';
-import { EventEditFormComponent } from './feature/schedule/components/event-edit-form/event-edit-form.component';
+import { EventEditFormComponent } from './feature/schedule/components/event-edit-form/event-edit-form.component'
 import { LoginComponent } from './feature/login/components/login/login.component';
 import { RegisterComponent } from './feature/register/components/register/register.component';
+import { AddEventComponent } from './feature/calendar/components/add-event/add-event.component';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 
 // Angular Material
@@ -37,15 +38,24 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ProfileComponent } from './feature/profile/components/profile/profile.component';
 import { SharedModule } from './shared/shared.module';
+import { SettingsComponent } from './feature/settings/components/settings/settings.component';
+import { StatisticsComponent } from './feature/statistics/components/statistics/statistics.component';
+import { SpacesComponent } from './feature/spaces/components/spaces/spaces.component';
 import { NotesComponent } from './feature/notes/components/notes/notes.component';
+import { EventsComponent } from './feature/events/components/events/events.component';
+import { TasksComponent } from './feature/tasks/components/tasks/tasks.component';
+import { AddEventDialogComponent } from './feature/events/components/add-event-dialog/add-event-dialog.component';
+import { EventDetailComponent } from './feature/events/components/event-detail/event-detail.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NotificationsComponent } from './feature/notifications/components/notifications/notifications.component';
+import { TaskDetailsDialogComponent } from './feature/tasks/components/task-details-dialog/task-details-dialog.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { AddTaskDialogComponent } from './feature/tasks/components/add-task-dialog/add-task-dialog.component'; 
 import { EventNotesComponent } from './feature/notes/components/event-notes/event-notes.component';
 import { NoteDetailComponent } from './feature/notes/components/note-detail/note-detail.component';
 import { MatSelectModule } from '@angular/material/select'; // Додайте цей імпорт
 import { MatOptionModule } from '@angular/material/core'; // Додайте цей імпорт
-
-
-
-
 
 @NgModule({
   declarations: [
@@ -58,7 +68,18 @@ import { MatOptionModule } from '@angular/material/core'; // Додайте це
     LoginComponent,
     RegisterComponent,
     ProfileComponent,
+    SettingsComponent,
+    StatisticsComponent,
+    SpacesComponent,
     NotesComponent,
+    EventsComponent,
+    TasksComponent,
+    AddEventDialogComponent,
+    EventDetailComponent,
+    NotificationsComponent,
+    AddEventComponent,
+    TaskDetailsDialogComponent,
+    AddTaskDialogComponent,
     EventNotesComponent,
     NoteDetailComponent
   ],
@@ -67,6 +88,9 @@ import { MatOptionModule } from '@angular/material/core'; // Додайте це
     AppRoutingModule,
     SharedModule,
     // Material modules
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     MatSidenavModule,
     MatListModule,
     AppRoutingModule,
@@ -86,10 +110,9 @@ import { MatOptionModule } from '@angular/material/core'; // Додайте це
     MatRippleModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatProgressSpinnerModule,
     // CDK Modules
     DragDropModule,
-    MatSelectModule,
-    MatOptionModule
 ],
   providers: [
     provideAnimationsAsync(),
