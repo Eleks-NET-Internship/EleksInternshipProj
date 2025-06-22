@@ -47,7 +47,7 @@
     <div class="form-section">
       <app-calendar-form [selectedDate]="selectedDateSignal()" />
       @if (selectedDateSignal()) {
-        <button class="create-event-btn" mat-button (click)="onEventCreating()">Створити подію</button>
+        <button class="create-event-btn" mat-flat-button (click)="onEventCreating()">Створити подію</button>
       }
     </div>
   </div>
