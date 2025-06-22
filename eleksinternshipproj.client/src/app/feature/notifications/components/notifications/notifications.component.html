@@ -1,6 +1,9 @@
 <div class="notifications-container">
   <div class="notifications-header">
     <div class="header-title">Сповіщення</div>
+    <div class="header-actions">
+      <button *ngIf="canNotifySpaces" class="notify-space-btn" (click)="openNotifySpaceDialog()">Сповістити учасників</button>
+    </div>
   </div>
   <div class="header-divider"></div>
 

@@ -13,3 +13,8 @@ export interface NotificationDTO {
   deadlineAt: string | null;
   sentBefore: number | null;
 }
+export interface SpaceNotificationDTO {
+  title: string;
+  message: string;
+  spaceId: number;
+}

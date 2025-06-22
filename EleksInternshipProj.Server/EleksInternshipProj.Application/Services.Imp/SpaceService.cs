@@ -74,6 +74,11 @@ namespace EleksInternshipProj.Application.Services.Imp
             var allSpaces = (await _spaceRepository.GetByUserAsync(userId)).ToList();
             return allSpaces.Select(s => s.ToDto());
         }
+        public async Task<IEnumerable<SpaceRenameDto>> GetSpacesWhereAdminAsync(long userId)
+        {
+            var allSpaces = await _spaceRepository.GetByUserWhereAdminAsync(userId);
+            return allSpaces.Select(s => new SpaceRenameDto { Id = s.Id, Name = s.Name});
+        }
 
         public async Task<Space?> RenameSpaceAsync(long spaceId, string newName)
         {

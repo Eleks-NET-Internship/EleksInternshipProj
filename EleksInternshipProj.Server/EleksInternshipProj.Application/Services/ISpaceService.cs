@@ -6,6 +6,7 @@ namespace EleksInternshipProj.Application.Services
     public interface ISpaceService
     {
         public Task<IEnumerable<SpaceDto>> GetSpacesAsync(long userId);
+        public Task<IEnumerable<SpaceRenameDto>> GetSpacesWhereAdminAsync(long userId);
         public Task<Space?> AddSpaceAsync(long userId, string name);
         public Task<Space?> AddSpaceAsync(SpaceDtoShort spaceDto);
         public Task<UserSpace?> AddUserToSpaceAsync(long spaceId, string username);

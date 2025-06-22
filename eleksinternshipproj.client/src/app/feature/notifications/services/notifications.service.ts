@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NotificationDTO, NotificationsResponse } from '../models/notifications-models';
+import { NotificationDTO, NotificationsResponse, SpaceNotificationDTO } from '../models/notifications-models';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -12,7 +12,11 @@ export class NotificationsService {
 
   constructor(private readonly http: HttpClient) { }
 
-  getNotifications(): Observable<NotificationsResponse> {
-    return this.http.get<NotificationsResponse>(`${this.apiBaseUrl}/api/notifications`);
+  getNotifications(): Observable<NotificationDTO[]> {
+    return this.http.get<NotificationDTO[]>(`${this.apiBaseUrl}/api/notifications`);
+  }
+
+  notifySpace(dto: SpaceNotificationDTO): Observable<any> {
+    return this.http.post(`${this.apiBaseUrl}/api/spaces/${dto.spaceId}/notifications`, dto);
   }
 }

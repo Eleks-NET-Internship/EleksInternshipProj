@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment} from '../../../shared/.env/environment';
-import {SpaceDto, SpaceDtoShort, SpaceRenameDto, UserSpaceDto} from '../models/spaces-models';
+import { environment } from '../../../shared/.env/environment';
+import { SpaceDto, SpaceDtoShort, SpaceRenameDto, UserSpaceDto } from '../models/spaces-models';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +14,10 @@ export class SpacesService {
 
   getSpaces(): Observable<SpaceDto[]> {
     return this.http.get<SpaceDto[]>(`${this.apiBaseUrl}/all`);
+  }
+
+  getSpacesWhereAdmin(): Observable<SpaceRenameDto[]> {
+    return this.http.get<SpaceRenameDto[]>(`${this.apiBaseUrl}/where-admin`);
   }
 
   createSpace(spaceName: string): Observable<SpaceDto> {
@@ -54,8 +58,8 @@ export class SpacesService {
   }
 
   renameSpace(spaceId: number, newName: string): Observable<SpaceDto> {
-    const spaceRenameDto: SpaceRenameDto = 
-    { 
+    const spaceRenameDto: SpaceRenameDto =
+    {
       id: spaceId,
       name: newName.trim()
     };

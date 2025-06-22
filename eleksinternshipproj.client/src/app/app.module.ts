@@ -50,7 +50,8 @@ import { NotificationsComponent } from './feature/notifications/components/notif
 import { TaskDetailsDialogComponent } from './feature/tasks/components/task-details-dialog/task-details-dialog.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { AddTaskDialogComponent } from './feature/tasks/components/add-task-dialog/add-task-dialog.component'; 
+import { AddTaskDialogComponent } from './feature/tasks/components/add-task-dialog/add-task-dialog.component';
+import { NotifySpaceComponent } from './feature/notifications/components/notify-space/notify-space.component'; 
 
 
 
@@ -77,7 +78,8 @@ import { AddTaskDialogComponent } from './feature/tasks/components/add-task-dial
     NotificationsComponent,
     AddEventComponent,
     TaskDetailsDialogComponent,
-    AddTaskDialogComponent
+    AddTaskDialogComponent,
+    NotifySpaceComponent
   ],
   imports: [
     BrowserModule, HttpClientModule,

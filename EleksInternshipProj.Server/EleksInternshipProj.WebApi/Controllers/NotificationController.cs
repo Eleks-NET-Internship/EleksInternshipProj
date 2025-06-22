@@ -41,7 +41,7 @@ namespace EleksInternshipProj.WebApi.Controllers
                 return BadRequest(new { message = ex.Message });
             }
 
-            return Ok(new { data = notifications });
+            return Ok(notifications);
         }
     }
 }

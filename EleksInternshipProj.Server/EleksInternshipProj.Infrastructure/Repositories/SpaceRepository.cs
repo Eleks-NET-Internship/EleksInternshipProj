@@ -179,6 +179,22 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             return spaces;
         }
 
+        public async Task<IEnumerable<Space>> GetByUserWhereAdminAsync(long userId)
+        {
+            _logger.LogInformation($"Fetching Spaces for User with ID = {userId} where he is admin");
+
+            var spaces = await _context.Spaces
+                .Where(s => s.UserSpaces.Any(us => us.UserId == userId && us.Role.Name == "Адміністратор"))
+                .Include(s => s.UserSpaces)
+                .ThenInclude(us => us.User)
+                .Include(s=>s.UserSpaces)
+                .ThenInclude(s=>s.Role)
+                .ToListAsync();
+
+            _logger.LogInformation($"Found {spaces.Count} Space(s) for User ID = {userId} where he is admin");
+            return spaces;
+        }
+
         public async Task<Space?> UpdateAsync(Space space)
         {
             _logger.LogInformation($"Updating Space with ID = {space.Id}");
