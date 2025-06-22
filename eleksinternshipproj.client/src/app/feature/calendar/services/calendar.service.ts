@@ -4,21 +4,26 @@ import { map, Observable, shareReplay } from 'rxjs';
 import { environment } from '../../../shared/.env/environment';
 
 import type { AddUniqueEventDto, TaskDTO, UniqueEventDTO } from '../models/calendar-models';
+import { SpaceContextService } from '../../../core/services/space-context/space-context.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarService {
   private readonly apiBaseUrl = environment.apiUrl;
-  private spaceId = JSON.parse(sessionStorage.getItem('selectedSpace') ?? '').id;
+  private spaceId: number | null = null;
   private tasks!: Observable<{ data: TaskDTO[] }>;
 
   trigger = signal<boolean>(false);
 
-  constructor(private readonly http: HttpClient) { }
+  constructor(private readonly http: HttpClient, private readonly spaceContextService: SpaceContextService) { }
+
+  // spaceId should be made a parameter in all functions here and moved to component
+  initContext() {
+    this.spaceId = this.spaceContextService.getSpaceId();
+  }
 
   getTasks() {
-    this.spaceId = JSON.parse(sessionStorage.getItem('selectedSpace') ?? '').id;
     this.tasks = this.http.get<{ data: TaskDTO[] }>(this.apiBaseUrl + '/api/Task/space/' + this.spaceId).pipe(shareReplay(1));
   }
   

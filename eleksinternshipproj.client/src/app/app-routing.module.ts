@@ -18,6 +18,7 @@ import { EventsComponent } from './feature/events/components/events/events.compo
 import { SpacesComponent } from './feature/spaces/components/spaces/spaces.component';
 import { EventDetailComponent } from './feature/events/components/event-detail/event-detail.component';
 import { NotificationsComponent } from './feature/notifications/components/notifications/notifications.component';
+import { spaceContextGuard } from './core/guards/space-context.guard';
 
 const routes: Routes = [
 
@@ -38,14 +39,14 @@ const routes: Routes = [
     component: MainLayoutComponent,
     children: [
       { path: 'spaces', component: SpacesComponent, canActivate: [authGuard] },
-      { path: 'calendar', component: CalendarComponent, canActivate: [authGuard] },
-      { path: 'schedule', component: ScheduleComponent, canActivate: [authGuard] },
-      { path: 'edit-schedule', component: EditScheduleComponent, canActivate: [authGuard] },
-      { path: 'tasks', component: TasksComponent, canActivate: [authGuard] },
-      { path: 'notes', component: NotesComponent, canActivate: [authGuard] },
-      { path: 'events', component: EventsComponent, canActivate: [authGuard] },
-      { path: 'event/:id', component: EventDetailComponent, canActivate: [authGuard] },
-      { path: 'statistics', component: StatisticsComponent, canActivate: [authGuard] },
+      { path: 'calendar', component: CalendarComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'schedule', component: ScheduleComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'edit-schedule', component: EditScheduleComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'tasks', component: TasksComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'notes', component: NotesComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'events', component: EventsComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'event/:id', component: EventDetailComponent, canActivate: [authGuard, spaceContextGuard] },
+      //{ path: 'statistics', component: StatisticsComponent, canActivate: [authGuard, spaceContextGuard] },
       { path: 'notifications', component: NotificationsComponent, canActivate: [authGuard] },
       { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
       { path: 'settings', component: SettingsComponent, canActivate: [authGuard] }

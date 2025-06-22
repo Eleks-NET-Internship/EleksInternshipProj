@@ -25,6 +25,7 @@ export class CalendarComponent implements OnInit {
   constructor( private readonly calendarService: CalendarService, private readonly dialog: MatDialog ) {}
 
   ngOnInit(): void {
+    this.calendarService.initContext();
     this.generateCalendar();
   }
 

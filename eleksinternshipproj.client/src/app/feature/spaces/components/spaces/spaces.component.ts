@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SpaceDto, UserSpaceDto } from '../../models/spaces-models';
 import { SpacesService } from '../../services/spaces.service';
+import { SpaceContextService } from '../../../../core/services/space-context/space-context.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-spaces',
@@ -18,9 +20,10 @@ export class SpacesComponent implements OnInit {
   deleteConfirmDialog = false;
   spaceToDelete: SpaceDto | null = null;
 
-  constructor(private spacesService: SpacesService) {}
+  constructor(private spacesService: SpacesService, private spaceContextService: SpaceContextService, private router: Router) { }
 
   ngOnInit(): void {
+    this.spaceContextService.clearSpaceContext();
     this.getSpaces();
   }
 
@@ -28,7 +31,7 @@ export class SpacesComponent implements OnInit {
     this.spacesService.getSpaces().subscribe({
       next: (response) => {
         this.spaces = Array.isArray(response) ? response : [];
-        sessionStorage.setItem('spaces', JSON.stringify(this.spaces));
+        //sessionStorage.setItem('spaces', JSON.stringify(this.spaces));
       },
       error: (err) => {
         console.error('Помилка завантаження просторів', err);
@@ -99,7 +102,8 @@ export class SpacesComponent implements OnInit {
   }
 
   selectSpace(space: SpaceDto): void {
-    sessionStorage.setItem('selectedSpace', JSON.stringify(space));
+    this.spaceContextService.storeSpaceContext(space);
+    this.router.navigate(["/calendar"]);
   }
 
   trackBySpaceId(index: number, space: SpaceDto): number {

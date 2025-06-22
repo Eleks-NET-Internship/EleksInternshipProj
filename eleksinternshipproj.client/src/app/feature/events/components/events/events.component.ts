@@ -5,6 +5,7 @@ import { map } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
+import { SpaceContextService } from '../../../../core/services/space-context/space-context.service';
 
 @Component({
   selector: 'app-events',
@@ -14,18 +15,22 @@ import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.co
 export class EventsComponent implements OnInit {
   events: EventDto[] = [];
   selectedEvent!: EventDto;
-   private spaceId: number;
+  private spaceId: number | null = null;
 
   constructor(
     private eventsService: EventsService,
     private dialog: MatDialog,
-    private router: Router
-  ) {
-    const storedSpace = sessionStorage.getItem('selectedSpace');
-    this.spaceId = storedSpace ? JSON.parse(storedSpace).id : 1; 
-  }
+    private router: Router,
+    private spaceContextService: SpaceContextService
+  ) { }
 
   ngOnInit(): void {
+    this.spaceId = this.spaceContextService.getSpaceId();
+    if (!this.spaceId) {
+      console.log("No spaceId in events init");
+      return;
+    }
+
     this.eventsService.getAll(this.spaceId)
       .pipe(map((response: { data: EventDto[] }) => response.data))
       .subscribe({
@@ -39,12 +44,21 @@ export class EventsComponent implements OnInit {
   }
 
   addEvent(): void {
+    if (!this.spaceId) {
+      console.log("No spaceId in events");
+      return;
+    }
+
     const dialogRef = this.dialog.open(AddEventDialogComponent, {
       width: '400px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        if (!this.spaceId) {
+          console.log("No spaceId in events lambda");
+          return;
+        }
         const newEvent: CreateEventDto = {
           name: result,
           spaceId: this.spaceId

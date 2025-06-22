@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { TaskDto } from '../../models/tasks-models';
 import { EventsService } from '../../../events/services/events.service';
 import { map } from 'rxjs';
+import { SpaceContextService } from '../../../../core/services/space-context/space-context.service';
 
 @Component({
   selector: 'app-add-task-dialog',
@@ -13,17 +14,23 @@ import { map } from 'rxjs';
 export class AddTaskDialogComponent implements OnInit {
   task: Partial<TaskDto> = { name: '', eventId: 0 };
   events: EventDto[] = [];
-  private spaceId: number;
+  private spaceId: number | null = null;
 
   constructor(
     private dialogRef: MatDialogRef<AddTaskDialogComponent>,
-    private eventsService: EventsService
+    private eventsService: EventsService,
+    private spaceContextService: SpaceContextService
   ) {
-     const storedSpace = sessionStorage.getItem('selectedSpace');
-    this.spaceId = storedSpace ? JSON.parse(storedSpace).id : 1;
+    
   }
 
   ngOnInit(): void {
+    this.spaceId = this.spaceContextService.getSpaceId();
+    if (!this.spaceId) {
+      console.log("No spaceId in addTaskDialog");
+      return;
+    }
+
     this.eventsService.getAll(this.spaceId)
       .pipe(map((res: { data: EventDto[] }) => res.data))
       .subscribe(events => this.events = events);
