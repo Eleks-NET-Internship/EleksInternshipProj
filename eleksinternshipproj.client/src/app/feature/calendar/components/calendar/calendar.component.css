@@ -2,7 +2,7 @@
 .calendar-container {
   display: flex;
   gap: 20px;
-  padding-top: 24px;
+  padding-top: 20px;
   padding-bottom: 20px;
   background: #ffffff00;
   font-family: 'Segoe UI', sans-serif;
@@ -37,8 +37,26 @@
 }
 
 .container{
+  padding: 24px;
+}
+
+.calendar-page-header {
   display: flex;
-  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  /* padding: 24px 24px 0 24px; */
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.header-divider {
+  height: 1px;
+  background-color: #ccc;
+  margin: 8px 0 16px;
 }
 
 .calendar-section {
