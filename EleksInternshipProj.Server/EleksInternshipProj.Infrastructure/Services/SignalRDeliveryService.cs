@@ -3,6 +3,7 @@
 using EleksInternshipProj.Application.Services;
 using EleksInternshipProj.Infrastructure.Hubs;
 using EleksInternshipProj.Application.DTOs;
+using EleksInternshipProj.Domain.Models;
 
 namespace EleksInternshipProj.Infrastructure.Services
 {
@@ -15,14 +16,14 @@ namespace EleksInternshipProj.Infrastructure.Services
             _hubContext = hubContext;
         }
 
-        public async void SendReminderToSpace(DeadlineNotificationDTO notification)
+        public async void SendReminderToSpaceAsync(DeadlineNotificationDTO notification)
         {
             await _hubContext.Clients
                     .Group($"space-{notification.SpaceId}")
                     .SendAsync("ReceiveReminderNotification", notification);
         }
 
-        public async void SendGeneralToSpace(SpaceAdminNotificationDTO notification, long? excludedId = null)
+        public async void SendGeneralToSpaceAsync(SpaceAdminNotificationDTO notification, long? excludedId = null)
         {
             if (excludedId.HasValue)
             {
@@ -39,5 +40,15 @@ namespace EleksInternshipProj.Infrastructure.Services
                     .SendAsync("ReceiveSpaceNotification", notification);
             }
         }
+
+        public async Task AddUserToSpaceGroupAsync(long userId, long spaceId)
+        {
+            var connections = NotificationHub.GetUserConnections(userId);
+            foreach (var connectionId in connections)
+            {
+                await _hubContext.Groups.AddToGroupAsync(connectionId, $"space-{spaceId}");
+            }
+        }
+
     }
 }

@@ -8,13 +8,13 @@
 
   <div class="notification-list">
     <div *ngFor="let notif of notifications" class="notification"
-         [ngClass]="!notif.read ? 'clickableNotification' : ''">
-      <div [ngClass]="notif.read ? 'readHeader' : 'notReadHeader'">
+         [ngClass]="true ? 'clickableNotification' : ''">
+      <div [ngClass]="false ? 'readHeader' : 'notReadHeader'">
         <h3 class="notification-title">{{notif.title}}</h3>
       </div>
-      <div [ngClass]="notif.read ? 'readContent' : 'notReadContent'">
+      <div [ngClass]="false ? 'readContent' : 'notReadContent'">
         <p class="notification-description">{{notif.message}}</p>
-        <p class="notification-description">Коли? {{notif.deadlineAt | date:"medium"}}</p>
+        <p class="notification-description">{{notif.notificationType == 0 ? "Коли": ""}} {{notif.deadlineAt | date:"medium"}}</p>
         <small class="notification-description">Надіслано {{notif.sentAt | date:"medium"}}</small>
       </div>
     </div>

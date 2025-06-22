@@ -34,7 +34,6 @@ export class LoginComponent {
     this.authService.login(this.loginPayload).subscribe({
       next: (response) => {
         this.tokenActionsService.setToken(response.accessToken);
-        this.notifSignalRService.startConnection();
         this.router.navigate(['/spaces']);
       },
       error: (error) => {

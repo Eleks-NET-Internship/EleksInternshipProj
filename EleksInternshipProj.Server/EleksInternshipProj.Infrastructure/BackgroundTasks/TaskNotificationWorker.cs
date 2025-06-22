@@ -24,7 +24,7 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 await ProcessTaskNotificationAsync(24 * 60);
                 await ProcessTaskNotificationAsync(1 * 60);
 
-                await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);   // THIS NOT FOR PROD
+                await Task.Delay(TimeSpan.FromSeconds(4), stoppingToken);   // THIS NOT FOR PROD
                 //await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken); // THIS FOR PROD
             }
         }
@@ -80,7 +80,7 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                     SentAt = notification.SentAt,
                     DeadlineAt = notification.DeadlineAt.Value,
                 };
-                notificationDeliveryService.SendReminderToSpace(dto);
+                notificationDeliveryService.SendReminderToSpaceAsync(dto);
 
                 // email
 
