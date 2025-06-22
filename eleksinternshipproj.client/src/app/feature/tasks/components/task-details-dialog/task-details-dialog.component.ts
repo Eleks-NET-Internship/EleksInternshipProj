@@ -6,6 +6,8 @@ import { map } from 'rxjs';
 import { EventsService } from '../../../events/services/events.service';
 import { EventDto } from '../../../events/models/events-models';
 
+const DEFAULT_MIN_DATE = '0001-01-01T00:00:00';
+
 @Component({
   selector: 'app-task-details-dialog',
   templateUrl: './task-details-dialog.component.html',
@@ -28,59 +30,63 @@ export class TaskDetailsDialogComponent implements OnInit {
 
   ngOnInit() {
     this.getStatuses();
-    this.getEventById(this.task.eventId)
-    this.eventName = this.event?.name;
+    this.getEventById(this.task.eventId);
 
     if (!this.task.name) {
       this.task.name = 'Очікує';
     }
 
-    if (this.task.eventTime) {
+    if (this.task.eventTime && this.task.eventTime !== DEFAULT_MIN_DATE) {
       const dt = new Date(this.task.eventTime);
 
-      this.eventDate = dt.toISOString().split('T')[0];
+      // Локальна дата для input[type="date"]
+      const year = dt.getFullYear();
+      const month = String(dt.getMonth() + 1).padStart(2, '0');
+      const day = String(dt.getDate()).padStart(2, '0');
+      this.eventDate = `${year}-${month}-${day}`;
 
-      // Формат часу HH:mm для input[type="time"]
-      this.eventTimeString = dt.toTimeString().slice(0, 5);
+      // Локальний час для input[type="time"]
+      const hours = String(dt.getHours()).padStart(2, '0');
+      const minutes = String(dt.getMinutes()).padStart(2, '0');
+      this.eventTimeString = `${hours}:${minutes}`;
     } else {
       this.eventDate = '';
-      this.eventTimeString = '00:00';
+      this.eventTimeString = '';
     }
   }
 
   onStatusChange(selectedStatusId: number) {
-  const selectedStatus = this.statuses.find(s => s.id === +selectedStatusId);
-  if (selectedStatus) {
-    this.task.statusName = selectedStatus.name;
+    const selectedStatus = this.statuses.find(s => s.id === +selectedStatusId);
+    if (selectedStatus) {
+      this.task.statusName = selectedStatus.name;
+    }
   }
-}
-
-
 
   getStatuses() {
-     this.tasksService.getAllStatuses()
-              .pipe(map((response: { data: TaskModelStatusDto[] }) => response.data))
-              .subscribe({
-                next: (statuses) => {
-                  this.statuses = statuses;
-                },
-                error: (err) => {
-                  console.error('Помилка при завантаженні завданнь:', err);
-                }
-              });
+    this.tasksService.getAllStatuses()
+      .pipe(map((response: { data: TaskModelStatusDto[] }) => response.data))
+      .subscribe({
+        next: (statuses) => {
+          this.statuses = statuses;
+        },
+        error: (err) => {
+          console.error('Помилка при завантаженні статусів:', err);
+        }
+      });
   }
 
   getEventById(eventId: number) {
     this.eventService.getById(eventId)
-              .pipe(map((response: { data: EventDto }) => response.data))
-              .subscribe({
-                next: (event) => {
-                  this.event = event;
-                },
-                error: (err) => {
-                  console.error('Помилка при завантаженні завданнь:', err);
-                }
-              });
+      .pipe(map((response: { data: EventDto }) => response.data))
+      .subscribe({
+        next: (event) => {
+          this.event = event;
+          this.eventName = event.name;
+        },
+        error: (err) => {
+          console.error('Помилка при завантаженні події:', err);
+        }
+      });
   }
 
   close() {
@@ -88,12 +94,14 @@ export class TaskDetailsDialogComponent implements OnInit {
   }
 
   save() {
-    if (this.eventDate && this.eventTimeString) {
+    if (this.eventDate?.trim() && this.eventTimeString?.trim()) {
       const [year, month, day] = this.eventDate.split('-').map(Number);
       const [hours, minutes] = this.eventTimeString.split(':').map(Number);
 
-      const date = new Date(year, month - 1, day, hours, minutes);
-      this.task.eventTime = date.toISOString();
+      const localDate = new Date(year, month - 1, day, hours, minutes);
+      this.task.eventTime = localDate.toISOString();
+    } else {
+      this.task.eventTime = DEFAULT_MIN_DATE;
     }
 
     this.dialogRef.close(this.task);
