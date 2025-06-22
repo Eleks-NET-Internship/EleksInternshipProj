@@ -3,10 +3,8 @@
 using EleksInternshipProj.Domain.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using EleksInternshipProj.Domain.Models;
-using Microsoft.AspNetCore.SignalR;
-using EleksInternshipProj.Infrastructure.Hubs;
-using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
+using EleksInternshipProj.Application.DTOs;
 
 namespace EleksInternshipProj.Infrastructure.BackgroundTasks
 {
@@ -71,7 +69,18 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 // send notif via something
 
                 // signalR
-                notificationDeliveryService.SendToGroup(notification);
+                DeadlineNotificationDTO dto = new DeadlineNotificationDTO
+                {
+                    Title = notification.Title,
+                    Message = notification.Message,
+                    RelatedType = notification.RelatedType,
+                    RelatedId = notification.RelatedId,
+                    SpaceId = notification.SpaceId,
+                    SentAt = notification.SentAt,
+                    DeadlineAt = notification.DeadlineAt,
+                    Read = notification.Read
+                };
+                notificationDeliveryService.SendReminderToSpace(dto);
 
                 // email
 

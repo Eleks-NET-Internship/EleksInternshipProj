@@ -4,6 +4,7 @@ namespace EleksInternshipProj.Application.Services
 {
     public interface INotificationService
     {
-        Task<IEnumerable<NotificationDTO>> GetNotificationsAsync(long userId);
+        Task<IEnumerable<DeadlineNotificationDTO>> GetNotificationsAsync(long userId);
+        Task SendSpaceNotification(long? excludedId, SpaceAdminNotificationDTO notif);
     }
 }

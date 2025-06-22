@@ -1,6 +1,6 @@
 ﻿namespace EleksInternshipProj.Application.DTOs
 {
-    public class NotificationDTO
+    public class DeadlineNotificationDTO
     {
 
         public string Title { get; set; }

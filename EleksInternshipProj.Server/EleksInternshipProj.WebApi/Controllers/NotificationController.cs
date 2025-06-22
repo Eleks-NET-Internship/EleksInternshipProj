@@ -22,7 +22,7 @@ namespace EleksInternshipProj.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserNotifications()
         {
-            IEnumerable<NotificationDTO> notifications;
+            IEnumerable<DeadlineNotificationDTO> notifications;
 
             try
             {

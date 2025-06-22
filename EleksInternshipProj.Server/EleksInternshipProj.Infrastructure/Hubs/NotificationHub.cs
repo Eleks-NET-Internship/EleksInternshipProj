@@ -4,16 +4,61 @@ using Microsoft.AspNetCore.SignalR;
 
 using EleksInternshipProj.Application.Services;
 using EleksInternshipProj.Domain.Models;
+using System.Collections.Concurrent;
 
 namespace EleksInternshipProj.Infrastructure.Hubs
 {
     public class NotificationHub : Hub
     {
+        private static readonly ConcurrentDictionary<long, HashSet<string>> UserConnections = new();
+
         private readonly ISpaceService _spaceService;
 
         public NotificationHub(ISpaceService spaceService)
         {
             _spaceService = spaceService;
+        }
+
+        public override Task OnConnectedAsync()
+        {
+            string? userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId != null && long.TryParse(userId, out var parsedId))
+            {
+                HashSet<string> connections = UserConnections.GetOrAdd(parsedId, _ => new HashSet<string>());
+                lock (connections)
+                {
+                    connections.Add(Context.ConnectionId);
+                }
+            }
+            
+            return base.OnConnectedAsync();
+        }
+
+        public override Task OnDisconnectedAsync(Exception? exception)
+        {
+            string? userId = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId != null && long.TryParse(userId, out var parsedId))
+            {
+                if (UserConnections.TryGetValue(parsedId, out HashSet<string>? connections))
+                {
+                    lock (connections)
+                    {
+                        connections.Remove(Context.ConnectionId);
+                        if (connections.Count == 0)
+                        {
+                            UserConnections.TryRemove(parsedId, out _);
+                        }
+                    }
+                }
+            }
+            return base.OnDisconnectedAsync(exception);
+        }
+
+        public static IReadOnlyCollection<string> GetUserConnections(long userId)
+        {
+            return UserConnections.TryGetValue(userId, out var connections) ? connections.ToList() : Array.Empty<string>();
         }
 
         public async Task JoinSpaces()

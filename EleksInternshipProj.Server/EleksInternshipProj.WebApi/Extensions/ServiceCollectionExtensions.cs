@@ -30,6 +30,7 @@ namespace EleksInternshipProj.WebApi.Extensions
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<ISpaceService, SpaceService>();
             services.AddScoped<INotificationService, NotificationService>();
+            services.AddScoped<ISpaceAuthService, SpaceAuthService>();
             services.AddScoped<INotificationDeliveryService, SignalRDeliveryService>();
 
             return services;
@@ -45,6 +46,7 @@ namespace EleksInternshipProj.WebApi.Extensions
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddScoped<ISpaceRepository, SpaceRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<IUserSpaceRepository, UserSpaceRepository>();
 
             return services;
         }

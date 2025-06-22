@@ -1,10 +1,7 @@
-using Task = System.Threading.Tasks.Task;
-
 using EleksInternshipProj.Domain.Models;
 
 namespace EleksInternshipProj.Domain.Abstractions
 {
-    // just exemple, this folder for repository interfaces
     public interface IUserRepository
     {
         Task<User?> GetByEmailAndProviderAsync(string email, string provider);

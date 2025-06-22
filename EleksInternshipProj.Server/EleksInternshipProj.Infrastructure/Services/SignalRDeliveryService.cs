@@ -4,7 +4,7 @@ using EleksInternshipProj.Application.Services;
 using EleksInternshipProj.Domain.Models;
 using EleksInternshipProj.Infrastructure.Hubs;
 using EleksInternshipProj.Application.DTOs;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
 
 namespace EleksInternshipProj.Infrastructure.Services
 {
@@ -17,24 +17,29 @@ namespace EleksInternshipProj.Infrastructure.Services
             _hubContext = hubContext;
         }
 
-        public async void SendToGroup(Notification notification, long? excludedId = null)
+        public async void SendReminderToSpace(DeadlineNotificationDTO notification)
         {
-            NotificationDTO dto = new NotificationDTO
-            {
-                Title = notification.Title,
-                Message = notification.Message,
-                RelatedType = notification.RelatedType,
-                RelatedId = notification.RelatedId,
-                SpaceId = notification.SpaceId,
-                SentAt = notification.SentAt,
-                DeadlineAt = notification.DeadlineAt,
-                Read = notification.Read
-            };
-
             await _hubContext.Clients
                     .Group($"space-{notification.SpaceId}")
-                    .SendAsync("ReceiveNotification", dto);
+                    .SendAsync("ReceiveReminderNotification", notification);
+        }
 
+        public async void SendGeneralToSpace(SpaceAdminNotificationDTO notification, long? excludedId = null)
+        {
+            if (excludedId.HasValue)
+            {
+                var excludedConnections = NotificationHub.GetUserConnections(excludedId.Value);
+
+                await _hubContext.Clients
+                    .GroupExcept($"space-{notification.SpaceId}", excludedConnections)
+                    .SendAsync("ReceiveSpaceNotification", notification);
+            }
+            else
+            {
+                await _hubContext.Clients
+                    .Group($"space-{notification.SpaceId}")
+                    .SendAsync("ReceiveSpaceNotification", notification);
+            }
         }
     }
 }
