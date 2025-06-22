@@ -6,6 +6,7 @@ using EleksInternshipProj.Domain.Models;
 using Microsoft.AspNetCore.SignalR;
 using EleksInternshipProj.Infrastructure.Hubs;
 using EleksInternshipProj.Application.DTOs;
+using EleksInternshipProj.Application.Services;
 
 namespace EleksInternshipProj.Infrastructure.BackgroundTasks
 {
@@ -40,8 +41,7 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
             using var scope = _serviceProvider.CreateScope();
             ITaskRepository taskService = scope.ServiceProvider.GetRequiredService<ITaskRepository>();
             INotificationRepository notificationRepository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
-
-            IHubContext<NotificationHub> hubContext = scope.ServiceProvider.GetRequiredService<IHubContext<NotificationHub>>();
+            INotificationDeliveryService notificationDeliveryService = scope.ServiceProvider.GetRequiredService<INotificationDeliveryService>();
 
             DateTime current = DateTime.UtcNow;
 
@@ -71,21 +71,8 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 // send notif via something
 
                 // signalR
-                await hubContext.Clients
-                    .Group($"space-{notification.SpaceId}")
-                    .SendAsync("ReceiveNotification",
-                        new NotificationDTO
-                        {
-                            Title = notification.Title,
-                            Message = notification.Message,
-                            RelatedType = notification.RelatedType,
-                            RelatedId = notification.RelatedId,
-                            SpaceId = notification.SpaceId,
-                            SentAt = notification.SentAt,
-                            DeadlineAt = notification.DeadlineAt,
-                            Read = notification.Read
-                        }
-                    );
+                notificationDeliveryService.SendToGroup(notification);
+
                 // email
 
             }
