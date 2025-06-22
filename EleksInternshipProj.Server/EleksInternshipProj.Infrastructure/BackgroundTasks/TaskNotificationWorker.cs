@@ -3,8 +3,7 @@
 using EleksInternshipProj.Domain.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using EleksInternshipProj.Domain.Models;
-using Microsoft.AspNetCore.SignalR;
-using EleksInternshipProj.Infrastructure.Hubs;
+using EleksInternshipProj.Application.Services;
 using EleksInternshipProj.Application.DTOs;
 
 namespace EleksInternshipProj.Infrastructure.BackgroundTasks
@@ -25,7 +24,7 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 await ProcessTaskNotificationAsync(24 * 60);
                 await ProcessTaskNotificationAsync(1 * 60);
 
-                await Task.Delay(TimeSpan.FromSeconds(1), stoppingToken);   // THIS NOT FOR PROD
+                await Task.Delay(TimeSpan.FromSeconds(4), stoppingToken);   // THIS NOT FOR PROD
                 //await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken); // THIS FOR PROD
             }
         }
@@ -40,8 +39,7 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
             using var scope = _serviceProvider.CreateScope();
             ITaskRepository taskService = scope.ServiceProvider.GetRequiredService<ITaskRepository>();
             INotificationRepository notificationRepository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
-
-            IHubContext<NotificationHub> hubContext = scope.ServiceProvider.GetRequiredService<IHubContext<NotificationHub>>();
+            INotificationDeliveryService notificationDeliveryService = scope.ServiceProvider.GetRequiredService<INotificationDeliveryService>();
 
             DateTime current = DateTime.UtcNow;
 
@@ -56,8 +54,9 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 Notification notification = new Notification
                 {
                     Id = 0,
-                    Title = minutes < 12*60 ? "Дедлайн дуже близько!" : "Дедлайн близько", // Should title and message be purely client-side?
+                    Title = minutes < 12*60 ? "Дедлайн дуже близько!" : "Дедлайн близько",
                     Message = $"Завдання '{task.Name}' має дедлайн!",
+                    NotificationType = NotificationType.Reminder,
                     RelatedType = "task",
                     RelatedId = task.Id,
                     SpaceId = task.Event.SpaceId,
@@ -71,21 +70,18 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 // send notif via something
 
                 // signalR
-                await hubContext.Clients
-                    .Group($"space-{notification.SpaceId}")
-                    .SendAsync("ReceiveNotification",
-                        new NotificationDTO
-                        {
-                            Title = notification.Title,
-                            Message = notification.Message,
-                            RelatedType = notification.RelatedType,
-                            RelatedId = notification.RelatedId,
-                            SpaceId = notification.SpaceId,
-                            SentAt = notification.SentAt,
-                            DeadlineAt = notification.DeadlineAt,
-                            Read = notification.Read
-                        }
-                    );
+                DeadlineNotificationDTO dto = new DeadlineNotificationDTO
+                {
+                    Title = notification.Title,
+                    Message = notification.Message,
+                    RelatedType = notification.RelatedType,
+                    RelatedId = notification.RelatedId.Value,
+                    SpaceId = notification.SpaceId,
+                    SentAt = notification.SentAt,
+                    DeadlineAt = notification.DeadlineAt.Value,
+                };
+                notificationDeliveryService.SendReminderToSpaceAsync(dto);
+
                 // email
 
             }

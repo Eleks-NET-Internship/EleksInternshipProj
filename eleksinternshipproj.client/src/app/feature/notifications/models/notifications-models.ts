@@ -3,12 +3,18 @@ export interface NotificationsResponse {
 }
 
 export interface NotificationDTO {
+  spaceId: number;
+  notificationType: number;
+  relatedType: string | null;
+  relatedId: number | null;
   title: string;
   message: string;
-  relatedType: string;
-  relatedId: number;
   sentAt: string;
-  deadlineAt: string;
+  deadlineAt: string | null;
+  sentBefore: number | null;
+}
+export interface SpaceNotificationDTO {
+  title: string;
+  message: string;
   spaceId: number;
-  read: boolean;
 }

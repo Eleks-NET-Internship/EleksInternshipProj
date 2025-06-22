@@ -1,0 +1,42 @@
+<h2 mat-dialog-title class="dialog-title">Сповістити учасників</h2>
+
+<mat-dialog-content class="dialog-content">
+  <form #notificationForm="ngForm" class="notification-form">
+    <!-- Заголовок -->
+    <mat-form-field class="full-width">
+      <mat-label>Заголовок</mat-label>
+      <input matInput [(ngModel)]="notification.title" name="title" required />
+    </mat-form-field>
+
+    <!-- Повідомлення -->
+    <mat-form-field class="full-width">
+      <mat-label>Повідомлення</mat-label>
+      <input matInput [(ngModel)]="notification.message" name="message" required />
+    </mat-form-field>
+
+    <!-- Івент (звичайний select) -->
+    <div class="form-group">
+      <label for="spaceId">Простір:</label>
+      <select id="spaceId"
+              class="custom-select"
+              [(ngModel)]="notification.spaceId"
+              name="spaceId"
+              required>
+        <option [value]="''" disabled selected>Оберіть простір</option>
+        <option *ngFor="let space of spaces" [value]="space.id">
+          {{ space.name }}
+        </option>
+      </select>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button (click)="close()">Скасувати</button>
+  <button mat-flat-button
+          color="primary"
+          (click)="save()"
+          [disabled]="!notificationForm.form.valid">
+    Сповістити
+  </button>
+</mat-dialog-actions>

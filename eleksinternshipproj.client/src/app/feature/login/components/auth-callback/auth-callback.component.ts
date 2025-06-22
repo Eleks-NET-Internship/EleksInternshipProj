@@ -25,7 +25,6 @@ export class AuthCallbackComponent {
 
         if (token) {
           this.tokenActionsService.setToken(token);
-          this.notifSignalRService.startConnection();
           this.router.navigateByUrl(returnUrl);
         } else {
           this.router.navigate(['/login']);

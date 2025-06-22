@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
+using EleksInternshipProj.Domain.Models;
 
 namespace EleksInternshipProj.WebApi.Controllers
 {
@@ -22,7 +23,7 @@ namespace EleksInternshipProj.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserNotifications()
         {
-            IEnumerable<NotificationDTO> notifications;
+            IEnumerable<Notification> notifications;
 
             try
             {
@@ -40,7 +41,7 @@ namespace EleksInternshipProj.WebApi.Controllers
                 return BadRequest(new { message = ex.Message });
             }
 
-            return Ok(new { data = notifications });
+            return Ok(notifications);
         }
     }
 }

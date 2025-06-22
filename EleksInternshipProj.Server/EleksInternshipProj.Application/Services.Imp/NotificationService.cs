@@ -7,29 +7,35 @@ namespace EleksInternshipProj.Application.Services.Imp
     public class NotificationService : INotificationService
     {
         public INotificationRepository _notificationRepository;
+        public INotificationDeliveryService _notificationDeliveryService;
 
-        public NotificationService(INotificationRepository notificationRepository)
+        public NotificationService(INotificationRepository notificationRepository, INotificationDeliveryService notificationDeliveryService)
         {
             _notificationRepository = notificationRepository;
+            _notificationDeliveryService = notificationDeliveryService;
         }
 
-        public async Task<IEnumerable<NotificationDTO>> GetNotificationsAsync(long userId)
+        public async Task<IEnumerable<Notification>> GetNotificationsAsync(long userId)
         {
             IEnumerable<Notification> notificationsRaw = await _notificationRepository.GetUserNotificationsAsync(userId);
-            IEnumerable<NotificationDTO> notifications = notificationsRaw
-                .Select(notif => new NotificationDTO
-                {
-                    Title = notif.Title,
-                    Message = notif.Message,
-                    RelatedType = notif.RelatedType,
-                    RelatedId = notif.RelatedId,
-                    SpaceId = notif.SpaceId,
-                    SentAt = notif.SentAt,
-                    DeadlineAt = notif.DeadlineAt,
-                    Read = notif.Read
+            return notificationsRaw;
+        }
 
-                });
-            return notifications;
+        public async Task SendSpaceNotification(long? exludedId, SpaceAdminNotificationDTO notif)
+        {
+            if (notif.SpaceId == null)
+                throw new ArgumentNullException(nameof(notif));
+            Notification notification = new Notification
+            {
+                Id = 0,
+                SpaceId = notif.SpaceId.Value,
+                NotificationType = NotificationType.SpaceAdminMessage,
+                Title = notif.Title,
+                Message = notif.Message,
+            };
+
+            await _notificationRepository.AddNotificationAsync(notification);
+            _notificationDeliveryService.SendGeneralToSpaceAsync(notif, exludedId);
         }
     }
 }

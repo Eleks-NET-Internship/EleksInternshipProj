@@ -6,6 +6,7 @@ namespace EleksInternshipProj.Domain.Abstractions
     public interface ISpaceRepository
     {
         Task<IEnumerable<Space>> GetByUserAsync(long userId);
+        Task<IEnumerable<Space>> GetByUserWhereAdminAsync(long userId);
         Task<Space?> GetByIdAsync(long id);
         Task<Space?> AddAsync(Space space, long userId);
         Task<Space?> AddAsync(Space space);
