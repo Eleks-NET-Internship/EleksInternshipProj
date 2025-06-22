@@ -5,21 +5,6 @@
   font-size: 14px;
 }
 
-.material-timepicker {
-  /* appearance: none;
-  -webkit-appearance: none;
-  padding: 12px 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-  font-size: 16px;
-  width: 330px;
-  transition: border-color 0.3s, box-shadow 0.3s;
-  background-color: #fff;
-  color: #333;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); */
-}
-
 mat-form-field {
   width: 350px;
 }
