@@ -38,6 +38,7 @@ namespace EleksInternshipProj.WebApi.Controllers
                 if (!await _spaceAuthService.IsUserAdminAsync(id, spaceId))
                     return Unauthorized("Not admin");
 
+                notif.SpaceId = spaceId;
                 await _notificationService.SendSpaceNotification(id, notif);
             }
             catch (Exception ex)

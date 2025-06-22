@@ -15,37 +15,23 @@ namespace EleksInternshipProj.Application.Services.Imp
             _notificationDeliveryService = notificationDeliveryService;
         }
 
-        public async Task<IEnumerable<DeadlineNotificationDTO>> GetNotificationsAsync(long userId)
+        public async Task<IEnumerable<Notification>> GetNotificationsAsync(long userId)
         {
             IEnumerable<Notification> notificationsRaw = await _notificationRepository.GetUserNotificationsAsync(userId);
-            IEnumerable<DeadlineNotificationDTO> notifications = notificationsRaw
-                .Select(notif => new DeadlineNotificationDTO
-                {
-                    Title = notif.Title,
-                    Message = notif.Message,
-                    RelatedType = notif.RelatedType,
-                    RelatedId = notif.RelatedId,
-                    SpaceId = notif.SpaceId,
-                    SentAt = notif.SentAt,
-                    DeadlineAt = notif.DeadlineAt,
-                    Read = notif.Read
-
-                });
-            return notifications;
+            return notificationsRaw;
         }
 
         public async Task SendSpaceNotification(long? exludedId, SpaceAdminNotificationDTO notif)
         {
+            if (notif.SpaceId == null)
+                throw new ArgumentNullException(nameof(notif));
             Notification notification = new Notification
             {
                 Id = 0,
-                SpaceId = notif.SpaceId,
-                RelatedType = "spaceAdminMessage",
-                RelatedId = 0,
+                SpaceId = notif.SpaceId.Value,
+                NotificationType = NotificationType.SpaceAdminMessage,
                 Title = notif.Title,
                 Message = notif.Message,
-                DeadlineAt = DateTime.MinValue, // works, but ugly, should change db
-                SentBefore = 0
             };
 
             await _notificationRepository.AddNotificationAsync(notification);

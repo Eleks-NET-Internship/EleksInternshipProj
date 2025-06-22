@@ -16,7 +16,5 @@
         public DateTime SentAt { get; set; }
 
         public DateTime DeadlineAt { get; set; }
-
-        public bool Read {  get; set; }
     }
 }

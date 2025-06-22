@@ -6,6 +6,6 @@
 
         public string Message { get; set; }
 
-        public long SpaceId { get; set; }
+        public long? SpaceId { get; set; }
     }
 }

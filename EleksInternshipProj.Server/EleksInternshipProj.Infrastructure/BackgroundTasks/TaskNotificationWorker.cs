@@ -54,8 +54,9 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 Notification notification = new Notification
                 {
                     Id = 0,
-                    Title = minutes < 12*60 ? "Дедлайн дуже близько!" : "Дедлайн близько", // Should title and message be purely client-side?
+                    Title = minutes < 12*60 ? "Дедлайн дуже близько!" : "Дедлайн близько",
                     Message = $"Завдання '{task.Name}' має дедлайн!",
+                    NotificationType = NotificationType.Reminder,
                     RelatedType = "task",
                     RelatedId = task.Id,
                     SpaceId = task.Event.SpaceId,
@@ -74,11 +75,10 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                     Title = notification.Title,
                     Message = notification.Message,
                     RelatedType = notification.RelatedType,
-                    RelatedId = notification.RelatedId,
+                    RelatedId = notification.RelatedId.Value,
                     SpaceId = notification.SpaceId,
                     SentAt = notification.SentAt,
-                    DeadlineAt = notification.DeadlineAt,
-                    Read = notification.Read
+                    DeadlineAt = notification.DeadlineAt.Value,
                 };
                 notificationDeliveryService.SendReminderToSpace(dto);
 

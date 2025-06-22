@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
 using EleksInternshipProj.Application.Services;
-using EleksInternshipProj.Domain.Models;
 using EleksInternshipProj.Infrastructure.Hubs;
 using EleksInternshipProj.Application.DTOs;
-using Microsoft.IdentityModel.Logging;
 
 namespace EleksInternshipProj.Infrastructure.Services
 {

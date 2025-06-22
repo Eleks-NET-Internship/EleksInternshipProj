@@ -3,6 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EleksInternshipProj.Domain.Models
 {
+    public enum NotificationType
+    {
+        Reminder,
+        SpaceAdminMessage,
+        General
+    }
+
     public class Notification
     {
         [Key]
@@ -17,12 +24,14 @@ namespace EleksInternshipProj.Domain.Models
         public Space Space { get; set; } = null!;
 
         [Required]
-        [Column("related_type")]
-        public string RelatedType { get; set; } = null!;
+        [Column("notification_type")]
+        public NotificationType NotificationType { get; set; }
 
-        [Required]
+        [Column("related_type")]
+        public string? RelatedType { get; set; }
+
         [Column("related_id")]
-        public long RelatedId { get; set; }
+        public long? RelatedId { get; set; }
 
         [Required, MaxLength(32)]
         [Column("title")]
@@ -36,16 +45,10 @@ namespace EleksInternshipProj.Domain.Models
         [Column("sent_at")]
         public DateTime SentAt { get; set; } = DateTime.UtcNow;
 
-        [Required]
         [Column("deadline_at")]
-        public DateTime DeadlineAt { get; set; }
+        public DateTime? DeadlineAt { get; set; }
 
-        [Required]
-        [Column("read")]
-        public bool Read { get; set; } = false;
-
-        [Required]
         [Column("sent_before")]
-        public int SentBefore {  get; set; }
+        public int? SentBefore {  get; set; }
     }
 }

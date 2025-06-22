@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Application.Services;
+using EleksInternshipProj.Domain.Models;
 
 namespace EleksInternshipProj.WebApi.Controllers
 {
@@ -22,7 +23,7 @@ namespace EleksInternshipProj.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetUserNotifications()
         {
-            IEnumerable<DeadlineNotificationDTO> notifications;
+            IEnumerable<Notification> notifications;
 
             try
             {
