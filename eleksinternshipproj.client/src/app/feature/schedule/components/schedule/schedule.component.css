@@ -7,6 +7,27 @@
   background: #ffffff00;
 }
 
+.schedule-head {
+  display: flex;
+  margin-left: 14px;
+  justify-content: space-between;
+  font-family: 'Segoe UI', sans-serif;
+  align-items: center;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: -52px;
+}
+
+.schedule-divider {
+  height: 1px;
+  background-color: #ccc;
+  margin-left: 14px;
+  margin-right: 20px;
+}
+
 .sidenav-container {
   overflow: hidden;
   display: flex;
@@ -17,7 +38,7 @@
 /* Основний контент */
 .main-content {
   min-height: 100vh;
-  padding: 24px;
+  padding: 10px;
   top: 0px;
   width: 100%;
 }
@@ -97,7 +118,9 @@ mat-card-content {
 .edit-button{
   display: flex;
   justify-content: flex-end;
-  margin-right: 50px; 
+  margin-right: 50px;
+  margin-bottom: 12px;
+  margin-top: 2px;
   button {
       color: rgb(0, 0, 0);
       mat-icon {
