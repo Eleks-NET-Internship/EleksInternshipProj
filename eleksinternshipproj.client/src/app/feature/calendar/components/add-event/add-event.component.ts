@@ -7,14 +7,16 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrl: './add-event.component.css'
 })
 export class AddEventComponent {
-  eventName: string = '';
-  eventTime: string = '';
+  eventData = {
+    eventName: '',
+    eventTime: ''
+  }
 
   constructor(public dialogRef: MatDialogRef<AddEventComponent>) {}
 
   onSave() {
-    if (this.eventName.trim()) {
-      this.dialogRef.close({ eventName: this.eventName, eventTime: this.eventTime });
+    if (this.eventData.eventName.trim()) {
+      this.dialogRef.close(this.eventData);
     }
   }
 

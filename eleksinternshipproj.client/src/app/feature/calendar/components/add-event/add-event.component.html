@@ -1,16 +1,26 @@
 <h2 mat-dialog-title>Нова подія</h2>
 
-<mat-dialog-content>
-  <mat-form-field appearance="outline" style="width: 100%; padding-top: 10px;">
-    <mat-label>Назва події</mat-label>
-    <input matInput [(ngModel)]="eventName" />
-  </mat-form-field>
+<form #eventForm="ngForm">
+  <mat-dialog-content style="padding-top: 0;">
+    <mat-form-field appearance="outline" style="width: 100%; padding-top: 4px;">
+      <mat-label>Назва події</mat-label>
+      <input matInput id="eventName" name="eventName" [(ngModel)]="eventData.eventName" #eventName="ngModel" required />
+      @if (eventName.invalid && (eventName.dirty || eventName.touched)) {
+        <mat-error>Ім'я події обов'язкове</mat-error>
+      }
+    </mat-form-field>
 
-  <label for="appt" class="material-label">Choose a time:</label><br>
-  <input type="time" id="appt" name="appt" class="material-timepicker" [(ngModel)]="eventTime" required>
+    <mat-form-field>
+      <mat-label>Час події</mat-label>
+      <input matInput type="time" id="eventTime" name="eventTime" class="material-timepicker" [(ngModel)]="eventData.eventTime" #eventTime="ngModel" required>
+      @if (eventTime.invalid && (eventTime.dirty || eventTime.touched)) {
+        <mat-error>Час події обов'язковий</mat-error>
+      }
+    </mat-form-field>
 
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button (click)="onCancel()">Скасувати</button>
-  <button mat-raised-button color="primary" (click)="onSave()">Зберегти</button>
-</mat-dialog-actions>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button type="button" (click)="onCancel()">Скасувати</button>
+    <button mat-flat-button color="primary" (click)="onSave()" [disabled]="!eventForm.form.valid">Зберегти</button>
+  </mat-dialog-actions>
+</form>
