@@ -12,6 +12,7 @@ public static class MarkerMapper
             Id = entity.Id,
             Name = entity.Name,
             SpaceId = entity.SpaceId,
+            Type = entity.Type,
         };
     }
 
@@ -22,6 +23,7 @@ public static class MarkerMapper
             Id = dto.Id,
             Name = dto.Name,
             SpaceId = dto.SpaceId,
+            Type = dto.Type,
         };
     }
 }

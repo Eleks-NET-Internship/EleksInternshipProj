@@ -16,15 +16,12 @@
 
     <!-- Schedule cards grid -->
     <div class="schedule-grid">
-
-      <!-- Monday column -->
-      <div class="day-column">
-        <mat-card *ngFor="let card of scheduleData.monday"
+      <div class="day-column" *ngFor="let day of daysOfWeek">
+        <mat-card *ngFor="let card of scheduleData[day] || []"
                   class="schedule-card"
                   [class.has-notification]="card.hasNotification"
                   (click)="onCardClick(card)">
 
-          <!-- Red notification dot -->
           <div *ngIf="card.hasNotification" class="notification-dot"></div>
 
           <mat-card-content>
@@ -36,13 +33,8 @@
           </mat-card-content>
         </mat-card>
       </div>
-
-      <!-- Empty columns for other days -->
-      <div class="day-column" *ngFor="let day of [1,2,3,4]">
-        <!-- Тут можна додати інші карточки -->
-      </div>
-
     </div>
+
   </div>
 
 </div>
