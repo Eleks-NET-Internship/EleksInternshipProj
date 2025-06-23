@@ -87,7 +87,8 @@ import { NotifySpaceComponent } from './feature/notifications/components/notify-
     AddTaskDialogComponent,
     EventNotesComponent,
     NoteDetailComponent,
-    NotifySpaceComponent
+    NotifySpaceComponent,
+    EventComponent
   ],
   imports: [
     BrowserModule,
