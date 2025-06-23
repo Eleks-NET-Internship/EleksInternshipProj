@@ -9,9 +9,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { CalendarComponent } from './feature/calendar/components/calendar/calendar.component';
 import { CalendarFormComponent } from './feature/calendar/components/calendar-form/calendar-form.component';
 import { ScheduleComponent } from './feature/schedule/components/schedule/schedule.component';
-import { SidebarComponent } from './feature/sidebar/components/sidebar/sidebar.component';
 import { EditScheduleComponent } from './feature/schedule/components/edit-schedule/edit-schedule.component';
-import { EventEditFormComponent } from './feature/schedule/components/event-edit-form/event-edit-form.component'
+import { EventEditFormComponent } from './feature/schedule/components/event-edit-form/event-edit-form.component';
 import { LoginComponent } from './feature/login/components/login/login.component';
 import { RegisterComponent } from './feature/register/components/register/register.component';
 import { AddEventComponent } from './feature/calendar/components/add-event/add-event.component';
@@ -51,13 +50,9 @@ import { NotificationsComponent } from './feature/notifications/components/notif
 import { TaskDetailsDialogComponent } from './feature/tasks/components/task-details-dialog/task-details-dialog.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-
-import { AddTaskDialogComponent } from './feature/tasks/components/add-task-dialog/add-task-dialog.component'; 
-import { EventNotesComponent } from './feature/notes/components/event-notes/event-notes.component';
-import { NoteDetailComponent } from './feature/notes/components/note-detail/note-detail.component';
-import { MatSelectModule } from '@angular/material/select'; // Додайте цей імпорт
-import { MatOptionModule } from '@angular/material/core'; // Додайте цей імпорт
+import { AddTaskDialogComponent } from './feature/tasks/components/add-task-dialog/add-task-dialog.component';
 import { NotifySpaceComponent } from './feature/notifications/components/notify-space/notify-space.component'; 
+
 
 
 
@@ -84,12 +79,7 @@ import { NotifySpaceComponent } from './feature/notifications/components/notify-
     AddEventComponent,
     TaskDetailsDialogComponent,
     AddTaskDialogComponent,
-
-    EventNotesComponent,
-    NoteDetailComponent
-
     NotifySpaceComponent
-
   ],
   imports: [
     BrowserModule, HttpClientModule,
