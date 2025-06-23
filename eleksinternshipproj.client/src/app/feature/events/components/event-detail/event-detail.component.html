@@ -3,21 +3,55 @@
   <p *ngIf="!event">Завантаження події...</p>
 
   <div *ngIf="event" class="content-blocks-container">
+    <!-- Завдання -->
     <mat-card class="content-block">
       <mat-card-header class="card-header">
         <div class="header-title-center">
           <mat-card-title>Завдання</mat-card-title>
         </div>
       </mat-card-header>
+
       <mat-card-content>
-        <mat-list>
-          <mat-list-item>Сюди додати завдання</mat-list-item>
-          <mat-list-item>Коли це буде</mat-list-item>
-          <mat-list-item>реалізовано в сервісі</mat-list-item>
-        </mat-list>
+        <div *ngIf="tasks.length > 0; else noTasks">
+          <div *ngFor="let task of tasks" class="mini-task-card" (click)="openTaskDetails(task)">
+
+             <button class="delete-task-btn" (click)="deleteTask(task.id, $event)" aria-label="Видалити завдання">
+                  <mat-icon>delete</mat-icon>
+             </button>
+
+            <div class="mini-task-header">{{ task.name }}</div>
+
+            <div class="mini-task-meta">
+              <div class="mini-task-meta-item">
+                <span class="mini-label">Статус:</span>
+                <mat-chip class="mini-chip" color="primary" selected>
+                  {{ task.statusName || ('ID: ' + task.statusId) }}
+                </mat-chip>
+              </div>
+
+              <div class="mini-task-meta-item">
+                <span class="mini-label">Дедлайн:</span>
+                <div class="mini-deadline">
+                  <mat-icon class="mini-icon" color="warn">schedule</mat-icon>
+                  <span *ngIf="task.eventTime !== '0001-01-01T00:00:00'; else noDeadline">
+                    {{ task.eventTime | date: 'dd.MM.yyyy HH:mm' }}
+                  </span>
+                  <ng-template #noDeadline>
+                    <span class="no-deadline">Не задано</span>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #noTasks>
+          <p>Завдань поки немає.</p>
+        </ng-template>
       </mat-card-content>
     </mat-card>
 
+    <!-- Нотатки -->
     <mat-card class="content-block">
       <mat-card-header class="card-header">
         <div class="header-title-center">
@@ -25,7 +59,7 @@
         </div>
       </mat-card-header>
       <mat-card-content>
-        <p>З нотатками так само</p>
+        <p>Ще зробим. Всьо буде, головне здоров'я</p>
       </mat-card-content>
     </mat-card>
   </div>
