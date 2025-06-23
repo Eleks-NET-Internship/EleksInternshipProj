@@ -1,0 +1,126 @@
+<div class="note-detail-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <button mat-icon-button class="back-button" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+    
+    <div class="header-actions">
+      <button mat-icon-button class="action-button" (click)="toggleEdit()" [attr.aria-label]="isEditing ? 'Зберегти' : 'Редагувати'">
+        <mat-icon>{{ isEditing ? 'save' : 'edit' }}</mat-icon>
+      </button>
+      
+      <button mat-icon-button class="action-button" (click)="deleteNote()" aria-label="Видалити нотатку">
+        <mat-icon>delete</mat-icon>
+      </button>
+      
+      <button mat-icon-button [matMenuTriggerFor]="menu" class="action-button" aria-label="Більше дій">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="shareNote()">
+          <mat-icon>share</mat-icon>
+          <span>Поділитися</span>
+        </button>
+        <button mat-menu-item (click)="duplicateNote()">
+          <mat-icon>content_copy</mat-icon>
+          <span>Дублювати</span>
+        </button>
+        <button mat-menu-item (click)="exportNote()">
+          <mat-icon>download</mat-icon>
+          <span>Експорт</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <!-- Note Content -->
+  <div class="note-content-wrapper">
+    <mat-card class="note-card">
+      <!-- Title Section -->
+      <mat-card-header class="note-header">
+        <div class="title-section" *ngIf="!isEditing">
+          <h1 class="note-title">{{ note?.title || 'Без назви' }}</h1>
+          <div class="note-meta">
+            <span class="event-badge" *ngIf="note?.eventId as eventId">
+                <mat-icon class="meta-icon">event</mat-icon>
+                {{ getEventTitle(eventId) }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Edit Title and Event -->
+        <div class="edit-header" *ngIf="isEditing">
+          <mat-form-field class="title-field" appearance="outline">
+            <mat-label>Заголовок нотатки</mat-label>
+            <input matInput [(ngModel)]="editedNote.title" placeholder="Введіть заголовок...">
+          </mat-form-field>
+
+          <!-- Event Selection -->
+          <div class="event-selection">
+            <mat-form-field class="event-field" appearance="outline">
+              <mat-label>Подія</mat-label>
+              <mat-select [(value)]="editedNote.eventId" [compareWith]="compareEvents">
+                
+                <mat-option *ngFor="let event of events" [value]="event.eventId">
+                  {{ event.eventName }}
+                </mat-option>
+              </mat-select>
+              <mat-hint>Оберіть подію для прив'язки нотатки</mat-hint>
+            </mat-form-field>
+            
+            <!-- Clear Event Button -->
+            <button 
+              mat-icon-button 
+              type="button"
+              *ngIf="editedNote.eventId"
+              (click)="clearEvent()"
+              matTooltip="Очистити подію"
+              class="clear-event-button">
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-card-header>
+
+      <!-- Content Section -->
+      <mat-card-content class="note-body">
+        <!-- View Mode -->
+        <div class="content-view" *ngIf="!isEditing">
+          <div class="note-text" [innerHTML]="getFormattedContent()"></div>
+          <div class="empty-state" *ngIf="!note?.content">
+            <mat-icon class="empty-icon">note_add</mat-icon>
+            <p>Нотатка порожня</p>
+            <button mat-stroked-button (click)="toggleEdit()">Додати контент</button>
+          </div>
+        </div>
+
+        <!-- Edit Mode -->
+        <mat-form-field class="content-field" *ngIf="isEditing" appearance="outline">
+          <mat-label>Зміст нотатки</mat-label>
+          <textarea 
+            matInput 
+            [(ngModel)]="editedNote.content" 
+            placeholder="Введіть текст нотатки..."
+            rows="15">
+          </textarea>
+        </mat-form-field>
+      </mat-card-content>
+
+      <!-- Action Buttons for Edit Mode -->
+      <mat-card-actions class="edit-actions" *ngIf="isEditing">
+        <button mat-raised-button color="primary" (click)="saveNote()">
+          <mat-icon>save</mat-icon>
+          Зберегти
+        </button>
+        <button mat-stroked-button (click)="cancelEdit()">
+          <mat-icon>cancel</mat-icon>
+          Скасувати
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
