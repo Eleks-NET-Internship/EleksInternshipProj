@@ -1,1 +1,78 @@
-<p>TODO: implement notes</p>
+<div class="notes-container">
+  <!-- Header -->
+  <div class="events-header">
+    <div class="header-title">Події</div>
+
+    <div class="header-actions">
+      <button class="add-event-btn" (click)="addEvent()">+ Додати подію</button>
+    </div>
+  </div>
+
+  <div class="header-divider"></div>
+
+  <!-- Event Notes Section -->
+  <div class="notes-section" *ngIf="eventNotes.length > 0">
+    <h2 class="section-title">Нотатки за подіями</h2>
+    <div class="notes-grid">
+      <mat-card 
+        *ngFor="let note of eventNotes" 
+        class="note-card event-note"
+        (click)="openEventNotes(note)">
+        
+        
+        <mat-card-header>
+          <mat-card-title class="event-title">
+            <mat-icon class="event-icon">event</mat-icon>
+            {{ note.eventName || 'Без назви' }}
+          </mat-card-title>
+          
+          <!-- <div class="note-actions">
+            <button mat-icon-button (click)="$event.stopPropagation(); deleteNote(note.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div> -->
+        </mat-card-header>
+        
+        <mat-card-content>
+          <!-- <p class="note-content">{{ note.content }}</p> -->
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Regular Notes Section -->
+  <div class="notes-section">
+    <h2 class="section-title">Усі нотатки</h2>
+    <div class="notes-grid">
+      <mat-card 
+        *ngFor="let note of regularNotes" 
+        class="note-card"
+        (click)="editNote(note)">
+        
+        <mat-card-header>
+          <mat-card-title class="note-title">
+            {{ note.title || 'Без назви' }}
+          </mat-card-title>
+          
+          <div class="note-actions">
+            <button mat-icon-button (click)="$event.stopPropagation(); deleteNote(note.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <p class="note-content">{{ note.content }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Empty note card for adding new note -->
+      <mat-card class="note-card empty-note" (click)="addNote()">
+        <mat-card-content class="empty-content">
+          <mat-icon class="add-icon">add</mat-icon>
+          <p>Створити нотатку</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

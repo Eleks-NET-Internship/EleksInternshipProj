@@ -19,6 +19,8 @@ import { SpacesComponent } from './feature/spaces/components/spaces/spaces.compo
 import { EventDetailComponent } from './feature/events/components/event-detail/event-detail.component';
 import { NotificationsComponent } from './feature/notifications/components/notifications/notifications.component';
 import { spaceContextGuard } from './core/guards/space-context.guard';
+import { EventNotesComponent } from './feature/notes/components/event-notes/event-notes.component';
+import { NoteDetailComponent } from './feature/notes/components/note-detail/note-detail.component';
 
 const routes: Routes = [
 
@@ -45,6 +47,8 @@ const routes: Routes = [
       { path: 'tasks', component: TasksComponent, canActivate: [authGuard, spaceContextGuard] },
       { path: 'notes', component: NotesComponent, canActivate: [authGuard, spaceContextGuard] },
       { path: 'events', component: EventsComponent, canActivate: [authGuard, spaceContextGuard] },
+      { path: 'event-notes', component: EventNotesComponent, canActivate: [authGuard] },
+      { path: 'notes/:id', component: NoteDetailComponent, canActivate: [authGuard] },
       { path: 'event/:id', component: EventDetailComponent, canActivate: [authGuard, spaceContextGuard] },
       //{ path: 'statistics', component: StatisticsComponent, canActivate: [authGuard, spaceContextGuard] },
       { path: 'notifications', component: NotificationsComponent, canActivate: [authGuard] },
