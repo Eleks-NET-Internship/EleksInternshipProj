@@ -64,7 +64,6 @@
             <mat-form-field class="event-field" appearance="outline">
               <mat-label>Подія</mat-label>
               <mat-select [(value)]="editedNote.eventId" [compareWith]="compareEvents">
-                
                 <mat-option *ngFor="let event of events" [value]="event.eventId">
                   {{ event.eventName }}
                 </mat-option>

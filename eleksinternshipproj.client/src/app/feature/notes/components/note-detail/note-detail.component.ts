@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NoteService, NoteDto, EventDto } from '../../../../core/services/note/note.service';
 import { SpaceContextService } from '../../../../core/services/space-context/space-context.service';
@@ -29,7 +30,7 @@ export class NoteDetailComponent implements OnInit {
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
     private noteService: NoteService,
-     private spaceContextService: SpaceContextService
+    private spaceContextService: SpaceContextService
   ) {}
 
   async ngOnInit(): Promise<void> {

@@ -86,7 +86,7 @@ import { NotifySpaceComponent } from './feature/notifications/components/notify-
     AddTaskDialogComponent,
 
     EventNotesComponent,
-    NoteDetailComponent
+    NoteDetailComponent,
 
     NotifySpaceComponent
 
@@ -96,6 +96,7 @@ import { NotifySpaceComponent } from './feature/notifications/components/notify-
     AppRoutingModule,
     SharedModule,
     // Material modules
+    MatSelectModule,
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
