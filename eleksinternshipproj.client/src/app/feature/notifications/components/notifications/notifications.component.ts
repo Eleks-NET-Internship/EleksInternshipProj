@@ -5,6 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { NotifySpaceComponent } from '../notify-space/notify-space.component';
 import { SpacesService } from '../../../spaces/services/spaces.service';
 import { SpaceRenameDto } from '../../../spaces/models/spaces-models';
+import { Subscription } from 'rxjs';
+import { NotificationsSignalrService } from '../../../../core/services/notifications/notifications-signalr.service';
 
 @Component({
   selector: 'app-notifications',
@@ -12,12 +14,20 @@ import { SpaceRenameDto } from '../../../spaces/models/spaces-models';
   styleUrl: './notifications.component.css'
 })
 export class NotificationsComponent {
-  notifications: NotificationDTO[] = []; 
+  notifications: NotificationDTO[] = [];
   canNotifySpaces: boolean = false;
-  constructor(private notificationsService: NotificationsService, private dialog: MatDialog, private spacesService: SpacesService) { }
+
+  private subscription?: Subscription;
+  constructor(private notificationsService: NotificationsService, private dialog: MatDialog, private spacesService: SpacesService, private notificationsignalRService: NotificationsSignalrService) { }
 
   ngOnInit(): void {
     this.getNotifications();
+
+    this.subscription = this.notificationsignalRService.notificationReceived$
+      .subscribe(() => {
+        this.getNotifications();
+      });
+
     this.spacesService.getSpacesWhereAdmin().subscribe({
       next: (result: SpaceRenameDto[]) => {
         if (result.length > 0) {

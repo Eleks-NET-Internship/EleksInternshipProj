@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { AuthService } from '../auth/auth.service';
 import { TokenActionsService } from '../tokens/token-actions.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationsSignalrService {
   private hubConnection!: signalR.HubConnection;
+
+  private notificationReceivedSource = new Subject<void>();
+  notificationReceived$ = this.notificationReceivedSource.asObservable();
 
   private readonly apiBaseUrl = 'https://localhost:7050';
 
@@ -42,6 +46,8 @@ export class NotificationsSignalrService {
 
 
     this.hubConnection.on("ReceiveReminderNotification", (data) => {
+      this.notificationReceivedSource.next();
+
       if (Notification.permission === "granted") {
         this.createReminderNotification(data);
       } else if (Notification.permission !== "denied") {
@@ -54,6 +60,8 @@ export class NotificationsSignalrService {
     });
 
     this.hubConnection.on("ReceiveSpaceNotification", (data) => {
+      this.notificationReceivedSource.next();
+
       if (Notification.permission === "granted") {
         this.createSpaceNotification(data);
       } else if (Notification.permission !== "denied") {
