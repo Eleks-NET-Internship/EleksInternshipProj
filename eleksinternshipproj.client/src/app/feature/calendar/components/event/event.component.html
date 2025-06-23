@@ -1,0 +1,10 @@
+<div class="display-field">
+    <div class="event-header">
+        <p>{{ event().eventName }}</p>
+        <p>{{ time }}</p>
+    </div>
+
+    <div class="markers-container">{{ markers }}</div>
+
+    <button (click)="onDeleteEvent()">Видалити подію</button>
+</div>

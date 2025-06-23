@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -51,8 +51,9 @@ import { NotificationsComponent } from './feature/notifications/components/notif
 import { TaskDetailsDialogComponent } from './feature/tasks/components/task-details-dialog/task-details-dialog.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { AddTaskDialogComponent } from './feature/tasks/components/add-task-dialog/add-task-dialog.component';
+import { EventComponent } from './feature/calendar/components/event/event.component'; 
 
-import { AddTaskDialogComponent } from './feature/tasks/components/add-task-dialog/add-task-dialog.component'; 
 import { EventNotesComponent } from './feature/notes/components/event-notes/event-notes.component';
 import { NoteDetailComponent } from './feature/notes/components/note-detail/note-detail.component';
 import { MatSelectModule } from '@angular/material/select'; // Додайте цей імпорт
@@ -84,15 +85,12 @@ import { NotifySpaceComponent } from './feature/notifications/components/notify-
     AddEventComponent,
     TaskDetailsDialogComponent,
     AddTaskDialogComponent,
-
     EventNotesComponent,
     NoteDetailComponent,
-
     NotifySpaceComponent
-
   ],
   imports: [
-    BrowserModule, HttpClientModule,
+    BrowserModule,
     AppRoutingModule,
     SharedModule,
     // Material modules

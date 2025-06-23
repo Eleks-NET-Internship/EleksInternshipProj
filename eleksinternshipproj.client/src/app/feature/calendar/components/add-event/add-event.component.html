@@ -10,12 +10,40 @@
       }
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline">
       <mat-label>Час події</mat-label>
       <input matInput type="time" id="eventTime" name="eventTime" class="material-timepicker" [(ngModel)]="eventData.eventTime" #eventTime="ngModel" required>
       @if (eventTime.invalid && (eventTime.dirty || eventTime.touched)) {
         <mat-error>Час події обов'язковий</mat-error>
       }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Мітки</mat-label>
+      <mat-chip-grid #chipGrid>
+        <mat-chip-row *ngFor="let tag of selectedTags"
+                      [removable]="true"
+                      (removed)="removeTag(tag)">
+          {{ tag }}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      </mat-chip-grid>
+      <input matInput
+              #tagInput
+              name="markers"
+              [(ngModel)]="inputValue"
+              [matChipInputFor]="chipGrid"
+              [matAutocomplete]="autoTags"
+              [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              (matChipInputTokenEnd)="addTag($event)"
+              placeholder="Виберіть або додайте мітки">
+      <mat-autocomplete #autoTags="matAutocomplete" (optionSelected)="selectTag($event)">
+        <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+          {{ tag }}
+        </mat-option>
+      </mat-autocomplete>
     </mat-form-field>
 
   </mat-dialog-content>
