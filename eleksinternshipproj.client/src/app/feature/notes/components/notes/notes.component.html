@@ -1,11 +1,14 @@
 <div class="notes-container">
   <!-- Header -->
-  <div class="header">
-    <h1 class="title">Мої нотатки</h1>
-    <button mat-fab color="primary" class="add-button" (click)="addNote()" aria-label="Додати нотатку">
-      <mat-icon>add</mat-icon>
-    </button>
+  <div class="events-header">
+    <div class="header-title">Події</div>
+
+    <div class="header-actions">
+      <button class="add-event-btn" (click)="addEvent()">+ Додати подію</button>
+    </div>
   </div>
+
+  <div class="header-divider"></div>
 
   <!-- Event Notes Section -->
   <div class="notes-section" *ngIf="eventNotes.length > 0">

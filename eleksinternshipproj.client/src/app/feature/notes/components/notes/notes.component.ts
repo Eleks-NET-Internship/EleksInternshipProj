@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NoteService, NoteDto, EventDto } from '../../../../core/services/note/note.service';
 import { Router } from '@angular/router';
+import { SpaceContextService } from '../../../../core/services/space-context/space-context.service';
 
 // Для групування нотаток за подіями
 export interface EventGroup {
@@ -22,20 +23,31 @@ export class NotesComponent implements OnInit {
   eventNotes: EventGroup[] = [];
   events: EventDto[] = [];
   loading = false;
-  private spaceId: number = 1; 
+  private spaceId: number | null = null;
 
   constructor(
     private noteService: NoteService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private spaceContextService: SpaceContextService
   ) {}
 
   ngOnInit(): void {
+    this.spaceId = this.spaceContextService.getSpaceId();
+    if (!this.spaceId) {
+      console.log("No spaceId in events init");
+      return;
+    }
     this.loadEvents();
   }
 
   private async loadEvents(): Promise<void> {
+    this.spaceId = this.spaceContextService.getSpaceId();
+    if (!this.spaceId) {
+      console.log("No spaceId in events init");
+      return;
+    }
   try {
     this.loading = true;
 
@@ -66,6 +78,11 @@ this.events = rawEvents.map(event => ({
 
 
   async loadNotes(): Promise<void> {
+    this.spaceId = this.spaceContextService.getSpaceId();
+    if (!this.spaceId) {
+      console.log("No spaceId in events init");
+      return;
+    }
     try {
       this.loading = true;
       this.regularNotes = await this.noteService.getAllNotes(this.spaceId);

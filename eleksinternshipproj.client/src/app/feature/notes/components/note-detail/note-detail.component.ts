@@ -4,6 +4,8 @@ import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NoteService, NoteDto, EventDto } from '../../../../core/services/note/note.service';
+import { SpaceContextService } from '../../../../core/services/space-context/space-context.service';
+
 
 @Component({
   selector: 'app-note-detail',
@@ -17,7 +19,7 @@ export class NoteDetailComponent implements OnInit {
   isNewNote = false;
   noteId: number = 0;
   events: EventDto[] = [];
-  private spaceId: number = 1; 
+  private spaceId: number | null = null;
 
 
   constructor(
@@ -26,10 +28,16 @@ export class NoteDetailComponent implements OnInit {
     private location: Location,
     private dialog: MatDialog,
     private snackBar: MatSnackBar,
-    private noteService: NoteService
+    private noteService: NoteService,
+     private spaceContextService: SpaceContextService
   ) {}
 
   async ngOnInit(): Promise<void> {
+    this.spaceId = this.spaceContextService.getSpaceId();
+    if (!this.spaceId) {
+      console.log("No spaceId in events init");
+      return;
+    }
     try {
       const rawEvents = await this.noteService.getEvents(this.spaceId);
       this.events = rawEvents.map(event => ({
