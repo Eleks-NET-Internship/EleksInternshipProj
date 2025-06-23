@@ -41,23 +41,43 @@ export class NotificationsSignalrService {
       .catch((err => console.error("Error starting up signalR", err)));
 
 
-    this.hubConnection.on("ReceiveNotification", (data) => {
+    this.hubConnection.on("ReceiveReminderNotification", (data) => {
       if (Notification.permission === "granted") {
-        this.createNotification(data);
+        this.createReminderNotification(data);
       } else if (Notification.permission !== "denied") {
         Notification.requestPermission().then(permission => {
           if (permission === "granted") {
-            this.createNotification(data);
+            this.createReminderNotification(data);
           }
         })
       }
-    })
+    });
+
+    this.hubConnection.on("ReceiveSpaceNotification", (data) => {
+      if (Notification.permission === "granted") {
+        this.createSpaceNotification(data);
+      } else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(permission => {
+          if (permission === "granted") {
+            this.createSpaceNotification(data);
+          }
+        })
+      }
+    });
+    
+
   }
 
-  createNotification(data: any): Notification {
+  createReminderNotification(data: any): Notification {
     const deadlineDate = new Date(data.deadlineAt);
     return new Notification(data.title, {
       body: `${data.message} Коли? ${deadlineDate.toLocaleString()}`
+    });
+  }
+
+  createSpaceNotification(data: any): Notification {
+    return new Notification(data.title, {
+      body: `${data.message}`
     });
   }
 

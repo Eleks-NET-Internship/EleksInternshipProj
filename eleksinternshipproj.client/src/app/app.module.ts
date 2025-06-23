@@ -51,11 +51,15 @@ import { NotificationsComponent } from './feature/notifications/components/notif
 import { TaskDetailsDialogComponent } from './feature/tasks/components/task-details-dialog/task-details-dialog.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+
 import { AddTaskDialogComponent } from './feature/tasks/components/add-task-dialog/add-task-dialog.component'; 
 import { EventNotesComponent } from './feature/notes/components/event-notes/event-notes.component';
 import { NoteDetailComponent } from './feature/notes/components/note-detail/note-detail.component';
 import { MatSelectModule } from '@angular/material/select'; // Додайте цей імпорт
 import { MatOptionModule } from '@angular/material/core'; // Додайте цей імпорт
+import { NotifySpaceComponent } from './feature/notifications/components/notify-space/notify-space.component'; 
+
+
 
 @NgModule({
   declarations: [
@@ -80,8 +84,12 @@ import { MatOptionModule } from '@angular/material/core'; // Додайте це
     AddEventComponent,
     TaskDetailsDialogComponent,
     AddTaskDialogComponent,
+
     EventNotesComponent,
     NoteDetailComponent
+
+    NotifySpaceComponent
+
   ],
   imports: [
     BrowserModule, HttpClientModule,

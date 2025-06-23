@@ -36,6 +36,20 @@ namespace EleksInternshipProj.WebApi.Controllers
             return Ok(spaces);
         }
 
+        [HttpGet]
+        [Route("where-admin")]
+        public async Task<ActionResult<IEnumerable<SpaceDto>>> GetSpacesWhereAdmin()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return Unauthorized("No id");
+            }
+
+            var spaces = await _spaceService.GetSpacesWhereAdminAsync(long.Parse(userId));
+            return Ok(spaces);
+        }
+
         [HttpPost]
         public async Task<ActionResult<SpaceDto>> AddSpace([FromBody] SpaceDtoShort spaceDto)
         {

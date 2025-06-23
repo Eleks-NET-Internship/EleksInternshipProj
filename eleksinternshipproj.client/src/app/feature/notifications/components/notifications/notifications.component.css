@@ -15,6 +15,25 @@ h3, p, small {
   margin-bottom: 8px;
 }
 
+.header-actions {
+  position: relative;
+}
+
+.notify-space-btn {
+  background-color: transparent;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+  .notify-space-btn:hover {
+    background-color: #f0f0f0;
+  }
+
 .notifications-header {
   display: flex;
   justify-content: space-between;

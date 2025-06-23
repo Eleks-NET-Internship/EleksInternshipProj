@@ -9,11 +9,13 @@ namespace EleksInternshipProj.Application.Services.Imp
     {
         private readonly ISpaceRepository _spaceRepository;
         private readonly IUserRepository _userRepository;
+        private readonly INotificationDeliveryService _notificationDeliveryService;
 
-        public SpaceService(ISpaceRepository spaceRepository, IUserRepository userRepository)
+        public SpaceService(ISpaceRepository spaceRepository, IUserRepository userRepository, INotificationDeliveryService notificationDeliveryService)
         {
             _spaceRepository = spaceRepository;
             _userRepository = userRepository;
+            _notificationDeliveryService = notificationDeliveryService;
         }
 
         public async Task<Space?> AddSpaceAsync(long userId, string name)
@@ -24,29 +26,41 @@ namespace EleksInternshipProj.Application.Services.Imp
             };
             return await _spaceRepository.AddAsync(space, userId);
         }
-        
+
         public async Task<Space?> AddSpaceAsync(SpaceDtoShort spaceDto)
         {
-            return await _spaceRepository.AddAsync(spaceDto.ToEntity());
+            Space? res = await _spaceRepository.AddAsync(spaceDto.ToEntity());
+            if (res != null)
+            {
+                if (spaceDto.UserSpaces != null)
+                {
+                    foreach (var userSpaceDto in spaceDto.UserSpaces)
+                    {
+                        await _notificationDeliveryService.AddUserToSpaceGroupAsync(userSpaceDto.UserId, res.Id);
+                    }
+                }
+            }
+            return res;
         }
 
         public async Task<UserSpace?> AddUserToSpaceAsync(long spaceId, string username)
         {
             var user = await _userRepository.GetByNameAsync(username);
-            
+
             if (user == null)
             {
                 return null; // User not found
             }
-            
+
             var userSpaceDto = new UserSpaceDto
             {
                 SpaceId = spaceId,
                 UserId = user.Id,
                 RoleId = 2
             };
-            
+
             var newUserSpace = await _spaceRepository.AddToAsync(userSpaceDto.SpaceId, userSpaceDto.UserId, userSpaceDto.RoleId);
+            await _notificationDeliveryService.AddUserToSpaceGroupAsync(user.Id, spaceId);
             return newUserSpace;
         }
 
@@ -59,6 +73,11 @@ namespace EleksInternshipProj.Application.Services.Imp
         {
             var allSpaces = (await _spaceRepository.GetByUserAsync(userId)).ToList();
             return allSpaces.Select(s => s.ToDto());
+        }
+        public async Task<IEnumerable<SpaceRenameDto>> GetSpacesWhereAdminAsync(long userId)
+        {
+            var allSpaces = await _spaceRepository.GetByUserWhereAdminAsync(userId);
+            return allSpaces.Select(s => new SpaceRenameDto { Id = s.Id, Name = s.Name});
         }
 
         public async Task<Space?> RenameSpaceAsync(long spaceId, string newName)
