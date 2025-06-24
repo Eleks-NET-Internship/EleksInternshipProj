@@ -16,14 +16,14 @@ namespace EleksInternshipProj.Infrastructure.Services
             _hubContext = hubContext;
         }
 
-        public async void SendReminderToSpaceAsync(DeadlineNotificationDTO notification)
+        public async Task SendReminderToSpaceAsync(DeadlineNotificationDTO notification)
         {
             await _hubContext.Clients
                     .Group($"space-{notification.SpaceId}")
                     .SendAsync("ReceiveReminderNotification", notification);
         }
 
-        public async void SendGeneralToSpaceAsync(SpaceAdminNotificationDTO notification, long? excludedId = null)
+        public async Task SendGeneralToSpaceAsync(SpaceAdminNotificationDTO notification, long? excludedId = null)
         {
             if (excludedId.HasValue)
             {

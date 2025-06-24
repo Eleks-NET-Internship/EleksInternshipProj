@@ -82,7 +82,7 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                     SentAt = notification.SentAt,
                     DeadlineAt = notification.DeadlineAt.Value,
                 };
-                notificationDeliveryService.SendReminderToSpaceAsync(dto);
+                await notificationDeliveryService.SendReminderToSpaceAsync(dto);
 
                 // email
                 var users = await userSpaceService.GetUsersBySpaceId(dto.SpaceId);

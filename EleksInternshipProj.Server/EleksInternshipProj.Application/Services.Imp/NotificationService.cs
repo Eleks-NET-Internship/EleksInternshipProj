@@ -35,7 +35,7 @@ namespace EleksInternshipProj.Application.Services.Imp
             };
 
             await _notificationRepository.AddNotificationAsync(notification);
-            _notificationDeliveryService.SendGeneralToSpaceAsync(notif, exludedId);
+            await _notificationDeliveryService.SendGeneralToSpaceAsync(notif, exludedId);
         }
     }
 }
