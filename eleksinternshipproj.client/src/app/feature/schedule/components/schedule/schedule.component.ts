@@ -64,6 +64,6 @@ export class ScheduleComponent implements OnInit {
 
   EditSchedule() {
     this.context.currentTimetable = this.timetable;
-    this.router.navigate(['/edit-schedule']);
+    this.router.navigate(['schedule/edit-schedule']);
   }
 }

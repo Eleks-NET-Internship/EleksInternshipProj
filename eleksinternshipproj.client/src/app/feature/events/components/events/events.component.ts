@@ -124,6 +124,6 @@ export class EventsComponent implements OnInit {
   }
 
   goToEvent(event: EventDto): void {
-    this.router.navigate(['/event', event.id]);
+    this.router.navigate(['/events', event.id]);
   }
 }
