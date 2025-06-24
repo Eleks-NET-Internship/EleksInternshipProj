@@ -148,7 +148,7 @@ private getEventName(eventId: number): string {
   }
 
   openEventNotes(event: EventGroup): void {
-    this.router.navigate(['/event-notes'], { 
+    this.router.navigate(['notes/event-notes'], { 
       queryParams: { 
         eventId: event.eventId,
         eventTitle: event.eventName 

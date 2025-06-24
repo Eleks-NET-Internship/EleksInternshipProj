@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EventsService } from '../../services/events.service';
 import { TaskDto } from '../../../tasks/models/tasks-models';
 import { TasksService } from '../../../tasks/services/tasks.service';
@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs';
 import { EventDto } from '../../models/events-models';
 import { TaskDetailsDialogComponent } from '../../../tasks/components/task-details-dialog/task-details-dialog.component';
+import { NoteDto, NoteService } from '../../../../core/services/note/note.service';
 
 @Component({
   selector: 'app-event-detail',
@@ -17,11 +18,14 @@ export class EventDetailComponent implements OnInit {
   eventId!: number;
   event?: EventDto;
   tasks: TaskDto[] = [];
+  notes: NoteDto[] = [];
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private eventsService: EventsService,
     private taskService: TasksService,
+    private noteService: NoteService,
     private dialog: MatDialog
   ) {}
 
@@ -31,6 +35,7 @@ export class EventDetailComponent implements OnInit {
       next: (response) => {
         this.event = response.data;
         this.loadTasks();
+        this.loadNotes();
       },
       error: (err) => {
         console.error('Помилка при завантаженні події:', err);
@@ -61,6 +66,16 @@ export class EventDetailComponent implements OnInit {
         error: (err) => {
           console.error('Помилка при завантаженні завдань:', err);
         }
+      });
+  }
+
+   loadNotes(): void {
+    this.noteService.getNotesByEventId(this.eventId)
+      .then(notes => {
+        this.notes = notes;
+      })
+      .catch(err => {
+        console.error('Помилка при завантаженні нотаток:', err);
       });
   }
 
@@ -98,5 +113,9 @@ export class EventDetailComponent implements OnInit {
         error: err => console.error('Помилка при видаленні завдання:', err)
       });
     }
+  }
+
+  openNote(note: NoteDto): void {
+     this.router.navigate(['/notes', note.id]);
   }
 }
