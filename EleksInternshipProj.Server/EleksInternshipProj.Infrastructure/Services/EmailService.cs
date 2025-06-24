@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EleksInternshipProj.Application.DTOs;
 using EleksInternshipProj.Infrastructure.Configuration;
+using EleksInternshipProj.Domain.Models;
 
 namespace EleksInternshipProj.Infrastructure.Services
 {
@@ -80,14 +81,17 @@ namespace EleksInternshipProj.Infrastructure.Services
 
         private string BuildDeadlineEmailBody(DeadlineNotificationDTO dto)
         {
+            var kyivZone = TimeZoneInfo.FindSystemTimeZoneById("FLE Standard Time"); // Windows (Kyiv)
+            var deadlineLocal = TimeZoneInfo.ConvertTimeFromUtc(dto.DeadlineAt, kyivZone);
+            var sentAtLocal = TimeZoneInfo.ConvertTimeFromUtc(dto.SentAt, kyivZone);
             var sb = new StringBuilder();
 
             sb.AppendLine("🔔 НАГАДУВАННЯ ПРО ДЕДЛАЙН ЗАВДАННЯ");
             sb.AppendLine(new string('-', 40));
             sb.AppendLine($"{dto.Message}");
             sb.AppendLine();
-            sb.AppendLine($"⏰ Дедлайн буде:   {dto.DeadlineAt:dd.MM.yyyy HH:mm}");
-            sb.AppendLine($"📅 Повідомлення надіслано: {dto.SentAt:dd.MM.yyyy HH:mm}");
+            sb.AppendLine($"⏰ Дедлайн буде:   {deadlineLocal:dd.MM.yyyy HH:mm}");
+            sb.AppendLine($"📅 Повідомлення надіслано: {sentAtLocal:dd.MM.yyyy HH:mm}");
             sb.AppendLine(new string('-', 40));
             sb.AppendLine("Це автоматичне повідомлення від платформи Navchayko.");
 
