@@ -122,14 +122,14 @@ export class CalendarComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe({
-      next: (result: { eventName: string, eventTime: string }) => {
+      next: (result: { eventName: string, eventTime: string, markerNames: string[] }) => {
         const addedEvent: AddUniqueEventDto = {
           id: 0,
           eventName: result.eventName,
           eventTime: this.getFullDate(this.selectedDateSignal() as Date, result.eventTime),
           spaceId: 0,
         };
-        this.calendarService.addUniqueEvent(addedEvent);
+        this.calendarService.addUniqueEvent(addedEvent, result.markerNames);
       },
       error: (err) => {
         console.error('Error during event creating: ', err);
