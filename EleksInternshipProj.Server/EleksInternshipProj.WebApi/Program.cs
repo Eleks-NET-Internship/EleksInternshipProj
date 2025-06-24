@@ -43,6 +43,7 @@ namespace EleksInternshipProj.WebApi
             builder.Services.AddRepositories();
             builder.Services.AddHostedServices();
             builder.Services.ConfigureAuth(builder.Configuration);
+            builder.Services.AddAppConfiguration(builder.Configuration);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

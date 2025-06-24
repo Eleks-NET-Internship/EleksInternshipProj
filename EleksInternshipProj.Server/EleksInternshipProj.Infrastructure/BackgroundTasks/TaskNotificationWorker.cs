@@ -40,6 +40,8 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
             ITaskRepository taskService = scope.ServiceProvider.GetRequiredService<ITaskRepository>();
             INotificationRepository notificationRepository = scope.ServiceProvider.GetRequiredService<INotificationRepository>();
             INotificationDeliveryService notificationDeliveryService = scope.ServiceProvider.GetRequiredService<INotificationDeliveryService>();
+            IEmailService emailService = scope.ServiceProvider.GetRequiredService<IEmailService>();
+            IUserSpaceRepository userSpaceService = scope.ServiceProvider.GetRequiredService<IUserSpaceRepository>();
 
             DateTime current = DateTime.UtcNow;
 
@@ -83,7 +85,11 @@ namespace EleksInternshipProj.Infrastructure.BackgroundTasks
                 notificationDeliveryService.SendReminderToSpaceAsync(dto);
 
                 // email
-
+                var users = await userSpaceService.GetUsersBySpaceId(dto.SpaceId);
+                foreach (var user in users)
+                {
+                    await emailService.SendDeadlineNotificationAsync(user.Email, dto);
+                }
             }
         }
     }

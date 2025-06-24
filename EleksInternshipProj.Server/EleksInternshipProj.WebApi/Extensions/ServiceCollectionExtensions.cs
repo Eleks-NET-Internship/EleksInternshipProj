@@ -12,6 +12,7 @@ using EleksInternshipProj.Infrastructure.Repositories;
 using EleksInternshipProj.Infrastructure.Extensions;
 using EleksInternshipProj.Infrastructure.Services;
 using EleksInternshipProj.Infrastructure.BackgroundTasks;
+using EleksInternshipProj.Infrastructure.Configuration;
 
 namespace EleksInternshipProj.WebApi.Extensions
 {
@@ -34,7 +35,7 @@ namespace EleksInternshipProj.WebApi.Extensions
             services.AddScoped<INotificationDeliveryService, SignalRDeliveryService>();
             services.AddScoped<ISpaceAuthService, SpaceAuthService>();
             services.AddScoped<INoteService, NoteService>();
-
+            services.AddScoped<IEmailService, EmailService>();
 
             return services;
         }
@@ -56,6 +57,21 @@ namespace EleksInternshipProj.WebApi.Extensions
 
             return services;
         }
+
+        public static IServiceCollection AddAppConfiguration(this IServiceCollection services, IConfiguration configuration)
+        {
+            var emailSettings = configuration
+                .GetSection("EmailSettings")
+                .Get<EmailSettings>();
+
+            if (emailSettings is null)
+                throw new InvalidOperationException("EmailSettings configuration section is missing or invalid.");
+
+            services.AddSingleton(emailSettings);
+
+            return services;
+        }
+
 
         public static IServiceCollection ConfigureAuth(this IServiceCollection services, IConfiguration configuration)
         {
