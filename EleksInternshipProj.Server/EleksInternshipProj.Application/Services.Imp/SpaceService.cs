@@ -69,6 +69,13 @@ namespace EleksInternshipProj.Application.Services.Imp
             return await _spaceRepository.DeleteAsync(spaceId);
         }
 
+        public async Task<SpaceDto?> GetByIdAsync(long id)
+        {
+            var space = await _spaceRepository.GetByIdAsync(id);
+
+            return space?.ToDto();
+        }
+
         public async Task<IEnumerable<SpaceDto>> GetSpacesAsync(long userId)
         {
             var allSpaces = (await _spaceRepository.GetByUserAsync(userId)).ToList();

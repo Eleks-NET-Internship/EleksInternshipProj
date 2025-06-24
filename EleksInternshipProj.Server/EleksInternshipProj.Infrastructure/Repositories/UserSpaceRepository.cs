@@ -1,4 +1,5 @@
 ﻿using EleksInternshipProj.Domain.Abstractions;
+using EleksInternshipProj.Domain.Models;
 using EleksInternshipProj.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,5 +34,14 @@ namespace EleksInternshipProj.Infrastructure.Repositories
             string roleName = await GetUserRoleAsync(userId, spaceId);
             return roleName == role;
         }
+
+        public async Task<IEnumerable<User>> GetUsersBySpaceId(long spaceId)
+        {
+            return await _context.UserSpaces
+                .Where(us => us.SpaceId == spaceId)
+                .Select(us => us.User!)
+                .ToListAsync();
+        }
+
     }
 }
