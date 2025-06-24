@@ -13,11 +13,10 @@
 
       <mat-card-content>
         <div *ngIf="tasks.length > 0; else noTasks">
-          <div *ngFor="let task of tasks" class="mini-task-card" (click)="openTaskDetails(task)">
-
-             <button class="delete-task-btn" (click)="deleteTask(task.id, $event)" aria-label="Видалити завдання">
-                  <mat-icon>delete</mat-icon>
-             </button>
+          <div *ngFor="let task of tasks" class="mini-task-card card-hover" (click)="openTaskDetails(task)">
+            <button class="delete-task-btn" (click)="deleteTask(task.id, $event)" aria-label="Видалити завдання">
+              <mat-icon>delete</mat-icon>
+            </button>
 
             <div class="mini-task-header">{{ task.name }}</div>
 
@@ -59,7 +58,21 @@
         </div>
       </mat-card-header>
       <mat-card-content>
-        <p>Ще зробим. Всьо буде, головне здоров'я</p>
+        <div *ngIf="notes.length > 0; else noNotes">
+          <div class="notes-container">
+            <div
+              *ngFor="let note of notes"
+              class="note-block card-hover"
+              tabindex="0"
+              (click)="openNote(note)"
+              [attr.aria-label]="'Нотатка ' + note.title">
+              {{ note.title }}
+            </div>
+          </div>
+        </div>
+        <ng-template #noNotes>
+          <p>Нотаток поки немає.</p>
+        </ng-template>
       </mat-card-content>
     </mat-card>
   </div>
