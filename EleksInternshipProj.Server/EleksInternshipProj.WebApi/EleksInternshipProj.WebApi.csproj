@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <SpaRoot>..\..\eleksinternshipproj.client</SpaRoot>
+    <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+    <SpaProxyServerUrl>https://localhost:4200</SpaProxyServerUrl>
+    
+    <UserSecretsId>82f77ff9-2540-4803-9d4d-6960a9fb2772</UserSecretsId>
+    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.16" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy">
+      <Version>8.*-*</Version>
+    </PackageReference>
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\eleksinternshipproj.client\eleksinternshipproj.client.esproj" />
+    <ProjectReference Include="..\EleksInternshipProj.Application\EleksInternshipProj.Application.csproj" />
+    <ProjectReference Include="..\eleksinternshipproj.client\eleksinternshipproj.client.esproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="..\EleksInternshipProj.Domain\EleksInternshipProj.Domain.csproj" />
+    <ProjectReference Include="..\EleksInternshipProj.Infrastructure\EleksInternshipProj.Infrastructure.csproj" />
+    <ProjectReference Include="..\EleksInternshipProj.Application\EleksInternshipProj.Application.csproj" />
+    <ProjectReference Include="..\EleksInternshipProj.Domain\EleksInternshipProj.Domain.csproj" />
+    <ProjectReference Include="..\EleksInternshipProj.Infrastructure\EleksInternshipProj.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

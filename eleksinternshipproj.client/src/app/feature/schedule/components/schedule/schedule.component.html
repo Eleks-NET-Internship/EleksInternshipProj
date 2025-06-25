@@ -1,0 +1,46 @@
+<div class="schedule-container">
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div class="schedule-head">
+      <div class="header-title">Розклад</div>
+    </div>
+    <div class="edit-button">
+      <button mat-icon-button size="small" (click)="EditSchedule()">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </div>
+
+    <div class="schedule-divider"></div>
+    
+    <!-- Days header -->
+    <div class="days-header">
+      <div class="day-column" *ngFor="let day of daysOfWeek">
+        <h3 class="day-title">{{ day }}</h3>
+      </div>
+    </div>
+
+    <!-- Schedule cards grid -->
+    <div class="schedule-grid">
+      <div class="day-column" *ngFor="let day of daysOfWeek">
+        <mat-card *ngFor="let card of scheduleData[day] || []"
+                  class="schedule-card"
+                  [class.has-notification]="card.hasNotification"
+                  (click)="onCardClick(card)">
+
+          <div *ngIf="card.hasNotification" class="notification-dot"></div>
+
+          <mat-card-content>
+            <div class="card-time">{{ card.time }}</div>
+            <div class="card-title">{{ card.title }}</div>
+            <div *ngIf="card.description" class="card-description">
+              {{ card.description }}
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,38 @@
+.display-field {
+  width: 100%;
+  padding: 5px 8px;
+  border: 1px solid #AC6869;
+  border-radius: 4px;
+  background: #F7E2E1;
+  color: #333;
+  font-size: 14px;
+  box-sizing: border-box;
+  min-height: 20px;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+p {
+  margin-bottom: 0;
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.markers-container {
+  text-align: center;
+}
+
+button {
+  background-color: #fbb;
+  border: 0;
+  color: #900;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #f99;
+}

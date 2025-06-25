@@ -1,0 +1,186 @@
+.event-detail-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  width: 75vw;
+  margin-left: 7%;
+}
+
+.event-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.content-blocks-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 100vw;
+  max-width: 1200px;
+}
+
+.content-block {
+  flex: 1;
+  min-width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.card-header {
+  background-color: #ba6b6b;
+  color: white;
+  padding: 16px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.header-title-center {
+  width: 100%;
+  text-align: center;
+}
+
+/* === Загальні стилі для блоків завдань і нотаток === */
+.card-hover {
+  position: relative;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  background-color: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
+  user-select: none;
+  outline: none;
+}
+
+.card-hover:hover,
+.card-hover:focus {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+  background-color: #fff0f0;
+}
+
+/* === Специфікація для завдань === */
+.mini-task-card {
+  font-weight: normal;
+}
+
+.mini-task-header {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.mini-task-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mini-task-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.mini-label {
+  font-weight: 500;
+  color: #555;
+}
+
+.mini-chip {
+  height: 22px;
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.mini-deadline {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  color: #444;
+}
+
+.mini-icon {
+  font-size: 18px;
+  color: #d32f2f;
+}
+
+.no-deadline {
+  font-style: italic;
+  color: #999;
+  font-size: 13px;
+}
+
+/* Кнопка видалення */
+.delete-task-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #d32f2f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s ease;
+  z-index: 10;
+}
+
+.delete-task-btn:hover {
+  background-color: rgba(211, 47, 47, 0.15);
+}
+
+.delete-task-btn mat-icon {
+  font-size: 20px;
+  pointer-events: none;
+}
+
+/* === Нотатки === */
+.notes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.note-block {
+  font-weight: 600;
+  color: #333;
+}
+
+.mini-task-card:first-child {
+  margin-top: 12px;
+}
+
+.notes-container .note-block:first-child {
+  margin-top: 12px;
+}
+
+
+/* Адаптивність */
+@media (max-width: 768px) {
+  .content-blocks-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .content-block {
+    width: 90%;
+    max-width: 500px;
+  }
+
+  .mini-task-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

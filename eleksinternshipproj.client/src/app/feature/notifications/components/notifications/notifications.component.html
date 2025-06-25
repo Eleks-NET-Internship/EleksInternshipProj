@@ -1,0 +1,25 @@
+<div class="notifications-container">
+  <div class="notifications-header">
+    <div class="header-title">Сповіщення</div>
+    <div class="header-actions">
+      <button *ngIf="canNotifySpaces" class="notify-space-btn" (click)="openNotifySpaceDialog()">Сповістити учасників</button>
+    </div>
+  </div>
+  <div class="header-divider"></div>
+
+  <div *ngIf="notifications.length < 1" class="empty-message">Пусто</div>
+
+  <div class="notification-list">
+    <div *ngFor="let notif of notifications" class="notification"
+         [ngClass]="true ? 'clickableNotification' : ''">
+      <div [ngClass]="false ? 'readHeader' : 'notReadHeader'">
+        <h3 class="notification-title">{{notif.title}}</h3>
+      </div>
+      <div [ngClass]="false ? 'readContent' : 'notReadContent'">
+        <p class="notification-description">{{notif.message}}</p>
+        <p class="notification-description">{{notif.notificationType == 0 ? "Коли": ""}} {{notif.deadlineAt | date:"medium"}}</p>
+        <small class="notification-description">Надіслано {{notif.sentAt | date:"medium"}}</small>
+      </div>
+    </div>
+  </div>
+</div>

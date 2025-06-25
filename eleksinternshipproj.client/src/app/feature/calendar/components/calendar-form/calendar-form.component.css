@@ -1,0 +1,75 @@
+/* calendar-form.component.css */
+.display-container {
+  background: #AC6869;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  height: fit-content;
+  overflow: hidden;
+}
+
+.display-section {
+  background: #F7E2E1;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  padding: 10px 20px 15px 20px;
+}
+
+.display-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  color: #000000;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+ 
+  height: 25px;
+  padding: 0 0 0 2px;
+  background: none;
+}
+
+.display-group {
+  margin-bottom: 12px;
+}
+
+.display-group:last-child {
+  margin-bottom: 0;
+}
+
+.display-field {
+  width: 100%;
+  padding: 5px 8px;
+  border: 1px solid #AC6869;
+  border-radius: 4px;
+  background: #F7E2E1;
+  color: #333;
+  font-size: 14px;
+  box-sizing: border-box;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .display-container {
+    border-radius: 10px;
+  }
+  
+  .display-section {
+    padding: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .display-field {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+}

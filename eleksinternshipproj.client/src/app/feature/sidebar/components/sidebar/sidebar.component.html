@@ -1,0 +1,19 @@
+<!-- Sidebar -->
+<div mode="side" opened class="sidenav">
+  <!-- Header with arrow -->
+  <div class="sidenav-header">
+    <p class="logo">NAVCHAYKO</p>
+  </div>
+
+  <!-- Navigation menu -->
+  <mat-nav-list class="nav-list">
+    <mat-list-item *ngFor="let item of sidenavItems"
+                   [class.active]="item.active"
+                   [class.disabled]="item.disabled"
+                   [disableRipple]="item.disabled"
+                   (click)="onMenuClick(item)">
+      <mat-icon matListItemIcon>{{ item.icon }}</mat-icon>
+      <span matListItemTitle>{{ item.label }}</span>
+    </mat-list-item>
+  </mat-nav-list>
+</div>

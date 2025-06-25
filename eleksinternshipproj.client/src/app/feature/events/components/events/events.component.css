@@ -1,0 +1,86 @@
+.events-container {
+  padding: 24px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+.events-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.add-event-btn {
+  background-color: transparent;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+.header-divider {
+  height: 1px;
+  background-color: #ccc;
+  margin: 8px 0 16px;
+}
+
+.list-container {
+  width: 100%;
+  margin-top: 50px;
+}
+
+.list-item {
+  background-color: #ba6b6b;
+  color: white;
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 50px;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 500;
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.more-options {
+  color: white;
+}
+
+.empty-message {
+  font-size: 16px;
+  color: #777;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.more-options mat-icon {
+  color: white;
+}
+

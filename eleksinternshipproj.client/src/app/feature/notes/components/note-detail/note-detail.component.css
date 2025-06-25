@@ -1,0 +1,315 @@
+.note-detail-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  width: calc(100vw - 220px);
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 10;
+
+    .header-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .back-button {
+      margin-right: 8px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+
+      .action-button {
+        &:hover {
+          background-color: rgba(0,0,0,0.04);
+        }
+      }
+    }
+  }
+
+  .note-content-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+
+    .note-card {
+      max-width: 800px;
+      margin: 0 auto;
+      min-height: calc(100vh - 140px);
+      
+      .note-header {
+        padding-bottom: 16px;
+        border-bottom: 1px solid #e0e0e0;
+
+        .title-section {
+          width: 100%;
+
+          .note-title {
+            font-size: 2rem;
+            font-weight: 300;
+            margin: 0 0 16px 0;
+            color: #333;
+            line-height: 1.2;
+          }
+
+          .note-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 0.875rem;
+            color: #666;
+
+            span {
+              display: flex;
+              align-items: center;
+              gap: 4px;
+
+              .meta-icon {
+                font-size: 16px;
+                width: 16px;
+                height: 16px;
+              }
+            }
+
+            .event-badge {
+              background-color: #e3f2fd;
+              color: #1976d2;
+              padding: 4px 8px;
+              border-radius: 12px;
+              font-weight: 500;
+            }
+          }
+        }
+
+        .title-field {
+          width: 100%;
+          font-size: 1.5rem;
+
+          ::ng-deep .mat-form-field-infix {
+            font-size: 1.5rem;
+          }
+        }
+      }
+      
+
+      .note-body {
+        padding: 24px 0;
+        min-height: 300px;
+
+        .content-view {
+          .note-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+            word-wrap: break-word;
+
+            ::ng-deep {
+              p {
+                margin-bottom: 16px;
+              }
+
+              strong {
+                font-weight: 600;
+              }
+
+              em {
+                font-style: italic;
+              }
+            }
+          }
+
+          .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: #666;
+
+            .empty-icon {
+              font-size: 48px;
+              width: 48px;
+              height: 48px;
+              margin-bottom: 16px;
+              opacity: 0.5;
+            }
+
+            p {
+              margin-bottom: 24px;
+              font-size: 1.1rem;
+            }
+          }
+        }
+
+        .content-field {
+          width: 100%;
+
+          ::ng-deep {
+            .mat-form-field-infix {
+              font-size: 1rem;
+              line-height: 1.6;
+            }
+
+            textarea {
+              resize: vertical;
+              font-family: inherit;
+            }
+          }
+        }
+      }
+
+      .edit-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: flex-end;
+        padding-top: 16px;
+        border-top: 1px solid #e0e0e0;
+
+        button {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+      }
+    }
+  }
+}
+/* // Додаткові стилі для нових елементів */
+
+.edit-header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .title-field {
+    width: 100%;
+  }
+
+  .event-selection {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+
+    .event-field {
+      flex: 1;
+    }
+
+    .clear-event-button {
+      margin-top: 8px;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/* // Адаптивний дизайн для вибору події */
+@media (max-width: 768px) {
+  .edit-header {
+    .event-selection {
+      flex-direction: column;
+      
+      .clear-event-button {
+        align-self: flex-end;
+        margin-top: 0;
+      }
+    }
+  }
+}
+
+/* // Покращення стилів для badge події */
+.event-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background-color: rgba(63, 81, 181, 0.1);
+  color: #3f51b5;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+
+  .meta-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* // Стилі для mat-select в темній темі (якщо потрібно) */
+.mat-mdc-select-panel {
+  .mat-mdc-option {
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+}
+
+/* // Responsive design */
+@media (max-width: 768px) {
+  .note-detail-container {
+    .header {
+      padding: 12px 16px;
+
+      .header-actions {
+        gap: 4px;
+      }
+    }
+
+    .note-content-wrapper {
+      padding: 16px;
+
+      .note-card {
+        .note-header {
+          .note-title {
+            font-size: 1.5rem;
+          }
+
+          .note-meta {
+            flex-direction: column;
+            gap: 8px;
+          }
+        }
+
+        .edit-actions {
+          flex-direction: column;
+
+          button {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* // Анімації */
+.note-card {
+  transition: all 0.3s ease;
+}
+
+.content-view, .content-field {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

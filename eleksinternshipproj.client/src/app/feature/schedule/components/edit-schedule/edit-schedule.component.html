@@ -1,0 +1,69 @@
+<div class="schedule-container">
+  <mat-sidenav-container class="schedule-sidenav-container">
+    <mat-sidenav-content class="schedule-content">
+
+      <!-- Schedule Grid -->
+      <div class="schedule-grid">
+        <div class="day-column"
+             *ngFor="let day of daysForDisplay; let i = index"
+             [class.highlight-day]="day?.dayName === 'Середа'">
+
+          <div class="day-header">
+            <!-- Show existing dayName or fallback to allWeekDays[i] -->
+            <h4>{{ day?.dayName ?? allWeekDays[i] }}</h4>
+          </div>
+
+          <div class="day-events"
+               cdkDropList
+               [id]="'day-' + i"
+               [cdkDropListData]="day?.eventDays ?? []"
+               [cdkDropListConnectedTo]="connectedDropLists"
+               (cdkDropListDropped)="onEventDrop($event)">
+
+            <!-- Event Cards -->
+            <mat-card class="event-card"
+                      *ngFor="let event of day?.eventDays ?? []; let j = index"
+                      cdkDrag
+                      style="background-color: #e0f7fa">
+              <div class="event-actions">
+                <button mat-icon-button (click)="editEvent(event)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteEvent(i, j)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+
+              <mat-card-content>
+                <div class="event-time">{{ getEventTime(event) }}</div>
+                <div class="event-title">{{ event.event.name }}</div>
+                <div class="event-description" *ngIf="event.event.markers.length">
+                  {{ getEventDescription(event) }}
+                </div>
+              </mat-card-content>
+
+              <div class="drag-handle" cdkDragHandle>
+                <mat-icon>drag_indicator</mat-icon>
+              </div>
+            </mat-card>
+
+            <!-- Empty state -->
+            <div class="empty-state">
+              <button mat-button (click)="addEvent(i)" class="add-event-btn">
+                <mat-icon>add</mat-icon>
+                Додати подію
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="action-buttons">
+        <button mat-raised-button color="primary" (click)="cancelChanges()">Скасувати</button>
+        <button mat-raised-button color="accent" (click)="saveChanges()">Застосувати</button>
+      </div>
+
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

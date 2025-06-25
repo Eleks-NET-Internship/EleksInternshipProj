@@ -1,0 +1,95 @@
+.notifications-container {
+  padding: 24px;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+}
+
+h3, p, small {
+  margin: 0px;
+  padding: 0px;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.header-actions {
+  position: relative;
+}
+
+.notify-space-btn {
+  background-color: transparent;
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #333;
+  transition: all 0.2s ease;
+}
+
+  .notify-space-btn:hover {
+    background-color: #f0f0f0;
+  }
+
+.notifications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-divider {
+  height: 1px;
+  background-color: #ccc;
+  margin: 8px 0 16px;
+}
+
+.empty-message {
+  font-size: 16px;
+  color: #777;
+  text-align: center;
+  margin-top: 40px;
+}
+
+.notification {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  border: 2px solid #a1a1a1;
+  border-radius: 5px;
+  margin-bottom: 7px;
+}
+
+.readContent {
+  background-color: #e1e1e1;
+}
+
+.readHeader {
+  background-color: #d1d1d1;
+}
+
+.notReadContent {
+  background-color: #F7E2E1;
+}
+
+.notReadHeader {
+  background-color: #AC6869;
+}
+
+.notification-title {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.notification-description {
+  font-size: 12px;
+  color: #666;
+}
+
+.clickableNotification:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}

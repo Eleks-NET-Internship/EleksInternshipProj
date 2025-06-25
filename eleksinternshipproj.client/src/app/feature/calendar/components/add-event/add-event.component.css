@@ -1,0 +1,16 @@
+.material-label {
+  display: block;
+  margin-bottom: 4px;
+  color: #555;
+  font-size: 14px;
+}
+
+mat-form-field {
+  width: 350px;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.5);
+  cursor: pointer;
+  margin-left: 5px;
+}

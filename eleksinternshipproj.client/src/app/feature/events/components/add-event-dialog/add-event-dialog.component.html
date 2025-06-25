@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Нова подія</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" style="width: 100%; padding-top: 10px;">
+    <mat-label>Назва події</mat-label>
+    <input matInput [(ngModel)]="eventName" />
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()">Скасувати</button>
+  <button mat-raised-button color="primary" (click)="onSave()">Зберегти</button>
+</mat-dialog-actions>
